@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { MenuGrid } from '@/components/menu/MenuGrid';
 import { CategoryFilter } from '@/components/menu/CategoryFilter';
 import { SearchBar } from '@/components/menu/SearchBar';
+import { MobileCategoryDropdown } from '@/components/menu/MobileCategoryDropdown';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { MenuProvider } from '@/lib/context/MenuContext';
 import { restaurant, menuItems, categories } from '@/data/menu';
@@ -20,6 +21,9 @@ export default function MenuPage() {
           {/* Search and Filter Section */}
           <div className="space-y-3 sm:space-y-4">
             <SearchBar />
+            {/* Mobile Dropdown */}
+            <MobileCategoryDropdown />
+            {/* Desktop Category Filter */}
             <CategoryFilter />
           </div>
 
