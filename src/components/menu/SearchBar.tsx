@@ -36,7 +36,7 @@ export function SearchBar({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative w-full max-w-md mx-auto"
+      className="relative w-full max-w-sm sm:max-w-md mx-auto"
     >
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
