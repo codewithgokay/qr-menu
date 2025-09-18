@@ -45,7 +45,7 @@ export function SearchBar({
           placeholder={placeholder}
           value={query}
           onChange={(e) => handleSearch(e.target.value)}
-          className="pl-10 pr-10 h-12 text-base"
+          className="pl-10 pr-10 h-10 sm:h-12 text-sm sm:text-base"
         />
         {query && (
           <motion.div

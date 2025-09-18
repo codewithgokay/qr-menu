@@ -122,18 +122,18 @@ export function MenuGrid() {
             transition={{ delay: categoryIndex * 0.1 }}
             className="space-y-6"
           >
-            {/* Category Header */}
+            {/* Category Header - Mobile First */}
             {filters.category === 'all' && (
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">{category?.icon}</span>
-                <div>
-                  <h2 className="text-2xl font-bold">{category?.name}</h2>
+              <div className="flex items-center space-x-2 sm:space-x-3 py-2">
+                <span className="text-xl sm:text-2xl">{category?.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-lg sm:text-2xl font-bold truncate">{category?.name}</h2>
                   {category?.description && (
-                    <p className="text-muted-foreground">{category.description}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground truncate">{category.description}</p>
                   )}
                 </div>
-                <div className="flex-1 h-px bg-border" />
-                <span className="text-sm text-muted-foreground">
+                <div className="hidden sm:flex flex-1 h-px bg-border mx-2" />
+                <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
                   {items.length} item{items.length !== 1 ? 's' : ''}
                 </span>
               </div>

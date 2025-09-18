@@ -34,32 +34,34 @@ export function CategoryFilter() {
       className="w-full"
     >
       <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex space-x-3 pb-2">
+        <div className="flex space-x-2 sm:space-x-3 pb-2 px-1">
           {allCategories.map((category, index) => (
             <motion.div
               key={category.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.05 }}
             >
               <Button
                 variant={activeCategory === category.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleCategoryClick(category.id)}
                 className={`
-                  min-w-fit h-12 px-4 rounded-full transition-all duration-200
+                  min-w-fit h-10 sm:h-12 px-3 sm:px-4 rounded-full transition-all duration-200
+                  text-xs sm:text-sm font-medium
                   ${activeCategory === category.id 
                     ? 'bg-primary text-primary-foreground shadow-md' 
                     : 'hover:bg-muted'
                   }
                 `}
               >
-                <span className="mr-2 text-lg">{category.icon}</span>
-                <span className="font-medium">{category.name}</span>
+                <span className="mr-1 sm:mr-2 text-sm sm:text-lg">{category.icon}</span>
+                <span className="hidden sm:inline font-medium">{category.name}</span>
+                <span className="sm:hidden font-medium">{category.name.split(' ')[0]}</span>
                 {category.id !== 'all' && (
                   <Badge 
                     variant="secondary" 
-                    className="ml-2 text-xs"
+                    className="ml-1 sm:ml-2 text-xs px-1 py-0 h-4"
                   >
                     {/* This would show item count in a real app */}
                   </Badge>
