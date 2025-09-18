@@ -44,7 +44,7 @@ export function MenuItem({ item, index }: MenuItemProps) {
     item.isGlutenFree && 'gluten-free',
     item.isDairyFree && 'dairy-free',
     item.isSpicy && 'spicy',
-  ].filter(Boolean);
+  ].filter(Boolean) as string[];
 
   return (
     <motion.div
@@ -112,9 +112,9 @@ export function MenuItem({ item, index }: MenuItemProps) {
             {/* Dietary Info */}
             {dietaryInfo.length > 0 && (
               <div className="flex flex-wrap gap-1 mb-3">
-                {dietaryInfo.map((info) => (
-                  <Badge key={info} variant="secondary" className="text-xs">
-                    {getDietaryIcon(info as string)}
+                {dietaryInfo.map((info, index) => (
+                  <Badge key={`${info}-${index}`} variant="secondary" className="text-xs">
+                    {getDietaryIcon(info)}
                     <span className="ml-1 capitalize">{info}</span>
                   </Badge>
                 ))}
@@ -182,9 +182,9 @@ export function MenuItem({ item, index }: MenuItemProps) {
                     <div>
                       <h4 className="font-semibold mb-2">Dietary Information</h4>
                       <div className="flex flex-wrap gap-2">
-                        {dietaryInfo.map((info) => (
-                          <Badge key={info} variant="secondary">
-                            {getDietaryIcon(info as string)}
+                        {dietaryInfo.map((info, index) => (
+                          <Badge key={`${info}-${index}`} variant="secondary">
+                            {getDietaryIcon(info)}
                             <span className="ml-1 capitalize">{info}</span>
                           </Badge>
                         ))}
