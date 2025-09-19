@@ -47,6 +47,10 @@ export function ImageOptimized({
         className={`object-cover transition-all duration-500 ${
           imageLoaded ? 'opacity-100' : 'opacity-0'
         }`}
+        style={{
+          width: '100%',
+          height: 'auto'
+        }}
         onLoad={() => setImageLoaded(true)}
         onError={() => setImageError(true)}
         placeholder="blur"

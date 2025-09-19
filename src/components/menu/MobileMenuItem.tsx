@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { MenuItem as MenuItemType } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Clock, Flame, Leaf, Wheat, Milk, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ImageOptimized } from '@/components/common/ImageOptimized';
@@ -133,6 +133,9 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
         <SheetContent className="w-full sm:max-w-lg bg-primary-cream">
           <SheetHeader>
             <SheetTitle className="text-2xl font-heading text-text-primary">{item.name}</SheetTitle>
+            <SheetDescription className="text-text-secondary">
+              {item.description}
+            </SheetDescription>
           </SheetHeader>
           <div className="mt-6 space-y-6">
             {/* Large Image */}

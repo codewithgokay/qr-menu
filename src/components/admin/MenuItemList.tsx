@@ -104,6 +104,10 @@ function SortableMenuItem({
               width={400}
               height={300}
               className="w-full h-full object-cover"
+              style={{
+                width: '100%',
+                height: 'auto'
+              }}
             />
           </div>
         )}
@@ -260,6 +264,10 @@ export function MenuItemList({
                       width={400}
                       height={300}
                       className="w-full h-full object-cover"
+                      style={{
+                        width: '100%',
+                        height: 'auto'
+                      }}
                     />
                   </div>
                 )}
