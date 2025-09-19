@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { menuItems } from '@/data/menu'
 
 // GET /api/menu-items - Get all menu items
 export async function GET() {
   try {
-    const menuItems = await prisma.menuItem.findMany({
+    // Try to fetch from database first
+    const dbMenuItems = await prisma.menuItem.findMany({
       where: { isActive: true },
       include: {
         category: true,
@@ -18,7 +20,7 @@ export async function GET() {
     })
 
     // Transform the data to match the expected format
-    const transformedItems = menuItems.map(item => ({
+    const transformedItems = dbMenuItems.map(item => ({
       id: item.id,
       name: item.name,
       description: item.description,
@@ -38,8 +40,28 @@ export async function GET() {
 
     return NextResponse.json(transformedItems)
   } catch (error) {
-    console.error('Error fetching menu items:', error)
-    return NextResponse.json({ error: 'Failed to fetch menu items' }, { status: 500 })
+    console.error('Database error, falling back to static data:', error)
+    
+    // Fallback to static data when database is not available
+    const transformedItems = menuItems.map(item => ({
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      category: item.category,
+      image: item.image,
+      allergens: item.allergens || [],
+      isVegetarian: item.isVegetarian || false,
+      isVegan: item.isVegan || false,
+      isSpicy: item.isSpicy || false,
+      isPopular: item.isPopular || false,
+      isGlutenFree: item.isGlutenFree || false,
+      isDairyFree: item.isDairyFree || false,
+      calories: item.calories || 0,
+      prepTime: item.prepTime || 0
+    }))
+
+    return NextResponse.json(transformedItems)
   }
 }
 

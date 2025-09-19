@@ -1,16 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { categories } from '@/data/menu'
 
 // GET /api/categories - Get all categories
 export async function GET() {
   try {
-    const categories = await prisma.menuCategory.findMany({
+    // Try to fetch from database first
+    const dbCategories = await prisma.menuCategory.findMany({
       where: { isActive: true },
       orderBy: { order: 'asc' }
     })
 
     // Transform the data to match the expected format
-    const transformedCategories = categories.map(category => ({
+    const transformedCategories = dbCategories.map(category => ({
       id: category.id,
       name: category.name,
       description: category.description,
@@ -20,8 +22,18 @@ export async function GET() {
 
     return NextResponse.json(transformedCategories)
   } catch (error) {
-    console.error('Error fetching categories:', error)
-    return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 })
+    console.error('Database error, falling back to static data:', error)
+    
+    // Fallback to static data when database is not available
+    const transformedCategories = categories.map(category => ({
+      id: category.id,
+      name: category.name,
+      description: category.description,
+      icon: category.icon,
+      order: category.order
+    }))
+
+    return NextResponse.json(transformedCategories)
   }
 }
 
