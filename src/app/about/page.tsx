@@ -24,7 +24,7 @@ export default function AboutPage() {
               Hakkımızda
             </h1>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto leading-relaxed">
-              Bella Vista olarak, 2015 yılından beri İtalya'nın en otantik lezzetlerini 
+              Bella Vista olarak, 2015 yılından beri İtalya&apos;nın en otantik lezzetlerini 
               sizlere sunmanın gururunu yaşıyoruz.
             </p>
           </motion.div>
@@ -43,14 +43,14 @@ export default function AboutPage() {
                 </h2>
                 <div className="space-y-4 text-text-secondary leading-relaxed">
                   <p>
-                    Bella Vista, İtalya'nın güneyindeki küçük bir kasabada doğan bir aşk hikayesidir. 
-                    Kurucumuz Mario'nun büyükannesi Maria'nın mutfağında başlayan bu yolculuk, 
-                    bugün İstanbul'un kalbinde en seçkin İtalyan restoranlarından biri olarak devam ediyor.
+                    Bella Vista, İtalya&apos;nın güneyindeki küçük bir kasabada doğan bir aşk hikayesidir. 
+                    Kurucumuz Mario&apos;nun büyükannesi Maria&apos;nın mutfağında başlayan bu yolculuk, 
+                    bugün İstanbul&apos;un kalbinde en seçkin İtalyan restoranlarından biri olarak devam ediyor.
                   </p>
                   <p>
-                    Her yemeğimizde, İtalya'nın sıcaklığını, ailenin sıcaklığını ve geleneksel 
+                    Her yemeğimizde, İtalya&apos;nın sıcaklığını, ailenin sıcaklığını ve geleneksel 
                     lezzetlerin büyüsünü hissedeceksiniz. Taze malzemeler, geleneksel tarifler ve 
-                    modern sunum teknikleriyle harmanladığımız mutfağımız, sizleri İtalya'ya götürüyor.
+                    modern sunum teknikleriyle harmanladığımız mutfağımız, sizleri İtalya&apos;ya götürüyor.
                   </p>
                   <p>
                     Sadece yemek değil, bir deneyim sunuyoruz. Her ziyaretinizde, sıcak bir karşılama, 

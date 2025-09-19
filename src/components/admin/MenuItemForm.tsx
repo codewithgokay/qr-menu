@@ -40,7 +40,7 @@ export function MenuItemForm({
   });
 
   const [imagePreview, setImagePreview] = useState<string>('');
-  const [_imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (item) {

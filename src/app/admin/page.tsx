@@ -47,12 +47,12 @@ export default function AdminPage() {
     setIsAuth(true);
   };
 
-  const handleMenuUpdate = (_items: MenuItem[]) => {
+  const handleMenuUpdate = () => {
     // This will be handled by the context in the main app
     // The data is now managed by the database
   };
 
-  const handleCategoryUpdate = (_categories: MenuCategory[]) => {
+  const handleCategoryUpdate = () => {
     // The data is now managed by the database
   };
 
