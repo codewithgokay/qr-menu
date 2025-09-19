@@ -29,7 +29,7 @@ export function Header({ restaurant }: HeaderProps) {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 100);
+      setIsScrolled(scrollTop > 20);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -52,17 +52,6 @@ export function Header({ restaurant }: HeaderProps) {
             }`}>
               {restaurant.name}
             </h1>
-            <motion.p 
-              className="text-text-secondary mt-1 text-lg transition-all duration-300"
-              animate={{ 
-                opacity: isScrolled ? 0 : 1,
-                height: isScrolled ? 0 : 'auto',
-                marginTop: isScrolled ? 0 : 4
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              {restaurant.description}
-            </motion.p>
           </div>
           
           {/* Navigation Menu */}
@@ -102,6 +91,15 @@ export function Header({ restaurant }: HeaderProps) {
                   <Link href="/menu" className="flex items-center w-full">
                     <span className="mr-3">🍽️</span>
                     <span className="font-medium">Menü</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="cursor-pointer py-3 px-4 text-text-primary hover:bg-warm-beige/50"
+                >
+                  <Link href="/about" className="flex items-center w-full">
+                    <span className="mr-3">ℹ️</span>
+                    <span className="font-medium">Hakkımızda</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>

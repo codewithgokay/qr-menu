@@ -16,7 +16,7 @@ export function Footer({ restaurant }: FooterProps) {
       className="border-t border-warm-beige bg-gradient-to-b from-soft-gray to-warm-beige/30 mt-16"
     >
       <div className="px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Restaurant Info */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-text-primary font-heading">{restaurant.name}</h3>
@@ -44,21 +44,6 @@ export function Footer({ restaurant }: FooterProps) {
                   </span>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* QR Code Placeholder */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-text-primary font-heading">QR Menü</h3>
-            <div className="flex flex-col items-center space-y-3">
-              <div className="w-24 h-24 bg-white rounded-2xl shadow-soft flex items-center justify-center">
-                <span className="text-xs text-text-secondary text-center font-medium">
-                  QR Kod
-                </span>
-              </div>
-              <p className="text-sm text-text-secondary text-center">
-                Bu menüyü görüntülemek için tarayın
-              </p>
             </div>
           </div>
         </div>
