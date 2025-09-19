@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 
 interface ImageOptimizedProps {
   src?: string;
@@ -25,7 +24,7 @@ export function ImageOptimized({
   const [imageError, setImageError] = useState(false);
 
   // Generate a placeholder image URL based on the alt text
-  const placeholderUrl = `https://via.placeholder.com/${width}x${height}/f3f4f6/9ca3af?text=${encodeURIComponent(alt)}`;
+  const _placeholderUrl = `https://via.placeholder.com/${width}x${height}/f3f4f6/9ca3af?text=${encodeURIComponent(alt)}`;
 
   if (imageError || !src) {
     return (

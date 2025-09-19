@@ -14,10 +14,10 @@ export default function HomePage() {
       <main className="flex items-center justify-center min-h-[calc(100vh-200px)]">
         <div className="text-center max-w-2xl mx-auto px-6">
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-6 font-heading">
-            Bella Vista'ya Hoş Geldiniz
+            Bella Vista&apos;ya Hoş Geldiniz
           </h1>
           <p className="text-lg md:text-xl text-text-secondary mb-8 leading-relaxed">
-            Modern dokunuşlarla otantik İtalyan mutfağı. Her yemeğimizde İtalya'nın sıcaklığını hissedeceksiniz.
+            Modern dokunuşlarla otantik İtalyan mutfağı. Her yemeğimizde İtalya&apos;nın sıcaklığını hissedeceksiniz.
           </p>
           <div className="flex justify-center">
             <Link 

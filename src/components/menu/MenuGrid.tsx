@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { MenuItem as MenuItemType } from '@/lib/types';
 import { MobileMenuItem } from './MobileMenuItem';
 import { Skeleton } from '@/components/ui/skeleton';

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { MenuItem, MenuCategory } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -18,7 +19,6 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import {
@@ -98,9 +98,11 @@ function SortableMenuItem({
       <div className="space-y-4">
         {item.image && (
           <div className="aspect-video overflow-hidden rounded-lg">
-            <img
+            <Image
               src={item.image}
               alt={item.name}
+              width={400}
+              height={300}
               className="w-full h-full object-cover"
             />
           </div>
@@ -252,9 +254,11 @@ export function MenuItemList({
               <div className="space-y-4">
                 {item.image && (
                   <div className="aspect-video overflow-hidden rounded-lg">
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.name}
+                      width={400}
+                      height={300}
                       className="w-full h-full object-cover"
                     />
                   </div>

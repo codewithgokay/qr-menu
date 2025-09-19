@@ -4,11 +4,12 @@ import { prisma } from '@/lib/prisma'
 // GET /api/menu-items/[id] - Get a specific menu item
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const menuItem = await prisma.menuItem.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         category: true,
         allergens: {
@@ -52,9 +53,10 @@ export async function GET(
 // PUT /api/menu-items/[id] - Update a menu item
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json()
     const { name, description, price, category, image, allergens, ...otherFields } = body
 
@@ -62,7 +64,7 @@ export async function PUT(
     if (allergens && allergens.length > 0) {
       // Delete existing allergens
       await prisma.menuItemAllergen.deleteMany({
-        where: { menuItemId: params.id }
+        where: { menuItemId: id }
       })
 
       // Create new allergens
@@ -75,7 +77,7 @@ export async function PUT(
 
         await prisma.menuItemAllergen.create({
           data: {
-            menuItemId: params.id,
+            menuItemId: id,
             allergenId: allergen.id
           }
         })
@@ -84,7 +86,7 @@ export async function PUT(
 
     // Update the menu item
     const menuItem = await prisma.menuItem.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         categoryId: category,
         name,
@@ -132,11 +134,12 @@ export async function PUT(
 // DELETE /api/menu-items/[id] - Soft delete a menu item
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     await prisma.menuItem.update({
-      where: { id: params.id },
+      where: { id },
       data: { isActive: false }
     })
 

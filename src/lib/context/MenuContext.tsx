@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useReducer, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { MenuState, FilterOptions, UserPreferences, MenuItem as MenuItemType, MenuCategory as MenuCategoryType } from '@/lib/types';
 import { menuItemsApi, categoriesApi } from '@/lib/api';
 import { menuItems as fallbackMenuItems, categories as fallbackCategories } from '@/data/menu';

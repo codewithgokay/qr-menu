@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Restaurant } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -61,19 +62,19 @@ export function Header({ restaurant }: HeaderProps) {
                   onClick={() => setIsMenuOpen(false)}
                   className="cursor-pointer py-3 px-4 text-text-primary hover:bg-warm-beige/50"
                 >
-                  <a href="/" className="flex items-center w-full">
+                  <Link href="/" className="flex items-center w-full">
                     <span className="mr-3">🏠</span>
                     <span className="font-medium">Ana Sayfa</span>
-                  </a>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => setIsMenuOpen(false)}
                   className="cursor-pointer py-3 px-4 text-text-primary hover:bg-warm-beige/50"
                 >
-                  <a href="/menu" className="flex items-center w-full">
+                  <Link href="/menu" className="flex items-center w-full">
                     <span className="mr-3">🍽️</span>
                     <span className="font-medium">Menü</span>
-                  </a>
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

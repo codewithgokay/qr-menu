@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { MenuItem, MenuCategory } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,7 +40,7 @@ export function MenuItemForm({
   });
 
   const [imagePreview, setImagePreview] = useState<string>('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [_imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (item) {
@@ -187,9 +188,11 @@ export function MenuItemForm({
             <label className="block text-sm font-medium text-text-primary mb-2">
               Resim Önizleme
             </label>
-            <img
+            <Image
               src={imagePreview}
               alt="Preview"
+              width={128}
+              height={128}
               className="w-32 h-32 object-cover rounded-lg border border-warm-beige"
             />
           </div>
