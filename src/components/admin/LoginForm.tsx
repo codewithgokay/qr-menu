@@ -24,10 +24,12 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     // Simulate a small delay for better UX
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    if (login(username, password)) {
+    const result = login(username, password);
+    
+    if (result.success) {
       onLoginSuccess();
     } else {
-      setError('Kullanıcı adı veya şifre hatalı');
+      setError(result.message);
     }
     
     setIsLoading(false);
@@ -89,7 +91,10 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
 
         <div className="mt-6 text-center">
           <p className="text-text-secondary text-sm">
-            Demo: admin / admin123
+            Varsayılan: admin / admin123
+          </p>
+          <p className="text-text-secondary text-xs mt-2">
+            İlk girişten sonra şifrenizi değiştirin
           </p>
         </div>
       </Card>

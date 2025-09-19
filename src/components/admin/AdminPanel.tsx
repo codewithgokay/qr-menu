@@ -13,6 +13,7 @@ import { PasswordChangeForm } from './PasswordChangeForm';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { passwordManager } from '@/lib/password';
+import { isAuthenticated, logout, getSessionInfo } from '@/lib/auth';
 
 interface AdminPanelProps {
   onMenuUpdate: (items: MenuItem[]) => void;
@@ -35,12 +36,39 @@ export function AdminPanel({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [sessionInfo, setSessionInfo] = useState<{ loginTime: number; lastActivity: number; sessionId: string } | null>(null);
 
   // Show message function
   const showMessage = (type: 'success' | 'error', text: string) => {
     setMessage({ type, text });
     setTimeout(() => setMessage(null), 3000);
   };
+
+  // Session monitoring
+  useEffect(() => {
+    const updateSessionInfo = () => {
+      const info = getSessionInfo();
+      setSessionInfo(info);
+    };
+
+    updateSessionInfo();
+    const interval = setInterval(updateSessionInfo, 30000); // Update every 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-logout on inactivity
+  useEffect(() => {
+    const checkSession = () => {
+      if (!isAuthenticated()) {
+        logout();
+        window.location.href = '/admin';
+      }
+    };
+
+    const interval = setInterval(checkSession, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, []);
 
   // Load data from API on mount
   useEffect(() => {
@@ -527,6 +555,13 @@ export function AdminPanel({
                     <p>Kategori Sayısı: {categories.length}</p>
                     <p>Son Güncelleme: {new Date().toLocaleString('tr-TR')}</p>
                     <p>Varsayılan Şifre: {passwordManager.isPasswordChanged() ? 'Değiştirilmiş' : 'admin123'}</p>
+                    {sessionInfo && (
+                      <>
+                        <p>Oturum ID: {sessionInfo.sessionId.substring(0, 8)}...</p>
+                        <p>Giriş Zamanı: {new Date(sessionInfo.loginTime).toLocaleString('tr-TR')}</p>
+                        <p>Son Aktivite: {new Date(sessionInfo.lastActivity).toLocaleString('tr-TR')}</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

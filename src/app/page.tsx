@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { AdminButton } from '@/components/admin/AdminButton';
 import { restaurant } from '@/data/menu';
 
 export default function HomePage() {
@@ -31,7 +30,6 @@ export default function HomePage() {
       </main>
       
       <Footer restaurant={restaurant} />
-      <AdminButton />
     </div>
   );
 }

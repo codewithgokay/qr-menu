@@ -8,7 +8,6 @@ import { CategoryFilter } from '@/components/menu/CategoryFilter';
 import { SearchBar } from '@/components/menu/SearchBar';
 import { MobileCategoryDropdown } from '@/components/menu/MobileCategoryDropdown';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-import { AdminButton } from '@/components/admin/AdminButton';
 import { MenuProvider } from '@/lib/context/MenuContext';
 import { restaurant } from '@/data/menu';
 
@@ -37,7 +36,6 @@ export default function MenuPage() {
         </main>
 
         <Footer restaurant={restaurant} />
-        <AdminButton />
       </div>
     </MenuProvider>
   );
