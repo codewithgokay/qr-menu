@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Restaurant } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,7 @@ interface HeaderProps {
 export function Header({ restaurant }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const currentHour = new Date().getHours();
   const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() as keyof typeof restaurant.operatingHours;
@@ -24,21 +25,44 @@ export function Header({ restaurant }: HeaderProps) {
     currentHour >= parseInt(restaurant.operatingHours[currentDay].open.split(':')[0]) &&
     currentHour < parseInt(restaurant.operatingHours[currentDay].close.split(':')[0]);
 
+  // Scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="sticky top-0 z-50 w-full border-b border-warm-beige bg-primary-cream/95 backdrop-blur supports-[backdrop-filter]:bg-primary-cream/60"
+      className={`sticky top-0 z-50 w-full border-b border-warm-beige bg-primary-cream/95 backdrop-blur supports-[backdrop-filter]:bg-primary-cream/60 transition-all duration-300 ${
+        isScrolled ? 'shadow-lg' : ''
+      }`}
     >
-      <div className="px-6 py-8">
+      <div className={`px-6 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-8'}`}>
         <div className="flex justify-between items-start">
           <div className="flex-1 min-w-0">
-            <h1 className="text-3xl font-bold text-text-primary tracking-tight font-heading">
+            <h1 className={`font-bold text-text-primary tracking-tight font-heading transition-all duration-300 ${
+              isScrolled ? 'text-2xl' : 'text-3xl'
+            }`}>
               {restaurant.name}
             </h1>
-            <p className="text-text-secondary mt-1 text-lg">
+            <motion.p 
+              className="text-text-secondary mt-1 text-lg transition-all duration-300"
+              animate={{ 
+                opacity: isScrolled ? 0 : 1,
+                height: isScrolled ? 0 : 'auto',
+                marginTop: isScrolled ? 0 : 4
+              }}
+              transition={{ duration: 0.3 }}
+            >
               {restaurant.description}
-            </p>
+            </motion.p>
           </div>
           
           {/* Navigation Menu */}
@@ -47,11 +71,15 @@ export function Header({ restaurant }: HeaderProps) {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="h-10 px-3 text-text-primary hover:text-text-primary hover:bg-warm-beige/50"
+                  className={`transition-all duration-300 text-text-primary hover:text-text-primary hover:bg-warm-beige/50 ${
+                    isScrolled ? 'h-12 px-4 bg-sage/10 hover:bg-sage/20' : 'h-10 px-3'
+                  }`}
                 >
-                  <Menu className="h-5 w-5 mr-2" />
-                  <span className="hidden sm:inline">Menü</span>
-                  <ChevronDown className="h-4 w-4 ml-1" />
+                  <Menu className={`mr-2 ${isScrolled ? 'h-6 w-6' : 'h-5 w-5'}`} />
+                  <span className={`font-medium ${isScrolled ? 'text-base' : 'text-sm'} hidden sm:inline`}>
+                    Menü
+                  </span>
+                  <ChevronDown className={`ml-1 ${isScrolled ? 'h-5 w-5' : 'h-4 w-4'}`} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
@@ -79,23 +107,36 @@ export function Header({ restaurant }: HeaderProps) {
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <Badge 
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                isOpenNow 
-                  ? "bg-emerald-500 text-white shadow-lg" 
-                  : "bg-gray-400 text-white"
-              }`}
+            <motion.div
+              animate={{ 
+                opacity: isScrolled ? 0 : 1,
+                scale: isScrolled ? 0 : 1
+              }}
+              transition={{ duration: 0.3 }}
+              className="hidden sm:block"
             >
-              {isOpenNow ? "Açık" : "Kapalı"}
-            </Badge>
+              <Badge 
+                className={`px-4 py-2 rounded-full text-sm font-medium ${
+                  isOpenNow 
+                    ? "bg-emerald-500 text-white shadow-lg" 
+                    : "bg-gray-400 text-white"
+                }`}
+              >
+                {isOpenNow ? "Açık" : "Kapalı"}
+              </Badge>
+            </motion.div>
           </div>
         </div>
 
         {/* Contact Info - Collapsible on Mobile */}
         <motion.div 
           initial={false}
-          animate={{ height: isOpen ? "auto" : 0 }}
+          animate={{ 
+            height: isOpen && !isScrolled ? "auto" : 0,
+            opacity: isScrolled ? 0 : 1
+          }}
           className="overflow-hidden"
+          transition={{ duration: 0.3 }}
         >
           <div className="mt-6 pt-6 border-t border-warm-beige/30 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
@@ -170,15 +211,24 @@ export function Header({ restaurant }: HeaderProps) {
         </motion.div>
 
         {/* Toggle Button for Mobile */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsOpen(!isOpen)}
-          className="sm:hidden mt-4 w-full h-10 text-sm text-text-secondary hover:text-text-primary hover:bg-warm-beige/50"
+        <motion.div
+          animate={{ 
+            opacity: isScrolled ? 0 : 1,
+            height: isScrolled ? 0 : 'auto'
+          }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
         >
-          <ChevronDown className={`h-4 w-4 mr-2 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-          {isOpen ? "Detayları Gizle" : "Detayları Göster"}
-        </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsOpen(!isOpen)}
+            className="sm:hidden mt-4 w-full h-10 text-sm text-text-secondary hover:text-text-primary hover:bg-warm-beige/50"
+          >
+            <ChevronDown className={`h-4 w-4 mr-2 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            {isOpen ? "Detayları Gizle" : "Detayları Göster"}
+          </Button>
+        </motion.div>
       </div>
     </motion.header>
   );
