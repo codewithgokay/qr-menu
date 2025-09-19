@@ -1,13 +1,14 @@
 'use client';
 
-import { createContext, useContext, useReducer, ReactNode } from 'react';
-import { MenuState, FilterOptions, UserPreferences, MenuItem as MenuItemType } from '@/lib/types';
+import { createContext, useContext, useReducer, useEffect, useState, ReactNode } from 'react';
+import { MenuState, FilterOptions, UserPreferences, MenuItem as MenuItemType, MenuCategory as MenuCategoryType } from '@/lib/types';
+import { menuItemsApi, categoriesApi } from '@/lib/api';
+import { menuItems as fallbackMenuItems, categories as fallbackCategories } from '@/data/menu';
 
 interface MenuContextType extends MenuState {
   setSearchQuery: (query: string) => void;
   setSelectedCategory: (category: string) => void;
   setFilters: (filters: Partial<FilterOptions>) => void;
-  toggleFavorite: (itemId: string) => void;
   setUserPreferences: (preferences: Partial<UserPreferences>) => void;
   clearFilters: () => void;
 }
@@ -18,12 +19,14 @@ type MenuAction =
   | { type: 'SET_SEARCH_QUERY'; payload: string }
   | { type: 'SET_SELECTED_CATEGORY'; payload: string }
   | { type: 'SET_FILTERS'; payload: Partial<FilterOptions> }
-  | { type: 'TOGGLE_FAVORITE'; payload: string }
   | { type: 'SET_USER_PREFERENCES'; payload: Partial<UserPreferences> }
   | { type: 'CLEAR_FILTERS' }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
-  | { type: 'SET_SELECTED_ITEM'; payload: MenuItemType | null };
+  | { type: 'SET_SELECTED_ITEM'; payload: MenuItemType | null }
+  | { type: 'SET_ITEMS'; payload: MenuItemType[] }
+  | { type: 'SET_CATEGORIES'; payload: MenuCategoryType[] }
+  | { type: 'UPDATE_ITEMS' };
 
 const initialState: MenuState = {
   items: [],
@@ -41,7 +44,6 @@ const initialState: MenuState = {
   error: null,
   selectedItem: null,
   userPreferences: {
-    favorites: [],
     dietaryRestrictions: [],
     language: 'en',
     currency: 'USD',
@@ -78,18 +80,6 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
         }
       };
     
-    case 'TOGGLE_FAVORITE':
-      const favorites = state.userPreferences.favorites.includes(action.payload)
-        ? state.userPreferences.favorites.filter(id => id !== action.payload)
-        : [...state.userPreferences.favorites, action.payload];
-      
-      return {
-        ...state,
-        userPreferences: {
-          ...state.userPreferences,
-          favorites
-        }
-      };
     
     case 'SET_USER_PREFERENCES':
       return {
@@ -131,6 +121,38 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
         selectedItem: action.payload
       };
     
+    case 'SET_ITEMS':
+      return {
+        ...state,
+        items: action.payload,
+        filteredItems: action.payload
+      };
+    
+    case 'SET_CATEGORIES':
+      return {
+        ...state,
+        categories: action.payload
+      };
+    
+    case 'UPDATE_ITEMS':
+      // Load items from localStorage
+      if (typeof window !== 'undefined') {
+        const savedItems = localStorage.getItem('qr_menu_items');
+        if (savedItems) {
+          try {
+            const parsedItems = JSON.parse(savedItems);
+            return {
+              ...state,
+              items: parsedItems,
+              filteredItems: parsedItems
+            };
+          } catch (error) {
+            console.error('Error loading menu items from localStorage:', error);
+          }
+        }
+      }
+      return state;
+    
     default:
       return state;
   }
@@ -138,21 +160,42 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
 
 interface MenuProviderProps {
   children: ReactNode;
-  initialItems?: MenuItemType[];
-  initialCategories?: any[];
 }
 
 export function MenuProvider({ 
-  children, 
-  initialItems = [], 
-  initialCategories = [] 
+  children
 }: MenuProviderProps) {
-  const [state, dispatch] = useReducer(menuReducer, {
-    ...initialState,
-    items: initialItems,
-    categories: initialCategories,
-    filteredItems: initialItems
-  });
+  const [state, dispatch] = useReducer(menuReducer, initialState);
+
+  // Load items and categories from API on mount (client-side only)
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
+    const loadData = async () => {
+      try {
+        dispatch({ type: 'SET_LOADING', payload: true });
+        dispatch({ type: 'SET_ERROR', payload: null });
+
+        const [itemsData, categoriesData] = await Promise.all([
+          menuItemsApi.getAll(),
+          categoriesApi.getAll()
+        ]);
+        dispatch({ type: 'SET_ITEMS', payload: itemsData });
+        dispatch({ type: 'SET_CATEGORIES', payload: categoriesData });
+      } catch (error) {
+        console.error('Error loading data from API, falling back to static data:', error);
+        // Fall back to static data if API fails
+        dispatch({ type: 'SET_ITEMS', payload: fallbackMenuItems });
+        dispatch({ type: 'SET_CATEGORIES', payload: fallbackCategories });
+        dispatch({ type: 'SET_ERROR', payload: null }); // Clear error since we have fallback data
+      } finally {
+        dispatch({ type: 'SET_LOADING', payload: false });
+      }
+    };
+
+    loadData();
+  }, []);
 
   const setSearchQuery = (query: string) => {
     dispatch({ type: 'SET_SEARCH_QUERY', payload: query });
@@ -166,9 +209,6 @@ export function MenuProvider({
     dispatch({ type: 'SET_FILTERS', payload: filters });
   };
 
-  const toggleFavorite = (itemId: string) => {
-    dispatch({ type: 'TOGGLE_FAVORITE', payload: itemId });
-  };
 
   const setUserPreferences = (preferences: Partial<UserPreferences>) => {
     dispatch({ type: 'SET_USER_PREFERENCES', payload: preferences });
@@ -185,7 +225,6 @@ export function MenuProvider({
         setSearchQuery,
         setSelectedCategory,
         setFilters,
-        toggleFavorite,
         setUserPreferences,
         clearFilters
       }}

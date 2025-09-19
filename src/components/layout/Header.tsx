@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Restaurant } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Phone, MapPin, Clock, Globe, Instagram, Facebook, Twitter } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Phone, MapPin, Clock, Globe, Instagram, Facebook, Twitter, ChevronDown, Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface HeaderProps {
@@ -13,6 +14,7 @@ interface HeaderProps {
 
 export function Header({ restaurant }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const currentHour = new Date().getHours();
   const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() as keyof typeof restaurant.operatingHours;
@@ -25,29 +27,65 @@ export function Header({ restaurant }: HeaderProps) {
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className="sticky top-0 z-50 w-full border-b border-warm-beige bg-primary-cream/95 backdrop-blur supports-[backdrop-filter]:bg-primary-cream/60"
     >
-      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo and Restaurant Info */}
-          <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1">
-            <div className="flex flex-col min-w-0 flex-1">
-              <h1 className="text-lg sm:text-2xl font-bold text-foreground truncate">
-                {restaurant.name}
-              </h1>
-              <p className="text-xs sm:text-sm text-muted-foreground truncate">
-                {restaurant.description}
-              </p>
-            </div>
+      <div className="px-6 py-8">
+        <div className="flex justify-between items-start">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-3xl font-bold text-text-primary tracking-tight font-heading">
+              {restaurant.name}
+            </h1>
+            <p className="text-text-secondary mt-1 text-lg">
+              {restaurant.description}
+            </p>
           </div>
-
-          {/* Status Badge */}
-          <div className="flex items-center space-x-2 flex-shrink-0">
+          
+          {/* Navigation Menu */}
+          <div className="flex items-center space-x-4">
+            <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="h-10 px-3 text-text-primary hover:text-text-primary hover:bg-warm-beige/50"
+                >
+                  <Menu className="h-5 w-5 mr-2" />
+                  <span className="hidden sm:inline">Menü</span>
+                  <ChevronDown className="h-4 w-4 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-48 bg-white/95 backdrop-blur-sm border-warm-beige rounded-xl shadow-lg" 
+                align="end"
+              >
+                <DropdownMenuItem 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="cursor-pointer py-3 px-4 text-text-primary hover:bg-warm-beige/50"
+                >
+                  <a href="/" className="flex items-center w-full">
+                    <span className="mr-3">🏠</span>
+                    <span className="font-medium">Ana Sayfa</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="cursor-pointer py-3 px-4 text-text-primary hover:bg-warm-beige/50"
+                >
+                  <a href="/menu" className="flex items-center w-full">
+                    <span className="mr-3">🍽️</span>
+                    <span className="font-medium">Menü</span>
+                  </a>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
             <Badge 
-              variant={isOpenNow ? "default" : "secondary"}
-              className={`text-xs px-2 py-1 ${isOpenNow ? "bg-green-500 hover:bg-green-600" : ""}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium ${
+                isOpenNow 
+                  ? "bg-emerald-500 text-white shadow-lg" 
+                  : "bg-gray-400 text-white"
+              }`}
             >
-              {isOpenNow ? "Open" : "Closed"}
+              {isOpenNow ? "Açık" : "Kapalı"}
             </Badge>
           </div>
         </div>
@@ -58,26 +96,26 @@ export function Header({ restaurant }: HeaderProps) {
           animate={{ height: isOpen ? "auto" : 0 }}
           className="overflow-hidden"
         >
-          <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t space-y-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 text-xs sm:text-sm">
-              <div className="flex items-center space-x-2 min-w-0">
-                <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground truncate">{restaurant.address}</span>
+          <div className="mt-6 pt-6 border-t border-warm-beige/30 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+              <div className="flex items-center space-x-3 min-w-0">
+                <MapPin className="h-4 w-4 text-text-secondary flex-shrink-0" />
+                <span className="text-text-secondary truncate">{restaurant.address}</span>
               </div>
-              <div className="flex items-center space-x-2 min-w-0">
-                <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+              <div className="flex items-center space-x-3 min-w-0">
+                <Phone className="h-4 w-4 text-text-secondary flex-shrink-0" />
                 <a 
                   href={`tel:${restaurant.phone}`}
-                  className="text-muted-foreground hover:text-foreground transition-colors truncate"
+                  className="text-text-secondary hover:text-text-primary transition-colors truncate"
                 >
                   {restaurant.phone}
                 </a>
               </div>
-              <div className="flex items-center space-x-2 min-w-0 sm:col-span-2 lg:col-span-1">
-                <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground truncate">
+              <div className="flex items-center space-x-3 min-w-0 sm:col-span-2 lg:col-span-1">
+                <Clock className="h-4 w-4 text-text-secondary flex-shrink-0" />
+                <span className="text-text-secondary truncate">
                   {restaurant.operatingHours[currentDay]?.isClosed 
-                    ? "Closed Today" 
+                    ? "Bugün Kapalı" 
                     : `${restaurant.operatingHours[currentDay]?.open} - ${restaurant.operatingHours[currentDay]?.close}`
                   }
                 </span>
@@ -85,15 +123,15 @@ export function Header({ restaurant }: HeaderProps) {
             </div>
 
             {/* Social Media Links */}
-            <div className="flex items-center space-x-3 sm:space-x-4 pt-2">
+            <div className="flex items-center space-x-4 pt-2">
               {restaurant.socialMedia?.instagram && (
                 <a 
                   href={`https://instagram.com/${restaurant.socialMedia.instagram.replace('@', '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-text-secondary hover:text-sage transition-colors p-2 rounded-full hover:bg-sage/10"
                 >
-                  <Instagram className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <Instagram className="h-5 w-5" />
                 </a>
               )}
               {restaurant.socialMedia?.facebook && (
@@ -101,9 +139,9 @@ export function Header({ restaurant }: HeaderProps) {
                   href={`https://facebook.com/${restaurant.socialMedia.facebook}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-text-secondary hover:text-sage transition-colors p-2 rounded-full hover:bg-sage/10"
                 >
-                  <Facebook className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <Facebook className="h-5 w-5" />
                 </a>
               )}
               {restaurant.socialMedia?.twitter && (
@@ -111,9 +149,9 @@ export function Header({ restaurant }: HeaderProps) {
                   href={`https://twitter.com/${restaurant.socialMedia.twitter.replace('@', '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-text-secondary hover:text-sage transition-colors p-2 rounded-full hover:bg-sage/10"
                 >
-                  <Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <Twitter className="h-5 w-5" />
                 </a>
               )}
               {restaurant.website && (
@@ -121,9 +159,9 @@ export function Header({ restaurant }: HeaderProps) {
                   href={restaurant.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-text-secondary hover:text-sage transition-colors p-2 rounded-full hover:bg-sage/10"
                 >
-                  <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <Globe className="h-5 w-5" />
                 </a>
               )}
             </div>
@@ -135,9 +173,10 @@ export function Header({ restaurant }: HeaderProps) {
           variant="ghost"
           size="sm"
           onClick={() => setIsOpen(!isOpen)}
-          className="sm:hidden mt-2 w-full h-8 text-xs"
+          className="sm:hidden mt-4 w-full h-10 text-sm text-text-secondary hover:text-text-primary hover:bg-warm-beige/50"
         >
-          {isOpen ? "Hide Details" : "Show Details"}
+          <ChevronDown className={`h-4 w-4 mr-2 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          {isOpen ? "Detayları Gizle" : "Detayları Göster"}
         </Button>
       </div>
     </motion.header>

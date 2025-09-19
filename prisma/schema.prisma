@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Restaurant {
+  id            String   @id @default(cuid())
+  name          String
+  description   String
+  logo          String?
+  coverImage    String?
+  address       String
+  phone         String
+  email         String
+  website       String?
+  instagram     String?
+  facebook      String?
+  twitter       String?
+  currency      String   @default("TRY")
+  language      String   @default("tr")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  operatingHours RestaurantOperatingHours[]
+  menuCategories MenuCategory[]
+  menuItems      MenuItem[]
+
+  @@map("restaurants")
+}
+
+model RestaurantOperatingHours {
+  id          String     @id @default(cuid())
+  restaurantId String
+  dayOfWeek   String     // monday, tuesday, etc.
+  openTime    String     // "11:00"
+  closeTime   String     // "22:00"
+  isClosed    Boolean    @default(false)
+  restaurant  Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@unique([restaurantId, dayOfWeek])
+  @@map("restaurant_operating_hours")
+}
+
+model MenuCategory {
+  id          String   @id @default(cuid())
+  restaurantId String
+  name        String
+  description String?
+  icon        String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  menuItems  MenuItem[]
+
+  @@map("menu_categories")
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  restaurantId String
+  categoryId   String
+  name        String
+  description String
+  price       Float
+  image       String?
+  calories    Int?
+  prepTime    Int?     // in minutes
+  order       Int      @default(0)
+  isVegetarian Boolean @default(false)
+  isVegan     Boolean  @default(false)
+  isSpicy     Boolean  @default(false)
+  isPopular   Boolean  @default(false)
+  isGlutenFree Boolean @default(false)
+  isDairyFree Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  category   MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  allergens  MenuItemAllergen[]
+
+  @@map("menu_items")
+}
+
+model Allergen {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  menuItems MenuItemAllergen[]
+
+  @@map("allergens")
+}
+
+model MenuItemAllergen {
+  id         String   @id @default(cuid())
+  menuItemId String
+  allergenId String
+
+  menuItem MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  allergen Allergen @relation(fields: [allergenId], references: [id], onDelete: Cascade)
+
+  @@unique([menuItemId, allergenId])
+  @@map("menu_item_allergens")
+}

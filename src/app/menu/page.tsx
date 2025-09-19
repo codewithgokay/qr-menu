@@ -8,18 +8,19 @@ import { CategoryFilter } from '@/components/menu/CategoryFilter';
 import { SearchBar } from '@/components/menu/SearchBar';
 import { MobileCategoryDropdown } from '@/components/menu/MobileCategoryDropdown';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { AdminButton } from '@/components/admin/AdminButton';
 import { MenuProvider } from '@/lib/context/MenuContext';
-import { restaurant, menuItems, categories } from '@/data/menu';
+import { restaurant } from '@/data/menu';
 
 export default function MenuPage() {
   return (
-    <MenuProvider initialItems={menuItems} initialCategories={categories}>
-      <div className="min-h-screen bg-background">
+    <MenuProvider>
+      <div className="min-h-screen bg-primary-cream">
         <Header restaurant={restaurant} />
         
-        <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
+        <main className="space-y-0">
           {/* Search and Filter Section */}
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-0">
             <SearchBar />
             {/* Mobile Dropdown */}
             <MobileCategoryDropdown />
@@ -28,12 +29,15 @@ export default function MenuPage() {
           </div>
 
           {/* Menu Grid */}
-          <Suspense fallback={<LoadingSpinner />}>
-            <MenuGrid />
-          </Suspense>
+          <div className="px-6 py-8">
+            <Suspense fallback={<LoadingSpinner />}>
+              <MenuGrid />
+            </Suspense>
+          </div>
         </main>
 
         <Footer restaurant={restaurant} />
+        <AdminButton />
       </div>
     </MenuProvider>
   );

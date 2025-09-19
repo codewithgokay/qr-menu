@@ -3,11 +3,11 @@ import { MenuItem, MenuCategory, Restaurant } from '@/lib/types';
 export const restaurant: Restaurant = {
   id: '1',
   name: 'Bella Vista',
-  description: 'Authentic Italian cuisine with a modern twist',
+  description: 'Modern dokunuşlarla otantik İtalyan mutfağı',
   logo: '/images/logo.png',
   coverImage: '/images/restaurant-cover.jpg',
-  address: '123 Main Street, Downtown',
-  phone: '+1 (555) 123-4567',
+  address: '123 Ana Cadde, Şehir Merkezi',
+  phone: '+90 (555) 123-4567',
   email: 'info@bellavista.com',
   website: 'https://bellavista.com',
   socialMedia: {
@@ -24,25 +24,25 @@ export const restaurant: Restaurant = {
     saturday: { open: '10:00', close: '23:00' },
     sunday: { open: '10:00', close: '21:00' }
   },
-  currency: 'USD',
-  language: 'en'
+  currency: 'TRY',
+  language: 'tr'
 };
 
 export const categories: MenuCategory[] = [
-  { id: 'appetizers', name: 'Appetizers', description: 'Start your meal right', icon: '🥗', order: 1 },
-  { id: 'pasta', name: 'Pasta', description: 'Fresh pasta dishes', icon: '🍝', order: 2 },
-  { id: 'pizza', name: 'Pizza', description: 'Wood-fired pizzas', icon: '🍕', order: 3 },
-  { id: 'mains', name: 'Main Courses', description: 'Hearty main dishes', icon: '🍖', order: 4 },
-  { id: 'desserts', name: 'Desserts', description: 'Sweet endings', icon: '🍰', order: 5 },
-  { id: 'beverages', name: 'Beverages', description: 'Drinks & more', icon: '🥤', order: 6 }
+  { id: 'appetizers', name: 'Mezeler', description: 'Yemeğinizi doğru şekilde başlatın', icon: '🥗', order: 1 },
+  { id: 'pasta', name: 'Makarna', description: 'Taze makarna yemekleri', icon: '🍝', order: 2 },
+  { id: 'pizza', name: 'Pizza', description: 'Odun ateşinde pişmiş pizzalar', icon: '🍕', order: 3 },
+  { id: 'mains', name: 'Ana Yemekler', description: 'Doyurucu ana yemekler', icon: '🍖', order: 4 },
+  { id: 'desserts', name: 'Tatlılar', description: 'Tatlı sonlar', icon: '🍰', order: 5 },
+  { id: 'beverages', name: 'İçecekler', description: 'İçecekler ve daha fazlası', icon: '🥤', order: 6 }
 ];
 
 export const menuItems: MenuItem[] = [
-  // Appetizers
+  // Mezeler
   {
     id: '1',
     name: 'Bruschetta Classica',
-    description: 'Grilled bread topped with fresh tomatoes, basil, and garlic',
+    description: 'Taze domates, fesleğen ve sarımsak ile süslenmiş ızgara ekmek',
     price: 12.99,
     category: 'appetizers',
     image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center',
@@ -54,8 +54,8 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '2',
-    name: 'Antipasto Platter',
-    description: 'Selection of cured meats, cheeses, olives, and vegetables',
+    name: 'Antipasto Tabağı',
+    description: 'Kurutulmuş etler, peynirler, zeytinler ve sebzelerden seçmeler',
     price: 18.99,
     category: 'appetizers',
     image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop&crop=center',
@@ -65,24 +65,24 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '3',
-    name: 'Calamari Fritti',
-    description: 'Crispy fried squid rings with marinara sauce',
+    name: 'Kalamar Tava',
+    description: 'Marinara sos ile çıtır kızartılmış kalamar halkaları',
     price: 16.99,
     category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center',
+    image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center',
     allergens: ['seafood', 'gluten'],
     calories: 280,
     prepTime: 15
   },
 
-  // Pasta
+  // Makarna
   {
     id: '4',
     name: 'Spaghetti Carbonara',
-    description: 'Classic Roman pasta with eggs, pancetta, and pecorino cheese',
+    description: 'Yumurta, pancetta ve pecorino peyniri ile klasik Roma makarnası',
     price: 22.99,
     category: 'pasta',
-    image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop&crop=center',
+    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&crop=center',
     allergens: ['dairy', 'eggs', 'gluten'],
     calories: 650,
     prepTime: 20
@@ -90,10 +90,10 @@ export const menuItems: MenuItem[] = [
   {
     id: '5',
     name: 'Penne Arrabbiata',
-    description: 'Spicy penne pasta with tomato sauce and red peppers',
+    description: 'Domates sosu ve kırmızı biber ile acılı penne makarnası',
     price: 19.99,
     category: 'pasta',
-    image: '/images/arrabbiata.jpg',
+    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&crop=center',
     isVegetarian: true,
     isVegan: true,
     isSpicy: true,
@@ -103,11 +103,11 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '6',
-    name: 'Lobster Ravioli',
-    description: 'Homemade ravioli filled with lobster and ricotta in cream sauce',
+    name: 'Istakoz Ravioli',
+    description: 'Krem sos ile istakoz ve ricotta doldurulmuş ev yapımı ravioli',
     price: 28.99,
     category: 'pasta',
-    image: '/images/lobster-ravioli.jpg',
+    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&crop=center',
     allergens: ['seafood', 'dairy', 'eggs', 'gluten'],
     isPopular: true,
     calories: 720,
@@ -118,7 +118,7 @@ export const menuItems: MenuItem[] = [
   {
     id: '7',
     name: 'Margherita',
-    description: 'Classic pizza with tomato sauce, mozzarella, and fresh basil',
+    description: 'Domates sosu, mozzarella ve taze fesleğen ile klasik pizza',
     price: 16.99,
     category: 'pizza',
     image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&h=300&fit=crop&crop=center',
@@ -130,10 +130,10 @@ export const menuItems: MenuItem[] = [
   {
     id: '8',
     name: 'Quattro Stagioni',
-    description: 'Four seasons pizza with artichokes, mushrooms, prosciutto, and olives',
+    description: 'Enginar, mantar, prosciutto ve zeytin ile dört mevsim pizzası',
     price: 24.99,
     category: 'pizza',
-    image: '/images/quattro-stagioni.jpg',
+    image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&h=300&fit=crop&crop=center',
     allergens: ['dairy', 'gluten'],
     calories: 620,
     prepTime: 15
@@ -141,24 +141,24 @@ export const menuItems: MenuItem[] = [
   {
     id: '9',
     name: 'Diavola',
-    description: 'Spicy pizza with tomato sauce, mozzarella, and spicy salami',
+    description: 'Domates sosu, mozzarella ve acılı salam ile acılı pizza',
     price: 20.99,
     category: 'pizza',
-    image: '/images/diavola.jpg',
+    image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&h=300&fit=crop&crop=center',
     isSpicy: true,
     allergens: ['dairy', 'gluten'],
     calories: 580,
     prepTime: 12
   },
 
-  // Main Courses
+  // Ana Yemekler
   {
     id: '10',
     name: 'Osso Buco',
-    description: 'Braised veal shanks with risotto and gremolata',
+    description: 'Risotto ve gremolata ile yavaş pişmiş dana incik',
     price: 32.99,
     category: 'mains',
-    image: '/images/osso-buco.jpg',
+    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop&crop=center',
     allergens: ['dairy', 'gluten'],
     isPopular: true,
     calories: 850,
@@ -167,10 +167,10 @@ export const menuItems: MenuItem[] = [
   {
     id: '11',
     name: 'Branzino al Sale',
-    description: 'Mediterranean sea bass baked in salt crust with herbs',
+    description: 'Otlar ile tuz kabuğunda pişirilmiş Akdeniz levreği',
     price: 28.99,
     category: 'mains',
-    image: '/images/branzino.jpg',
+    image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center',
     allergens: ['seafood'],
     isGlutenFree: true,
     calories: 420,
@@ -179,23 +179,23 @@ export const menuItems: MenuItem[] = [
   {
     id: '12',
     name: 'Vitello Tonnato',
-    description: 'Cold sliced veal with tuna sauce and capers',
+    description: 'Ton balığı sosu ve kapari ile soğuk dilimlenmiş dana eti',
     price: 26.99,
     category: 'mains',
-    image: '/images/vitello-tonnato.jpg',
+    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop&crop=center',
     allergens: ['seafood', 'eggs'],
     calories: 380,
     prepTime: 20
   },
 
-  // Desserts
+  // Tatlılar
   {
     id: '13',
     name: 'Tiramisu',
-    description: 'Classic Italian dessert with coffee, mascarpone, and cocoa',
+    description: 'Kahve, mascarpone ve kakao ile klasik İtalyan tatlısı',
     price: 8.99,
     category: 'desserts',
-    image: '/images/tiramisu.jpg',
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
     allergens: ['dairy', 'eggs', 'gluten'],
     isVegetarian: true,
     calories: 320,
@@ -204,10 +204,10 @@ export const menuItems: MenuItem[] = [
   {
     id: '14',
     name: 'Panna Cotta',
-    description: 'Vanilla panna cotta with berry compote',
+    description: 'Meyve kompostosu ile vanilyalı panna cotta',
     price: 7.99,
     category: 'desserts',
-    image: '/images/panna-cotta.jpg',
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
     allergens: ['dairy'],
     isVegetarian: true,
     isGlutenFree: true,
@@ -216,25 +216,25 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '15',
-    name: 'Gelato Selection',
-    description: 'Three scoops of artisanal gelato (vanilla, chocolate, strawberry)',
+    name: 'Gelato Seçimi',
+    description: 'Üç top el yapımı gelato (vanilya, çikolata, çilek)',
     price: 9.99,
     category: 'desserts',
-    image: '/images/gelato.jpg',
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
     allergens: ['dairy'],
     isVegetarian: true,
     calories: 240,
     prepTime: 3
   },
 
-  // Beverages
+  // İçecekler
   {
     id: '16',
-    name: 'Italian Soda',
-    description: 'Sparkling water with flavored syrup (lemon, cherry, or vanilla)',
+    name: 'İtalyan Sodası',
+    description: 'Aromalı şurup ile maden suyu (limon, kiraz veya vanilya)',
     price: 4.99,
     category: 'beverages',
-    image: '/images/italian-soda.jpg',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center',
     isVegan: true,
     isGlutenFree: true,
     calories: 80,
@@ -243,10 +243,10 @@ export const menuItems: MenuItem[] = [
   {
     id: '17',
     name: 'Espresso',
-    description: 'Single shot of premium Italian espresso',
+    description: 'Tek shot premium İtalyan espressosu',
     price: 3.99,
     category: 'beverages',
-    image: '/images/espresso.jpg',
+    image: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop&crop=center',
     isVegan: true,
     isGlutenFree: true,
     calories: 5,
@@ -254,11 +254,11 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: '18',
-    name: 'House Wine',
-    description: 'Selection of Italian wines by the glass (red, white, or rosé)',
+    name: 'Ev Şarabı',
+    description: 'Bardakta İtalyan şarapları seçimi (kırmızı, beyaz veya rosé)',
     price: 12.99,
     category: 'beverages',
-    image: '/images/house-wine.jpg',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center',
     isVegan: true,
     isGlutenFree: true,
     calories: 120,

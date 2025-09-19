@@ -12,9 +12,7 @@ export function MenuGrid() {
     items, 
     categories, 
     filters, 
-    isLoading, 
-    toggleFavorite, 
-    userPreferences 
+    isLoading
   } = useMenu();
 
   const filteredItems = useMemo(() => {
@@ -66,22 +64,38 @@ export function MenuGrid() {
     return (
       <div className="space-y-8">
         {Array.from({ length: 3 }).map((_, categoryIndex) => (
-          <div key={categoryIndex} className="space-y-4">
-            <Skeleton className="h-8 w-48" />
-            <div className="grid grid-cols-1 gap-3 sm:gap-4">
+          <div key={categoryIndex} className="space-y-6">
+            <div className="px-6 py-8 border-b border-warm-beige/30">
+              <div className="flex items-center space-x-4">
+                <Skeleton className="w-12 h-12 rounded-xl" />
+                <div className="space-y-2">
+                  <Skeleton className="h-6 w-48" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
               {Array.from({ length: 6 }).map((_, itemIndex) => (
-                <div key={itemIndex} className="flex space-x-3">
-                  <Skeleton className="h-24 w-24 sm:h-32 sm:w-32 rounded-lg flex-shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <div className="flex justify-between">
-                      <Skeleton className="h-4 w-3/4" />
-                      <Skeleton className="h-4 w-16" />
-                    </div>
-                    <Skeleton className="h-3 w-full" />
-                    <Skeleton className="h-3 w-2/3" />
-                    <div className="flex space-x-2">
-                      <Skeleton className="h-5 w-12" />
-                      <Skeleton className="h-5 w-16" />
+                <div key={itemIndex} className="animate-pulse">
+                  <div className="flex p-6 space-x-4 bg-white rounded-2xl shadow-soft">
+                    <Skeleton className="w-24 h-24 rounded-xl flex-shrink-0" />
+                    <div className="flex-1 space-y-3">
+                      <div className="flex justify-between">
+                        <Skeleton className="h-6 w-3/4" />
+                        <Skeleton className="h-6 w-16" />
+                      </div>
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-2/3" />
+                      <div className="flex justify-between items-center">
+                        <div className="flex space-x-2">
+                          <Skeleton className="h-6 w-16" />
+                          <Skeleton className="h-6 w-20" />
+                        </div>
+                        <div className="flex space-x-2">
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -98,12 +112,12 @@ export function MenuGrid() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="text-center py-12"
+        className="text-center py-16"
       >
-        <div className="text-6xl mb-4">🔍</div>
-        <h3 className="text-xl font-semibold mb-2">No items found</h3>
-        <p className="text-muted-foreground">
-          Try adjusting your search or filter criteria
+        <div className="text-8xl mb-6">🔍</div>
+        <h3 className="text-2xl font-bold text-text-primary mb-3 font-heading">Ürün bulunamadı</h3>
+        <p className="text-text-secondary text-lg">
+          Arama veya filtre kriterlerinizi ayarlamayı deneyin
         </p>
       </motion.div>
     );
@@ -122,20 +136,22 @@ export function MenuGrid() {
             transition={{ delay: categoryIndex * 0.1 }}
             className="space-y-6"
           >
-            {/* Category Header - Mobile First */}
+            {/* Category Header - Elegant Section Headers */}
             {filters.category === 'all' && (
-              <div className="flex items-center space-x-2 sm:space-x-3 py-2">
-                <span className="text-xl sm:text-2xl">{category?.icon}</span>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-lg sm:text-2xl font-bold truncate">{category?.name}</h2>
-                  {category?.description && (
-                    <p className="text-xs sm:text-sm text-muted-foreground truncate">{category.description}</p>
-                  )}
+              <div className="px-6 py-8 border-b border-warm-beige/30">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-sage/10 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">{category?.icon}</span>
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-text-primary font-heading">
+                      {category?.name}
+                    </h2>
+                    <p className="text-text-secondary">
+                      {category?.description} • {items.length} ürün
+                    </p>
+                  </div>
                 </div>
-                <div className="hidden sm:flex flex-1 h-px bg-border mx-2" />
-                <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
-                  {items.length} item{items.length !== 1 ? 's' : ''}
-                </span>
               </div>
             )}
 

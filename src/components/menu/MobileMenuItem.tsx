@@ -6,11 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { Heart, Clock, Flame, Star, Leaf, Wheat, Milk, Zap, MoreVertical, Eye, Share2 } from 'lucide-react';
+import { Clock, Flame, Leaf, Wheat, Milk, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ImageOptimized } from '@/components/common/ImageOptimized';
-import { useMenu } from '@/lib/context/MenuContext';
 
 interface MobileMenuItemProps {
   item: MenuItemType;
@@ -18,14 +16,12 @@ interface MobileMenuItemProps {
 }
 
 export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
-  const { toggleFavorite, userPreferences } = useMenu();
-  const isFavorite = userPreferences.favorites.includes(item.id);
   const [showDetails, setShowDetails] = useState(false);
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'TRY'
     }).format(price);
   };
 
@@ -40,6 +36,29 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
     }
   };
 
+  const translateDietaryInfo = (type: string) => {
+    switch (type) {
+      case 'vegetarian': return 'vejetaryen';
+      case 'vegan': return 'vegan';
+      case 'gluten-free': return 'glütensiz';
+      case 'dairy-free': return 'sütsüz';
+      case 'spicy': return 'acılı';
+      default: return type;
+    }
+  };
+
+  const translateAllergen = (allergen: string) => {
+    switch (allergen) {
+      case 'dairy': return 'süt ürünleri';
+      case 'eggs': return 'yumurta';
+      case 'gluten': return 'glüten';
+      case 'nuts': return 'fındık';
+      case 'seafood': return 'deniz ürünleri';
+      case 'soy': return 'soya';
+      default: return allergen;
+    }
+  };
+
   const dietaryInfo = [
     item.isVegetarian && 'vegetarian',
     item.isVegan && 'vegan',
@@ -48,22 +67,6 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
     item.isSpicy && 'spicy',
   ].filter(Boolean) as string[];
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: item.name,
-          text: item.description,
-          url: window.location.href,
-        });
-      } catch (err) {
-        console.log('Error sharing:', err);
-      }
-    } else {
-      // Fallback for browsers that don't support Web Share API
-      navigator.clipboard.writeText(`${item.name} - ${item.description} - ${formatPrice(item.price)}`);
-    }
-  };
 
   return (
     <motion.div
@@ -72,181 +75,102 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
       transition={{ delay: index * 0.05 }}
       className="w-full"
     >
-      <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-        <div className="flex">
-          {/* Image - Mobile optimized */}
-          <div className="relative w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0">
+      <Card 
+        className="group overflow-hidden bg-white shadow-soft hover:shadow-elevated transition-all duration-300 border-0 rounded-2xl cursor-pointer"
+        onClick={() => setShowDetails(true)}
+      >
+        <div className="flex p-6 space-x-4">
+          {/* Image Section */}
+          <div className="relative w-24 h-24 flex-shrink-0">
             <ImageOptimized
               src={item.image}
               alt={item.name}
-              width={128}
-              height={128}
-              className="w-full h-full object-cover"
+              width={96}
+              height={96}
+              className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
               fallbackText="No Image"
             />
-            
-            {/* Popular Badge */}
-            {item.isPopular && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="absolute top-1 left-1"
-              >
-                <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-1 py-0">
-                  <Star className="h-2 w-2 mr-0.5" />
-                  Hot
-                </Badge>
-              </motion.div>
-            )}
           </div>
-
-          {/* Content */}
-          <CardContent className="flex-1 p-3 sm:p-4 flex flex-col justify-between">
-            <div className="space-y-2">
-              {/* Title and Price */}
-              <div className="flex justify-between items-start">
-                <h3 className="font-semibold text-sm sm:text-base leading-tight pr-2 line-clamp-2">
-                  {item.name}
-                </h3>
-                <span className="text-sm sm:text-base font-bold text-primary flex-shrink-0">
-                  {formatPrice(item.price)}
-                </span>
-              </div>
-
-              {/* Description */}
-              <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
-                {item.description}
-              </p>
-
-              {/* Dietary Info - Compact */}
-              {dietaryInfo.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {dietaryInfo.slice(0, 3).map((info, idx) => (
-                    <Badge key={`${info}-${idx}`} variant="secondary" className="text-xs px-1 py-0 h-5">
-                      {getDietaryIcon(info)}
-                      <span className="ml-1 text-xs">{info}</span>
-                    </Badge>
-                  ))}
-                  {dietaryInfo.length > 3 && (
-                    <Badge variant="secondary" className="text-xs px-1 py-0 h-5">
-                      +{dietaryInfo.length - 3}
-                    </Badge>
-                  )}
-                </div>
-              )}
-
-              {/* Additional Info - Compact */}
-              <div className="flex items-center space-x-3 text-xs text-muted-foreground">
-                {item.prepTime && (
-                  <div className="flex items-center">
-                    <Clock className="h-3 w-3 mr-1" />
-                    {item.prepTime}min
-                  </div>
-                )}
-                {item.calories && (
-                  <div className="flex items-center">
-                    <Flame className="h-3 w-3 mr-1" />
-                    {item.calories}cal
-                  </div>
-                )}
-              </div>
+          
+          {/* Content Section */}
+          <div className="flex-1 min-w-0">
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="font-semibold text-lg text-text-primary truncate">
+                {item.name}
+              </h3>
+              <span className="font-bold text-xl text-navy-slate ml-4">
+                {formatPrice(item.price)}
+              </span>
             </div>
-
-            {/* Actions - Mobile optimized */}
-            <div className="flex items-center justify-between mt-2">
-              <div className="flex items-center space-x-2">
-                {/* Favorite Button */}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => toggleFavorite(item.id)}
-                  className="h-8 w-8 p-0"
-                >
-                  <Heart 
-                    className={`h-4 w-4 transition-colors ${
-                      isFavorite ? 'fill-red-500 text-red-500' : 'text-muted-foreground'
-                    }`} 
-                  />
-                </Button>
-
-                {/* View Details Button */}
-                <Button 
+            
+            <p className="text-text-secondary text-sm leading-relaxed mb-3 line-clamp-2">
+              {item.description}
+            </p>
+            
+            {/* Dietary Badges */}
+            <div className="flex flex-wrap gap-2">
+              {dietaryInfo.slice(0, 2).map((info, idx) => (
+                <Badge 
+                  key={`${info}-${idx}`} 
                   variant="outline" 
-                  size="sm"
-                  onClick={() => setShowDetails(true)}
-                  className="h-8 text-xs"
+                  className="text-sage bg-sage/10 text-xs px-2 py-1"
                 >
-                  <Eye className="h-3 w-3 mr-1" />
-                  View
-                </Button>
-              </div>
-
-              {/* Dropdown Menu */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => setShowDetails(true)}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    View Details
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleShare}>
-                    <Share2 className="h-4 w-4 mr-2" />
-                    Share Item
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => toggleFavorite(item.id)}>
-                    <Heart className={`h-4 w-4 mr-2 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
-                    {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  {getDietaryIcon(info)}
+                  <span className="ml-1">{translateDietaryInfo(info)}</span>
+                </Badge>
+              ))}
+              {dietaryInfo.length > 2 && (
+                <Badge variant="outline" className="text-sage bg-sage/10 text-xs px-2 py-1">
+                  +{dietaryInfo.length - 2}
+                </Badge>
+              )}
             </div>
-          </CardContent>
+          </div>
         </div>
       </Card>
 
       {/* Details Sheet */}
       <Sheet open={showDetails} onOpenChange={setShowDetails}>
-        <SheetContent className="w-full sm:max-w-lg">
+        <SheetContent className="w-full sm:max-w-lg bg-primary-cream">
           <SheetHeader>
-            <SheetTitle className="text-xl">{item.name}</SheetTitle>
+            <SheetTitle className="text-2xl font-heading text-text-primary">{item.name}</SheetTitle>
           </SheetHeader>
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 space-y-6">
             {/* Large Image */}
-            <div className="relative h-48 w-full overflow-hidden rounded-lg">
+            <div className="relative h-64 w-full overflow-hidden rounded-2xl">
               <ImageOptimized
                 src={item.image}
                 alt={item.name}
                 width={600}
                 height={400}
-                className="w-full h-full"
+                className="w-full h-full object-cover"
                 fallbackText="No Image"
               />
             </div>
 
             {/* Price */}
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-3xl font-bold text-navy-slate">
               {formatPrice(item.price)}
             </div>
 
             {/* Description */}
-            <p className="text-muted-foreground">
+            <p className="text-text-secondary text-lg leading-relaxed">
               {item.description}
             </p>
 
             {/* Dietary Information */}
             {dietaryInfo.length > 0 && (
               <div>
-                <h4 className="font-semibold mb-2">Dietary Information</h4>
+                <h4 className="font-semibold mb-3 text-text-primary">Beslenme Bilgileri</h4>
                 <div className="flex flex-wrap gap-2">
                   {dietaryInfo.map((info, index) => (
-                    <Badge key={`${info}-${index}`} variant="secondary">
+                    <Badge 
+                      key={`${info}-${index}`} 
+                      variant="outline" 
+                      className="text-sage bg-sage/10"
+                    >
                       {getDietaryIcon(info)}
-                      <span className="ml-1 capitalize">{info}</span>
+                      <span className="ml-1">{translateDietaryInfo(info)}</span>
                     </Badge>
                   ))}
                 </div>
@@ -256,11 +180,11 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
             {/* Allergens */}
             {item.allergens && item.allergens.length > 0 && (
               <div>
-                <h4 className="font-semibold mb-2">Allergens</h4>
+                <h4 className="font-semibold mb-3 text-text-primary">Alerjenler</h4>
                 <div className="flex flex-wrap gap-2">
                   {item.allergens.map((allergen) => (
-                    <Badge key={allergen} variant="destructive">
-                      {allergen}
+                    <Badge key={allergen} variant="destructive" className="bg-red-100 text-red-800">
+                      {translateAllergen(allergen)}
                     </Badge>
                   ))}
                 </div>
@@ -270,34 +194,19 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
             {/* Additional Details */}
             <div className="grid grid-cols-2 gap-4 text-sm">
               {item.prepTime && (
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>Prep: {item.prepTime}min</span>
+                <div className="flex items-center text-text-secondary">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span>Hazırlık: {item.prepTime}dk</span>
                 </div>
               )}
               {item.calories && (
-                <div className="flex items-center">
-                  <Flame className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{item.calories} calories</span>
+                <div className="flex items-center text-text-secondary">
+                  <Flame className="h-4 w-4 mr-2" />
+                  <span>{item.calories} kalori</span>
                 </div>
               )}
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex space-x-2 pt-4">
-              <Button 
-                onClick={() => toggleFavorite(item.id)}
-                variant={isFavorite ? "default" : "outline"}
-                className="flex-1"
-              >
-                <Heart className={`h-4 w-4 mr-2 ${isFavorite ? 'fill-white' : ''}`} />
-                {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-              </Button>
-              <Button onClick={handleShare} variant="outline" className="flex-1">
-                <Share2 className="h-4 w-4 mr-2" />
-                Share
-              </Button>
-            </div>
           </div>
         </SheetContent>
       </Sheet>

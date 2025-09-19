@@ -60,7 +60,6 @@ export interface FilterOptions {
 }
 
 export interface UserPreferences {
-  favorites: string[];
   dietaryRestrictions: string[];
   language: string;
   currency: string;

@@ -22,7 +22,7 @@ export function CategoryFilter() {
   };
 
   const allCategories = [
-    { id: 'all', name: 'All Items', icon: '🍽️', order: 0 },
+    { id: 'all', name: 'Tüm Ürünler', icon: '🍽️', order: 0 },
     ...categories
   ];
 
@@ -33,8 +33,8 @@ export function CategoryFilter() {
       transition={{ delay: 0.1 }}
       className="w-full hidden sm:block"
     >
-      <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex space-x-3 pb-2 px-1">
+      <ScrollArea className="w-full whitespace-nowrap pb-6">
+        <div className="flex space-x-3 px-6">
           {allCategories.map((category, index) => (
             <motion.div
               key={category.id}
@@ -43,15 +43,14 @@ export function CategoryFilter() {
               transition={{ delay: index * 0.05 }}
             >
               <Button
-                variant={activeCategory === category.id ? "default" : "outline"}
+                variant="ghost"
                 size="sm"
                 onClick={() => handleCategoryClick(category.id)}
                 className={`
-                  min-w-fit h-12 px-4 rounded-full transition-all duration-200
-                  text-sm font-medium
+                  flex-shrink-0 h-12 px-6 rounded-full transition-all duration-300
                   ${activeCategory === category.id 
-                    ? 'bg-primary text-primary-foreground shadow-md' 
-                    : 'hover:bg-muted'
+                    ? 'bg-navy-slate text-white shadow-lg transform scale-105' 
+                    : 'bg-white/60 backdrop-blur-sm hover:bg-white/80 text-text-primary border border-warm-beige'
                   }
                 `}
               >
@@ -60,7 +59,11 @@ export function CategoryFilter() {
                 {category.id !== 'all' && (
                   <Badge 
                     variant="secondary" 
-                    className="ml-2 text-xs px-1 py-0 h-4"
+                    className={`ml-2 text-xs px-2 py-1 h-5 ${
+                      activeCategory === category.id 
+                        ? 'bg-white/20 text-white' 
+                        : 'bg-sage/10 text-sage'
+                    }`}
                   >
                     {/* This would show item count in a real app */}
                   </Badge>
