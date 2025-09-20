@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { MenuItem as MenuItemType } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Clock, Flame, Leaf, Wheat, Milk, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ImageOptimized } from '@/components/common/ImageOptimized';
