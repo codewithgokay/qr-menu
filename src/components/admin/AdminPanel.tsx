@@ -476,7 +476,7 @@ export function AdminPanel({
                       💻 <strong>Masaüstü:</strong> Ürünleri sürükleyip bırakın
                     </p>
                     <p className="text-sage text-xs">
-                      📱 <strong>Mobil:</strong> ↑ ↓ butonlarını kullanın
+                      📱 <strong>Mobil & Tablet:</strong> ↑ ↓ butonlarını kullanın
                     </p>
                     <p className="text-sage text-xs">
                       ⚡ <strong>Otomatik:</strong> Değişiklikler anında kaydedilir
@@ -545,7 +545,7 @@ export function AdminPanel({
                       💻 <strong>Masaüstü:</strong> Kategorileri sürükleyip bırakın
                     </p>
                     <p className="text-terracotta text-xs">
-                      📱 <strong>Mobil:</strong> ↑ ↓ butonlarını kullanın
+                      📱 <strong>Mobil & Tablet:</strong> ↑ ↓ butonlarını kullanın
                     </p>
                     <p className="text-terracotta text-xs">
                       ⚡ <strong>Otomatik:</strong> Sıralama anında kaydedilir

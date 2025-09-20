@@ -110,7 +110,7 @@ function SortableCategoryItem({
         
         <div className="flex space-x-2">
           {isManageMode ? (
-            <div className="flex space-x-2 flex-1 sm:hidden">
+            <div className="flex space-x-2 flex-1 lg:hidden">
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
