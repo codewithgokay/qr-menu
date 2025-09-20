@@ -110,7 +110,7 @@ function SortableCategoryItem({
         
         <div className="flex space-x-2">
           {isManageMode ? (
-            <div className="flex space-x-2 flex-1">
+            <div className="flex space-x-2 flex-1 sm:hidden">
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -120,7 +120,7 @@ function SortableCategoryItem({
                 size="sm"
                 className="bg-terracotta/10 hover:bg-terracotta/20 text-terracotta flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                ↑ Yukarı
+                ↑
               </Button>
               <Button
                 onClick={(e) => {
@@ -131,7 +131,7 @@ function SortableCategoryItem({
                 size="sm"
                 className="bg-terracotta/10 hover:bg-terracotta/20 text-terracotta flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                ↓ Aşağı
+                ↓
               </Button>
             </div>
           ) : (

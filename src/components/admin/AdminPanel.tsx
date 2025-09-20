@@ -469,11 +469,11 @@ export function AdminPanel({
               {isItemManageMode && (
                 <div className="bg-sage/5 border border-sage/20 rounded-lg p-4">
                   <p className="text-sage text-sm">
-                    <strong>💡 İpucu:</strong> Ürünleri kategoriler içinde yeniden sıralamak için ↑ ↓ butonlarını kullanın. 
+                    <strong>💡 İpucu:</strong> Ürünleri kategoriler içinde yeniden sıralamak için sürükleyip bırakın veya ↑ ↓ butonlarını kullanın. 
                     Her kategori içindeki sıralama ayrı ayrı düzenlenebilir ve otomatik olarak kaydedilir.
                   </p>
                   <p className="text-sage text-xs mt-2">
-                    📱 Mobil: ↑ Yukarı ve ↓ Aşağı butonları ile kolayca sıralayın.
+                    💻 Masaüstü: Sürükleyip bırakın | 📱 Mobil: ↑ ↓ butonları ile sıralayın
                   </p>
                 </div>
               )}
@@ -531,11 +531,11 @@ export function AdminPanel({
               {isCategoryManageMode && (
                 <div className="bg-terracotta/5 border border-terracotta/20 rounded-lg p-4">
                   <p className="text-terracotta text-sm">
-                    <strong>💡 İpucu:</strong> Kategorileri yeniden sıralamak için ↑ Yukarı ve ↓ Aşağı butonlarını kullanın. 
+                    <strong>💡 İpucu:</strong> Kategorileri yeniden sıralamak için sürükleyip bırakın veya ↑ ↓ butonlarını kullanın. 
                     Sıralama otomatik olarak kaydedilir.
                   </p>
                   <p className="text-terracotta text-xs mt-2">
-                    📱 Mobil: Butonlar ile kolayca sıralayın.
+                    💻 Masaüstü: Sürükleyip bırakın | 📱 Mobil: ↑ ↓ butonları ile sıralayın
                   </p>
                 </div>
               )}

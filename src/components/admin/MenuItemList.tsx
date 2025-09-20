@@ -145,7 +145,7 @@ function SortableMenuItem({
         {/* Action Buttons */}
         <div className="flex flex-col space-y-2 flex-shrink-0">
           {isManageMode ? (
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col space-y-1 sm:hidden">
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
