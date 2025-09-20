@@ -23,12 +23,17 @@ export async function GET() {
         isDairyFree: true,
         calories: true,
         prepTime: true,
-        order: true
+        order: true,
+        allergens: {
+          include: {
+            allergen: true
+          }
+        }
       },
       orderBy: { order: 'asc' }
     })
 
-    // Transform the data to match the expected format (without allergens for now)
+    // Transform the data to match the expected format
     const transformedItems = dbMenuItems.map(item => ({
       id: item.id,
       name: item.name,
@@ -36,7 +41,7 @@ export async function GET() {
       price: item.price,
       category: item.categoryId,
       image: item.image,
-      allergens: [], // Simplified - no allergens for now
+      allergens: item.allergens.map(a => a.allergen.name),
       isVegetarian: item.isVegetarian,
       isVegan: item.isVegan,
       isSpicy: item.isSpicy,
