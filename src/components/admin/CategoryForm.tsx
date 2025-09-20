@@ -50,9 +50,19 @@ export function CategoryForm({
 
   return (
     <Card className="p-4 sm:p-6 bg-white shadow-soft border border-warm-beige">
-      <h2 className="text-xl sm:text-2xl font-bold text-text-primary mb-4 sm:mb-6 font-heading">
-        {isEditing ? 'Kategoriyi Düzenle' : 'Yeni Kategori Ekle'}
-      </h2>
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-text-primary font-heading">
+          {isEditing ? 'Kategoriyi Düzenle' : 'Yeni Kategori Ekle'}
+        </h2>
+        <Button
+          onClick={onCancel}
+          variant="outline"
+          size="sm"
+          className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige hover:text-text-primary text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-2"
+        >
+          ← Geri Dön
+        </Button>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <div>
