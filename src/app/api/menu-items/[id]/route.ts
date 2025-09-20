@@ -140,18 +140,40 @@ export async function DELETE(
     const { id } = await params
     console.log('DELETE request for menu item:', id)
     
+    // Test database connection first
+    await prisma.$connect()
+    console.log('Database connected for delete operation')
+    
+    // Check if menu item exists
+    const existingItem = await prisma.menuItem.findUnique({
+      where: { id }
+    })
+    
+    if (!existingItem) {
+      console.log('Menu item not found:', id)
+      return NextResponse.json({ 
+        error: 'Menu item not found' 
+      }, { status: 404 })
+    }
+    
+    // Update the menu item
     await prisma.menuItem.update({
       where: { id },
       data: { isActive: false }
     })
 
     console.log('Menu item successfully deleted:', id)
+    await prisma.$disconnect()
+    
     return NextResponse.json({ message: 'Menu item deleted successfully' })
   } catch (error) {
     console.error('Error deleting menu item:', error)
+    await prisma.$disconnect()
+    
     return NextResponse.json({ 
       error: 'Failed to delete menu item',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
+      type: 'database_error'
     }, { status: 500 })
   }
 }
