@@ -4,11 +4,10 @@ import { motion } from 'framer-motion';
 import { Utensils } from 'lucide-react';
 
 interface LoadingScreenProps {
-  progress: number;
   message?: string;
 }
 
-export function LoadingScreen({ progress, message = "Menü yükleniyor..." }: LoadingScreenProps) {
+export function LoadingScreen({ message = "Menü yükleniyor..." }: LoadingScreenProps) {
   return (
     <div className="fixed inset-0 bg-primary-cream z-50 flex items-center justify-center">
       <div className="text-center space-y-8 max-w-md mx-auto px-6">
@@ -50,32 +49,6 @@ export function LoadingScreen({ progress, message = "Menü yükleniyor..." }: Lo
           </p>
         </motion.div>
 
-        {/* Progress Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-          className="space-y-3"
-        >
-          <div className="flex justify-between text-sm">
-            <span className="text-text-secondary">İlerleme</span>
-            <span className="font-medium text-sage">{Math.round(progress)}%</span>
-          </div>
-          <div className="w-full bg-warm-beige/30 rounded-full h-3 overflow-hidden">
-            <motion.div
-              className="bg-gradient-to-r from-sage to-sage/80 h-full rounded-full relative"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            >
-              <motion.div
-                className="absolute inset-0 bg-white/20 rounded-full"
-                animate={{ x: ['-100%', '100%'] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-              />
-            </motion.div>
-          </div>
-        </motion.div>
 
         {/* Loading Dots */}
         <motion.div

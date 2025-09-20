@@ -79,7 +79,7 @@ export function MenuGrid() {
         animate={{ opacity: isLoadingProgress >= 100 ? 0 : 1 }}
         transition={{ duration: 0.5 }}
       >
-        <LoadingScreen progress={isLoadingProgress} />
+        <LoadingScreen />
       </motion.div>
     );
   }
