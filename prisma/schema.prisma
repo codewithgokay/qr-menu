@@ -91,6 +91,9 @@ model MenuItem {
   category   MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   allergens  MenuItemAllergen[]
 
+  @@index([isActive, order])
+  @@index([restaurantId, isActive])
+  @@index([categoryId, isActive])
   @@map("menu_items")
 }
 

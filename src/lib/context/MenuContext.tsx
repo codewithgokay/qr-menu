@@ -206,29 +206,15 @@ export function MenuProvider({
       try {
         dispatch({ type: 'SET_LOADING', payload: true });
         dispatch({ type: 'SET_ERROR', payload: null });
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 0 });
 
-        // Check cache first for faster loading
-        const cachedData = localStorage.getItem('qr_menu_cache');
-        const cacheTimestamp = localStorage.getItem('qr_menu_cache_timestamp');
-        const now = Date.now();
-        const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
-
-        if (cachedData && cacheTimestamp && (now - parseInt(cacheTimestamp)) < CACHE_DURATION) {
-          console.log('Loading from cache for faster performance');
-          const { items: cachedItems, categories: cachedCategories } = JSON.parse(cachedData);
-          dispatch({ type: 'SET_CATEGORIES', payload: cachedCategories });
-          dispatch({ type: 'SET_ITEMS', payload: cachedItems });
-          dispatch({ type: 'SET_VISIBLE_ITEMS', payload: cachedItems });
-          dispatch({ type: 'SET_LOADING', payload: false });
-          dispatch({ type: 'SET_INITIAL_LOAD', payload: false });
-          return;
-        }
-
-        // Try to load from API
+        // Try to load from API first
         const [itemsResult, categoriesResult] = await Promise.allSettled([
           menuItemsApi.getAll(),
           categoriesApi.getAll()
         ]);
+        
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 50 });
         
         let hasApiData = false;
         let allItems: MenuItemType[] = [];
@@ -257,19 +243,27 @@ export function MenuProvider({
           allCategories = fallbackCategories;
         }
         
-        // Cache the data for faster future loads
-        if (hasApiData) {
-          localStorage.setItem('qr_menu_cache', JSON.stringify({
-            items: allItems,
-            categories: allCategories
-          }));
-          localStorage.setItem('qr_menu_cache_timestamp', now.toString());
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 75 });
+        
+        // Set categories first
+        dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
+        
+        // Progressive loading of menu items
+        dispatch({ type: 'SET_ITEMS', payload: allItems });
+        
+        // Start progressive item reveal
+        const batchSize = Math.max(1, Math.ceil(allItems.length / 10)); // Show items in batches
+        
+        for (let i = 0; i <= allItems.length; i += batchSize) {
+          const visibleItems = allItems.slice(0, i);
+          dispatch({ type: 'SET_VISIBLE_ITEMS', payload: visibleItems });
+          
+          if (i < allItems.length) {
+            await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay between batches
+          }
         }
         
-        // Set all data at once for faster loading
-        dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
-        dispatch({ type: 'SET_ITEMS', payload: allItems });
-        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 100 });
         
       } catch (error) {
         console.error('Unexpected error in loadData:', error);
@@ -288,10 +282,7 @@ export function MenuProvider({
 
     // Listen for menu updates from admin panel
     const handleMenuUpdate = () => {
-      console.log('Menu updated, clearing cache and refreshing data...');
-      // Clear cache when admin makes changes
-      localStorage.removeItem('qr_menu_cache');
-      localStorage.removeItem('qr_menu_cache_timestamp');
+      console.log('Menu updated, refreshing data...');
       loadData();
     };
 
