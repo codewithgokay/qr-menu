@@ -68,12 +68,21 @@ export const menuItemsApi = {
 
   // Delete a menu item
   delete: async (id: string): Promise<void> => {
+    console.log('Attempting to delete menu item:', id)
     const response = await fetch(`${API_BASE_URL}/api/menu-items/${id}`, {
       method: 'DELETE',
     })
+    console.log('Delete response status:', response.status)
+    console.log('Delete response ok:', response.ok)
+    
     if (!response.ok) {
-      throw new Error('Failed to delete menu item')
+      const errorData = await response.json().catch(() => ({}))
+      console.error('Delete error response:', errorData)
+      throw new Error(`Failed to delete menu item: ${errorData.error || 'Unknown error'}`)
     }
+    
+    const result = await response.json()
+    console.log('Delete successful:', result)
   },
 
   // Reorder menu items

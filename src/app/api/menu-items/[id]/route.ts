@@ -138,14 +138,20 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
+    console.log('DELETE request for menu item:', id)
+    
     await prisma.menuItem.update({
       where: { id },
       data: { isActive: false }
     })
 
+    console.log('Menu item successfully deleted:', id)
     return NextResponse.json({ message: 'Menu item deleted successfully' })
   } catch (error) {
     console.error('Error deleting menu item:', error)
-    return NextResponse.json({ error: 'Failed to delete menu item' }, { status: 500 })
+    return NextResponse.json({ 
+      error: 'Failed to delete menu item',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
   }
 }
