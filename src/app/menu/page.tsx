@@ -1,13 +1,11 @@
 'use client';
 
-import { Suspense } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { MenuGrid } from '@/components/menu/MenuGrid';
 import { CategoryFilter } from '@/components/menu/CategoryFilter';
 import { SearchBar } from '@/components/menu/SearchBar';
 import { MobileCategoryDropdown } from '@/components/menu/MobileCategoryDropdown';
-import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { MenuProvider } from '@/lib/context/MenuContext';
 import { restaurant } from '@/data/menu';
 
@@ -29,9 +27,7 @@ export default function MenuPage() {
 
           {/* Menu Grid */}
           <div className="px-6 py-8">
-            <Suspense fallback={<LoadingSpinner />}>
-              <MenuGrid />
-            </Suspense>
+            <MenuGrid />
           </div>
         </main>
 

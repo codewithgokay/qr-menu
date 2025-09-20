@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Restaurant } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Phone, MapPin, Clock, Globe, Instagram, Facebook, Twitter, ChevronDown, Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -17,13 +17,10 @@ export function Header({ restaurant }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter();
 
-  const currentHour = new Date().getHours();
   const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() as keyof typeof restaurant.operatingHours;
-  const isOpenNow = restaurant.operatingHours[currentDay] && 
-    !restaurant.operatingHours[currentDay].isClosed &&
-    currentHour >= parseInt(restaurant.operatingHours[currentDay].open.split(':')[0]) &&
-    currentHour < parseInt(restaurant.operatingHours[currentDay].close.split(':')[0]);
+
 
   // Scroll detection
   useEffect(() => {
@@ -76,54 +73,39 @@ export function Header({ restaurant }: HeaderProps) {
                 align="end"
               >
                 <DropdownMenuItem 
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/');
+                  }}
                   className="cursor-pointer py-3 px-4 text-text-primary hover:bg-warm-beige/50"
                 >
-                  <Link href="/" className="flex items-center w-full">
-                    <span className="mr-3">🏠</span>
-                    <span className="font-medium">Ana Sayfa</span>
-                  </Link>
+                  <span className="mr-3">🏠</span>
+                  <span className="font-medium">Ana Sayfa</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/menu');
+                  }}
                   className="cursor-pointer py-3 px-4 text-text-primary hover:bg-warm-beige/50"
                 >
-                  <Link href="/menu" className="flex items-center w-full">
-                    <span className="mr-3">🍽️</span>
-                    <span className="font-medium">Menü</span>
-                  </Link>
+                  <span className="mr-3">🍽️</span>
+                  <span className="font-medium">Menü</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/about');
+                  }}
                   className="cursor-pointer py-3 px-4 text-text-primary hover:bg-warm-beige/50"
                 >
-                  <Link href="/about" className="flex items-center w-full">
-                    <span className="mr-3">ℹ️</span>
-                    <span className="font-medium">Hakkımızda</span>
-                  </Link>
+                  <span className="mr-3">ℹ️</span>
+                  <span className="font-medium">Hakkımızda</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <motion.div
-              animate={{ 
-                opacity: isScrolled ? 0 : 1,
-                scale: isScrolled ? 0 : 1
-              }}
-              transition={{ duration: 0.3 }}
-              className="hidden sm:block"
-            >
-              <Badge 
-                className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  isOpenNow 
-                    ? "bg-emerald-500 text-white shadow-lg" 
-                    : "bg-gray-400 text-white"
-                }`}
-              >
-                {isOpenNow ? "Açık" : "Kapalı"}
-              </Badge>
-            </motion.div>
-          </div>
+            </div>
         </div>
 
         {/* Contact Info - Collapsible on Mobile */}

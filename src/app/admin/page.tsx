@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { isAuthenticated, isAdminAccessRequested } from '@/lib/auth';
 import { LoginForm } from '@/components/admin/LoginForm';
 import { AdminPanel } from '@/components/admin/AdminPanel';
-import { MenuItem, MenuCategory } from '@/lib/types';
 
 export default function AdminPage() {
   const [isAuth, setIsAuth] = useState(false);

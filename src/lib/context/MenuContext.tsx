@@ -29,9 +29,9 @@ type MenuAction =
   | { type: 'UPDATE_ITEMS' };
 
 const initialState: MenuState = {
-  items: [],
-  categories: [],
-  filteredItems: [],
+  items: fallbackMenuItems, // Start with static data immediately
+  categories: fallbackCategories, // Start with static data immediately
+  filteredItems: fallbackMenuItems,
   filters: {
     search: '',
     category: 'all',
@@ -174,26 +174,29 @@ export function MenuProvider({
     
     const loadData = async () => {
       try {
-        dispatch({ type: 'SET_LOADING', payload: true });
+        // Don't set loading to true since we already have static data
         dispatch({ type: 'SET_ERROR', payload: null });
 
         const [itemsData, categoriesData] = await Promise.all([
           menuItemsApi.getAll(),
           categoriesApi.getAll()
         ]);
-        dispatch({ type: 'SET_ITEMS', payload: itemsData });
-        dispatch({ type: 'SET_CATEGORIES', payload: categoriesData });
+        
+        // Only update if we got different data
+        if (itemsData.length > 0) {
+          dispatch({ type: 'SET_ITEMS', payload: itemsData });
+        }
+        if (categoriesData.length > 0) {
+          dispatch({ type: 'SET_CATEGORIES', payload: categoriesData });
+        }
       } catch (error) {
-        console.error('Error loading data from API, falling back to static data:', error);
-        // Fall back to static data if API fails
-        dispatch({ type: 'SET_ITEMS', payload: fallbackMenuItems });
-        dispatch({ type: 'SET_CATEGORIES', payload: fallbackCategories });
-        dispatch({ type: 'SET_ERROR', payload: null }); // Clear error since we have fallback data
-      } finally {
-        dispatch({ type: 'SET_LOADING', payload: false });
+        console.error('Error loading data from API, using static data:', error);
+        // Keep using static data, no need to dispatch since it's already loaded
+        dispatch({ type: 'SET_ERROR', payload: null });
       }
     };
 
+    // Load data in background without blocking UI
     loadData();
   }, []);
 

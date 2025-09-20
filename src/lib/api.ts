@@ -7,17 +7,11 @@ export const menuItemsApi = {
   // Get all menu items
   getAll: async (): Promise<MenuItem[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/menu-items`)
+      const response = await fetch(`${API_BASE_URL}/api/menu-items`, {
+        // Add timeout to prevent hanging
+        signal: AbortSignal.timeout(3000)
+      })
       if (!response.ok) {
-        // If we're on the client side and the response is not ok, try again after a short delay
-        if (typeof window !== 'undefined') {
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          const retryResponse = await fetch(`${API_BASE_URL}/api/menu-items`);
-          if (!retryResponse.ok) {
-            throw new Error('Failed to fetch menu items after retry')
-          }
-          return retryResponse.json();
-        }
         throw new Error('Failed to fetch menu items')
       }
       return response.json()
@@ -105,17 +99,11 @@ export const categoriesApi = {
   // Get all categories
   getAll: async (): Promise<MenuCategory[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/categories`)
+      const response = await fetch(`${API_BASE_URL}/api/categories`, {
+        // Add timeout to prevent hanging
+        signal: AbortSignal.timeout(3000)
+      })
       if (!response.ok) {
-        // If we're on the client side and the response is not ok, try again after a short delay
-        if (typeof window !== 'undefined') {
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          const retryResponse = await fetch(`${API_BASE_URL}/api/categories`);
-          if (!retryResponse.ok) {
-            throw new Error('Failed to fetch categories after retry')
-          }
-          return retryResponse.json();
-        }
         throw new Error('Failed to fetch categories')
       }
       return response.json()
