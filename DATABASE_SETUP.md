@@ -6,7 +6,7 @@
 1. Go to [neon.tech](https://neon.tech)
 2. Sign up and create a new project
 3. Copy the connection string
-4. Add to Vercel environment variables as `DATABASE_URL`
+4. Add to Vercel environment variables as `POSTGRES_URL`
 
 ### Option 2: Supabase
 1. Go to [supabase.com](https://supabase.com)
@@ -19,14 +19,14 @@
 1. Go to [planetscale.com](https://planetscale.com)
 2. Create a new database
 3. Get the connection string
-4. Add to Vercel environment variables as `DATABASE_URL`
+4. Add to Vercel environment variables as `POSTGRES_URL`
 
 ## Environment Variables
 
 Add these to your Vercel project settings:
 
 ```
-DATABASE_URL=postgresql://username:password@host:port/database?sslmode=require
+POSTGRES_URL=postgresql://username:password@host:port/database?sslmode=require
 ADMIN_PASSWORD=your_secure_password_here
 ```
 
@@ -35,7 +35,7 @@ ADMIN_PASSWORD=your_secure_password_here
 1. Install PostgreSQL locally or use Docker
 2. Create a `.env.local` file:
 ```
-DATABASE_URL="postgresql://username:password@localhost:5432/qr_menu_db?schema=public"
+POSTGRES_URL="postgresql://username:password@localhost:5432/qr_menu_db?schema=public"
 ADMIN_PASSWORD="your_secure_password_here"
 ```
 

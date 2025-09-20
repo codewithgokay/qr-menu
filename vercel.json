@@ -2,6 +2,6 @@
   "buildCommand": "./vercel-build.sh",
   "installCommand": "npm install && npx prisma generate",
   "env": {
-    "DATABASE_URL": "@database_url"
+    "POSTGRES_URL": "@postgres_url"
   }
 }
