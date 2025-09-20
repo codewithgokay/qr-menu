@@ -40,7 +40,8 @@ export async function GET(
       isGlutenFree: menuItem.isGlutenFree,
       isDairyFree: menuItem.isDairyFree,
       calories: menuItem.calories,
-      prepTime: menuItem.prepTime
+      prepTime: menuItem.prepTime,
+      order: menuItem.order
     }
 
     return NextResponse.json(transformedItem)
@@ -60,14 +61,13 @@ export async function PUT(
     const body = await request.json()
     const { name, description, price, category, image, allergens, ...otherFields } = body
 
-    // First, handle allergens
-    if (allergens && allergens.length > 0) {
-      // Delete existing allergens
-      await prisma.menuItemAllergen.deleteMany({
-        where: { menuItemId: id }
-      })
+    // Handle allergens - always delete existing ones first
+    await prisma.menuItemAllergen.deleteMany({
+      where: { menuItemId: id }
+    })
 
-      // Create new allergens
+    // Only create new allergens if there are any
+    if (allergens && allergens.length > 0) {
       for (const allergenName of allergens) {
         const allergen = await prisma.allergen.upsert({
           where: { name: allergenName },
@@ -121,7 +121,8 @@ export async function PUT(
       isGlutenFree: menuItem.isGlutenFree,
       isDairyFree: menuItem.isDairyFree,
       calories: menuItem.calories,
-      prepTime: menuItem.prepTime
+      prepTime: menuItem.prepTime,
+      order: menuItem.order
     }
 
     return NextResponse.json(transformedItem)

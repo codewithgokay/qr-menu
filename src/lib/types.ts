@@ -14,6 +14,7 @@ export interface MenuItem {
   isDairyFree?: boolean;
   calories?: number;
   prepTime?: number; // in minutes
+  order?: number; // for sorting menu items
 }
 
 export interface MenuCategory {

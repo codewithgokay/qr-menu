@@ -5,7 +5,13 @@ import { MenuState, FilterOptions, UserPreferences, MenuItem as MenuItemType, Me
 import { menuItemsApi, categoriesApi } from '@/lib/api';
 import { menuItems as fallbackMenuItems, categories as fallbackCategories } from '@/data/menu';
 
-interface MenuContextType extends MenuState {
+interface ExtendedMenuState extends MenuState {
+  isLoadingProgress: number;
+  isInitialLoad: boolean;
+  visibleItems: MenuItemType[];
+}
+
+interface MenuContextType extends ExtendedMenuState {
   setSearchQuery: (query: string) => void;
   setSelectedCategory: (category: string) => void;
   setFilters: (filters: Partial<FilterOptions>) => void;
@@ -26,12 +32,15 @@ type MenuAction =
   | { type: 'SET_SELECTED_ITEM'; payload: MenuItemType | null }
   | { type: 'SET_ITEMS'; payload: MenuItemType[] }
   | { type: 'SET_CATEGORIES'; payload: MenuCategoryType[] }
-  | { type: 'UPDATE_ITEMS' };
+  | { type: 'UPDATE_ITEMS' }
+  | { type: 'SET_LOADING_PROGRESS'; payload: number }
+  | { type: 'SET_INITIAL_LOAD'; payload: boolean }
+  | { type: 'SET_VISIBLE_ITEMS'; payload: MenuItemType[] };
 
-const initialState: MenuState = {
-  items: fallbackMenuItems, // Start with static data immediately
-  categories: fallbackCategories, // Start with static data immediately
-  filteredItems: fallbackMenuItems,
+const initialState: ExtendedMenuState = {
+  items: [], // Start empty, load from API first
+  categories: [], // Start empty, load from API first
+  filteredItems: [],
   filters: {
     search: '',
     category: 'all',
@@ -40,7 +49,7 @@ const initialState: MenuState = {
     sortBy: 'name',
     sortOrder: 'asc'
   },
-  isLoading: false,
+  isLoading: true, // Show loading initially
   error: null,
   selectedItem: null,
   userPreferences: {
@@ -48,10 +57,13 @@ const initialState: MenuState = {
     language: 'en',
     currency: 'USD',
     theme: 'system'
-  }
+  },
+  isLoadingProgress: 0,
+  isInitialLoad: true,
+  visibleItems: []
 };
 
-function menuReducer(state: MenuState, action: MenuAction): MenuState {
+function menuReducer(state: ExtendedMenuState, action: MenuAction): ExtendedMenuState {
   switch (action.type) {
     case 'SET_SEARCH_QUERY':
       return {
@@ -153,6 +165,24 @@ function menuReducer(state: MenuState, action: MenuAction): MenuState {
       }
       return state;
     
+    case 'SET_LOADING_PROGRESS':
+      return {
+        ...state,
+        isLoadingProgress: action.payload
+      };
+    
+    case 'SET_INITIAL_LOAD':
+      return {
+        ...state,
+        isInitialLoad: action.payload
+      };
+    
+    case 'SET_VISIBLE_ITEMS':
+      return {
+        ...state,
+        visibleItems: action.payload
+      };
+    
     default:
       return state;
   }
@@ -174,30 +204,93 @@ export function MenuProvider({
     
     const loadData = async () => {
       try {
-        // Don't set loading to true since we already have static data
+        dispatch({ type: 'SET_LOADING', payload: true });
         dispatch({ type: 'SET_ERROR', payload: null });
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 0 });
 
-        const [itemsData, categoriesData] = await Promise.all([
+        // Try to load from API first
+        const [itemsResult, categoriesResult] = await Promise.allSettled([
           menuItemsApi.getAll(),
           categoriesApi.getAll()
         ]);
         
-        // Only update if we got different data
-        if (itemsData.length > 0) {
-          dispatch({ type: 'SET_ITEMS', payload: itemsData });
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 50 });
+        
+        let hasApiData = false;
+        let allItems: MenuItemType[] = [];
+        let allCategories: MenuCategoryType[] = [];
+        
+        // Handle menu items result
+        if (itemsResult.status === 'fulfilled' && itemsResult.value.length > 0) {
+          allItems = itemsResult.value;
+          hasApiData = true;
+        } else if (itemsResult.status === 'rejected') {
+          console.warn('Failed to load menu items from API:', itemsResult.reason);
         }
-        if (categoriesData.length > 0) {
-          dispatch({ type: 'SET_CATEGORIES', payload: categoriesData });
+        
+        // Handle categories result
+        if (categoriesResult.status === 'fulfilled' && categoriesResult.value.length > 0) {
+          allCategories = categoriesResult.value;
+          hasApiData = true;
+        } else if (categoriesResult.status === 'rejected') {
+          console.warn('Failed to load categories from API:', categoriesResult.reason);
         }
+        
+        // If no API data was loaded, fall back to static data
+        if (!hasApiData) {
+          console.log('No API data available, using static fallback data');
+          allItems = fallbackMenuItems;
+          allCategories = fallbackCategories;
+        }
+        
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 75 });
+        
+        // Set categories first
+        dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
+        
+        // Progressive loading of menu items
+        dispatch({ type: 'SET_ITEMS', payload: allItems });
+        
+        // Start progressive item reveal
+        const batchSize = Math.max(1, Math.ceil(allItems.length / 10)); // Show items in batches
+        
+        for (let i = 0; i <= allItems.length; i += batchSize) {
+          const visibleItems = allItems.slice(0, i);
+          dispatch({ type: 'SET_VISIBLE_ITEMS', payload: visibleItems });
+          
+          if (i < allItems.length) {
+            await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay between batches
+          }
+        }
+        
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 100 });
+        
       } catch (error) {
-        console.error('Error loading data from API, using static data:', error);
-        // Keep using static data, no need to dispatch since it's already loaded
+        console.error('Unexpected error in loadData:', error);
+        // Fall back to static data on any error
+        dispatch({ type: 'SET_ITEMS', payload: fallbackMenuItems });
+        dispatch({ type: 'SET_CATEGORIES', payload: fallbackCategories });
+        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: fallbackMenuItems });
         dispatch({ type: 'SET_ERROR', payload: null });
+      } finally {
+        dispatch({ type: 'SET_LOADING', payload: false });
+        dispatch({ type: 'SET_INITIAL_LOAD', payload: false });
       }
     };
 
-    // Load data in background without blocking UI
     loadData();
+
+    // Listen for menu updates from admin panel
+    const handleMenuUpdate = () => {
+      console.log('Menu updated, refreshing data...');
+      loadData();
+    };
+
+    window.addEventListener('menuUpdated', handleMenuUpdate);
+    
+    return () => {
+      window.removeEventListener('menuUpdated', handleMenuUpdate);
+    };
   }, []);
 
   const setSearchQuery = (query: string) => {

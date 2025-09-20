@@ -130,14 +130,24 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
 
       {/* Details Sheet */}
       <Sheet open={showDetails} onOpenChange={setShowDetails}>
-        <SheetContent className="w-full sm:max-w-lg bg-primary-cream">
-          <SheetHeader>
-            <SheetTitle className="text-2xl font-heading text-text-primary">{item.name}</SheetTitle>
+        <SheetContent className="w-full sm:max-w-lg bg-primary-cream p-0">
+          {/* Fixed Header */}
+          <div className="p-6 border-b border-warm-beige/30">
+            <SheetTitle className="text-2xl font-heading text-text-primary mb-2">{item.name}</SheetTitle>
             <SheetDescription className="text-text-secondary">
               {item.description}
             </SheetDescription>
-          </SheetHeader>
-          <div className="mt-6 space-y-6">
+          </div>
+          
+          {/* Scrollable Content */}
+          <div 
+            className="overflow-y-auto p-6 space-y-6"
+            style={{ 
+              height: 'calc(100vh - 250px)',
+              maxHeight: '500px',
+              overflowY: 'auto'
+            }}
+          >
             {/* Large Image */}
             <div className="relative h-64 w-full overflow-hidden rounded-2xl">
               <ImageOptimized
@@ -154,11 +164,6 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
             <div className="text-3xl font-bold text-navy-slate">
               {formatPrice(item.price)}
             </div>
-
-            {/* Description */}
-            <p className="text-text-secondary text-lg leading-relaxed">
-              {item.description}
-            </p>
 
             {/* Dietary Information */}
             {dietaryInfo.length > 0 && (
@@ -208,7 +213,9 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
                 </div>
               )}
             </div>
-
+            
+            {/* Bottom padding for better scrolling */}
+            <div className="h-8"></div>
           </div>
         </SheetContent>
       </Sheet>

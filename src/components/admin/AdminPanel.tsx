@@ -131,6 +131,12 @@ export function AdminPanel({
         showMessage('success', 'Ürün başarıyla eklendi');
       }
       
+      // Trigger menu page refresh
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('menu_updated', Date.now().toString());
+        window.dispatchEvent(new CustomEvent('menuUpdated'));
+      }
+      
       setShowForm(false);
       setEditingItem(null);
     } catch (error) {
@@ -145,6 +151,13 @@ export function AdminPanel({
       const updatedItems = menuItems.filter(item => item.id !== itemId);
       setMenuItems(updatedItems);
       onMenuUpdate(updatedItems);
+      
+      // Trigger menu page refresh
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('menu_updated', Date.now().toString());
+        window.dispatchEvent(new CustomEvent('menuUpdated'));
+      }
+      
       showMessage('success', 'Ürün başarıyla silindi');
     } catch (error) {
       console.error('Error deleting menu item:', error);
@@ -259,7 +272,7 @@ export function AdminPanel({
       try {
         const itemsWithOrder = menuItems.map((item, index) => ({
           id: item.id,
-          order: index + 1
+          order: index + 1 // Start from 1, not 0
         }));
         
         await menuItemsApi.reorder(itemsWithOrder);
@@ -269,6 +282,7 @@ export function AdminPanel({
         showMessage('error', 'Ürün sıralaması kaydedilirken hata oluştu');
       }
     }
+    
     setIsItemManageMode(!isItemManageMode);
   };
 
@@ -281,10 +295,18 @@ export function AdminPanel({
       // Save to database
       const itemsWithOrder = reorderedItems.map((item, index) => ({
         id: item.id,
-        order: index
+        order: index + 1 // Start from 1, not 0
       }));
 
       await menuItemsApi.reorder(itemsWithOrder);
+      
+      // Trigger menu page refresh by updating localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('menu_updated', Date.now().toString());
+        // Also dispatch a custom event to trigger immediate refresh
+        window.dispatchEvent(new CustomEvent('menuUpdated'));
+      }
+      
       showMessage('success', 'Ürün sıralaması başarıyla kaydedildi');
     } catch (error) {
       console.error('Error reordering menu items:', error);
@@ -440,8 +462,8 @@ export function AdminPanel({
               {isItemManageMode && (
                 <div className="bg-sage/5 border border-sage/20 rounded-lg p-4">
                   <p className="text-sage text-sm">
-                    <strong>💡 İpucu:</strong> Ürünleri yeniden sıralamak için sürükleyip bırakın. 
-                    Sıralama otomatik olarak kaydedilir.
+                    <strong>💡 İpucu:</strong> Ürünleri kategoriler içinde yeniden sıralamak için sürükleyip bırakın. 
+                    Her kategori içindeki sıralama ayrı ayrı düzenlenebilir ve otomatik olarak kaydedilir.
                   </p>
                 </div>
               )}

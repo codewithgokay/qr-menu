@@ -83,7 +83,7 @@ export function MenuItemForm({
       price: parseFloat(formData.price),
       category: formData.category,
       image: imagePreview,
-      allergens: formData.allergens ? formData.allergens.split(',').map(a => a.trim()) : undefined,
+      allergens: formData.allergens ? formData.allergens.split(',').map(a => a.trim()).filter(a => a.length > 0) : [],
       calories: formData.calories ? parseInt(formData.calories) : undefined,
       prepTime: formData.prepTime ? parseInt(formData.prepTime) : undefined,
       isVegetarian: formData.isVegetarian,

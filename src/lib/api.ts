@@ -7,10 +7,7 @@ export const menuItemsApi = {
   // Get all menu items
   getAll: async (): Promise<MenuItem[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/menu-items`, {
-        // Add timeout to prevent hanging
-        signal: AbortSignal.timeout(3000)
-      })
+      const response = await fetch(`${API_BASE_URL}/api/menu-items`)
       if (!response.ok) {
         throw new Error('Failed to fetch menu items')
       }
@@ -99,10 +96,7 @@ export const categoriesApi = {
   // Get all categories
   getAll: async (): Promise<MenuCategory[]> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/categories`, {
-        // Add timeout to prevent hanging
-        signal: AbortSignal.timeout(3000)
-      })
+      const response = await fetch(`${API_BASE_URL}/api/categories`)
       if (!response.ok) {
         throw new Error('Failed to fetch categories')
       }

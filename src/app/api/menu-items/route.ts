@@ -35,7 +35,8 @@ export async function GET() {
       isGlutenFree: item.isGlutenFree,
       isDairyFree: item.isDairyFree,
       calories: item.calories,
-      prepTime: item.prepTime
+      prepTime: item.prepTime,
+      order: item.order
     }))
 
     return NextResponse.json(transformedItems)
@@ -43,7 +44,7 @@ export async function GET() {
     console.error('Database error, falling back to static data:', error)
     
     // Fallback to static data when database is not available
-    const transformedItems = menuItems.map(item => ({
+    const transformedItems = menuItems.map((item, index) => ({
       id: item.id,
       name: item.name,
       description: item.description,
@@ -58,7 +59,8 @@ export async function GET() {
       isGlutenFree: item.isGlutenFree || false,
       isDairyFree: item.isDairyFree || false,
       calories: item.calories || 0,
-      prepTime: item.prepTime || 0
+      prepTime: item.prepTime || 0,
+      order: index + 1 // Use array index as order for static data
     }))
 
     return NextResponse.json(transformedItems)
@@ -132,7 +134,8 @@ export async function POST(request: NextRequest) {
       isGlutenFree: menuItem.isGlutenFree,
       isDairyFree: menuItem.isDairyFree,
       calories: menuItem.calories,
-      prepTime: menuItem.prepTime
+      prepTime: menuItem.prepTime,
+      order: menuItem.order
     }
 
     return NextResponse.json(transformedItem, { status: 201 })

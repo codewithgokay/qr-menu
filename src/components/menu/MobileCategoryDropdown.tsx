@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { useMenu } from '@/lib/context/MenuContext';
 
 export function MobileCategoryDropdown() {
-  const { filters, setSelectedCategory, categories } = useMenu();
+  const { filters, setSelectedCategory, categories, isLoading } = useMenu();
   const [isOpen, setIsOpen] = useState(false);
 
   const allCategories = [
@@ -22,6 +22,14 @@ export function MobileCategoryDropdown() {
     setSelectedCategory(categoryId);
     setIsOpen(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full sm:hidden px-6 py-4">
+        <div className="w-full h-12 bg-gray-200 rounded-xl animate-pulse" />
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -43,24 +51,31 @@ export function MobileCategoryDropdown() {
             <ChevronDown className="h-4 w-4 text-text-secondary" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-full min-w-[200px] bg-white/95 backdrop-blur-sm border-warm-beige rounded-xl" align="start">
-          {allCategories.map((category) => (
-            <DropdownMenuItem
-              key={category.id}
-              onClick={() => handleCategoryClick(category.id)}
-              className={`flex items-center space-x-3 cursor-pointer py-3 px-4 ${
-                filters.category === category.id ? 'bg-sage/10 text-sage' : 'text-text-primary hover:bg-warm-beige/50'
-              }`}
-            >
-              <span className="text-lg">{category.icon}</span>
-              <span className="flex-1 font-medium">{category.name}</span>
-              {filters.category === category.id && (
-                <div className="w-2 h-2 bg-sage rounded-full" />
-              )}
-            </DropdownMenuItem>
-          ))}
+        <DropdownMenuContent 
+          className="w-full min-w-[200px] bg-white/95 backdrop-blur-sm border-warm-beige rounded-xl shadow-lg" 
+          align="start"
+        >
+          <div className="max-h-[200px] overflow-y-auto">
+            {allCategories.map((category) => (
+              <DropdownMenuItem
+                key={category.id}
+                onClick={() => handleCategoryClick(category.id)}
+                className={`flex items-center space-x-3 cursor-pointer py-3 px-4 ${
+                  filters.category === category.id ? 'bg-sage/10 text-sage' : 'text-text-primary hover:bg-warm-beige/50'
+                }`}
+              >
+                <span className="text-lg">{category.icon}</span>
+                <span className="flex-1 font-medium">{category.name}</span>
+                {filters.category === category.id && (
+                  <div className="w-2 h-2 bg-sage rounded-full" />
+                )}
+              </DropdownMenuItem>
+            ))}
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </motion.div>
   );
 }
+
+

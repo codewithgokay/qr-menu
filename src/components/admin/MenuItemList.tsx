@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { MenuItem, MenuCategory } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -89,106 +89,207 @@ function SortableMenuItem({
       ref={setNodeRef} 
       style={style}
       {...(isManageMode ? { ...attributes, ...listeners } : {})}
-      className={`p-6 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300 ${
+      className={`p-4 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300 ${
         isManageMode ? 'cursor-grab active:cursor-grabbing' : ''
       } ${
         isDragging ? 'opacity-50 scale-105 shadow-lg' : isManageMode ? 'hover:scale-105' : ''
       }`}
     >
-      <div className="space-y-4">
+      <div className="flex items-center space-x-4">
+        
+        {/* Item Image */}
         {item.image && (
-          <div className="aspect-video overflow-hidden rounded-lg">
+          <div className="flex-shrink-0 w-16 h-16 overflow-hidden rounded-lg">
             <Image
               src={item.image}
               alt={item.name}
-              width={400}
-              height={300}
+              width={64}
+              height={64}
               className="w-full h-full object-cover"
-              style={{
-                width: '100%',
-                height: 'auto'
-              }}
             />
           </div>
         )}
         
-        <div>
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-semibold text-text-primary">{item.name}</h3>
-            <span className="text-lg font-bold text-sage">₺{item.price}</span>
+        {/* Item Details */}
+        <div className="flex-1 min-w-0">
+          <div className="flex justify-between items-start mb-1">
+            <h3 className="text-lg font-semibold text-text-primary truncate">{item.name}</h3>
+            <span className="text-lg font-bold text-sage ml-2">₺{item.price}</span>
           </div>
           
-          <p className="text-text-secondary text-sm mb-3 line-clamp-2">{item.description}</p>
+          <p className="text-text-secondary text-sm mb-2 line-clamp-1">{item.description}</p>
           
-          <div className="flex items-center justify-between mb-3">
-            <Badge variant="outline" className="bg-sage/10 border-sage/30 text-sage">
+          <div className="flex items-center justify-between">
+            <Badge variant="outline" className="bg-sage/10 border-sage/30 text-sage text-xs">
               {getCategoryName(item.category)}
             </Badge>
             
             <div className="flex space-x-1">
-              {item.isVegetarian && <span className="text-green-600" title="Vejetaryen">🌱</span>}
-              {item.isVegan && <span className="text-green-600" title="Vegan">🌿</span>}
-              {item.isSpicy && <span className="text-red-500" title="Acılı">🌶️</span>}
-              {item.isPopular && <span className="text-yellow-500" title="Popüler">⭐</span>}
-              {item.isGlutenFree && <span className="text-blue-500" title="Glutensiz">🌾</span>}
-              {item.isDairyFree && <span className="text-blue-500" title="Süt içermez">🥛</span>}
+              {item.isVegetarian && <span className="text-green-600 text-sm" title="Vejetaryen">🌱</span>}
+              {item.isVegan && <span className="text-green-600 text-sm" title="Vegan">🌿</span>}
+              {item.isSpicy && <span className="text-red-500 text-sm" title="Acılı">🌶️</span>}
+              {item.isPopular && <span className="text-yellow-500 text-sm" title="Popüler">⭐</span>}
+              {item.isGlutenFree && <span className="text-blue-500 text-sm" title="Glutensiz">🌾</span>}
+              {item.isDairyFree && <span className="text-blue-500 text-sm" title="Süt içermez">🥛</span>}
             </div>
           </div>
+        </div>
+        
+        {/* Action Buttons */}
+        <div className="flex flex-col space-y-2 flex-shrink-0">
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(item);
+            }}
+            size="sm"
+            className="bg-sage hover:bg-sage/90 text-white text-xs px-3 py-1"
+          >
+            Düzenle
+          </Button>
           
-          <div className="flex space-x-2">
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(item);
-              }}
-              size="sm"
-              className="bg-sage hover:bg-sage/90 text-white flex-1"
-            >
-              Düzenle
-            </Button>
-            
-            {deleteConfirm === item.id ? (
-              <div className="flex space-x-2 flex-1">
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(item.id);
-                  }}
-                  size="sm"
-                  className="bg-destructive hover:bg-destructive/90 text-white"
-                >
-                  Sil
-                </Button>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    cancelDelete();
-                  }}
-                  size="sm"
-                  variant="outline"
-                  className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige"
-                >
-                  İptal
-                </Button>
-              </div>
-            ) : (
+          {deleteConfirm === item.id ? (
+            <div className="flex space-x-1">
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDelete(item.id);
                 }}
                 size="sm"
-                variant="outline"
-                className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 flex-1"
+                className="bg-destructive hover:bg-destructive/90 text-white text-xs px-2 py-1"
               >
                 Sil
               </Button>
-            )}
-          </div>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  cancelDelete();
+                }}
+                size="sm"
+                variant="outline"
+                className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige text-xs px-2 py-1"
+              >
+                İptal
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(item.id);
+              }}
+              size="sm"
+              variant="outline"
+              className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs px-3 py-1"
+            >
+              Sil
+            </Button>
+          )}
         </div>
-        
       </div>
     </Card>
+  );
+}
+
+// Category Section Component
+function CategorySection({ 
+  category, 
+  items, 
+  categories, 
+  onEdit, 
+  onDelete, 
+  onReorder, 
+  deleteConfirm, 
+  setDeleteConfirm, 
+  isManageMode 
+}: {
+  category: MenuCategory;
+  items: MenuItem[];
+  categories: MenuCategory[];
+  onEdit: (item: MenuItem) => void;
+  onDelete: (itemId: string) => void;
+  onReorder?: (items: MenuItem[]) => void;
+  deleteConfirm: string | null;
+  setDeleteConfirm: (id: string | null) => void;
+  isManageMode: boolean;
+}) {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id && onReorder) {
+      const oldIndex = items.findIndex((item) => item.id === active.id);
+      const newIndex = items.findIndex((item) => item.id === over?.id);
+
+      const reorderedItems = arrayMove(items, oldIndex, newIndex);
+      onReorder(reorderedItems);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Category Header */}
+      <div className="flex items-center space-x-3 pb-2 border-b border-warm-beige/30">
+        <div className="w-8 h-8 bg-sage/10 rounded-lg flex items-center justify-center">
+          <span className="text-lg">{category.icon}</span>
+        </div>
+        <div>
+          <h3 className="text-xl font-bold text-text-primary font-heading">{category.name}</h3>
+          <p className="text-text-secondary text-sm">{items.length} ürün</p>
+        </div>
+      </div>
+
+      {/* Items List */}
+      {items.length === 0 ? (
+        <Card className="p-6 bg-white shadow-soft border border-warm-beige text-center">
+          <p className="text-text-secondary">Bu kategoride henüz ürün yok</p>
+        </Card>
+      ) : isManageMode ? (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={items.map(item => item.id)} strategy={rectSortingStrategy}>
+            <div className="space-y-3">
+              {items.map((item) => (
+                <SortableMenuItem
+                  key={item.id}
+                  item={item}
+                  categories={categories}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  deleteConfirm={deleteConfirm}
+                  setDeleteConfirm={setDeleteConfirm}
+                  isManageMode={isManageMode}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
+      ) : (
+        <div className="space-y-3">
+          {items.map((item) => (
+            <SortableMenuItem
+              key={item.id}
+              item={item}
+              categories={categories}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              deleteConfirm={deleteConfirm}
+              setDeleteConfirm={setDeleteConfirm}
+              isManageMode={isManageMode}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -202,150 +303,77 @@ export function MenuItemList({
 }: MenuItemListProps) {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  // Group items by category and sort categories by order
+  const groupedItems = useMemo(() => {
+    const grouped: { [key: string]: MenuItem[] } = {};
+    
+    // Group items by category
+    menuItems.forEach(item => {
+      if (!grouped[item.category]) {
+        grouped[item.category] = [];
+      }
+      grouped[item.category].push(item);
+    });
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+    // Sort items within each category by order
+    Object.keys(grouped).forEach(categoryId => {
+      grouped[categoryId] = grouped[categoryId].sort((a, b) => (a.order || 0) - (b.order || 0));
+    });
 
-    if (active.id !== over?.id && onReorder) {
-      const oldIndex = menuItems.findIndex((item) => item.id === active.id);
-      const newIndex = menuItems.findIndex((item) => item.id === over?.id);
+    return grouped;
+  }, [menuItems]);
 
-      const reorderedItems = arrayMove(menuItems, oldIndex, newIndex);
-      onReorder(reorderedItems);
+  // Sort categories by order and filter out empty ones
+  const sortedCategories = useMemo(() => {
+    return categories
+      .sort((a, b) => a.order - b.order)
+      .filter(category => groupedItems[category.id] && groupedItems[category.id].length > 0);
+  }, [categories, groupedItems]);
+
+  const handleCategoryReorder = (categoryId: string, reorderedItems: MenuItem[]) => {
+    if (onReorder) {
+      // Update the order field for the reordered items
+      const updatedReorderedItems = reorderedItems.map((item, index) => ({
+        ...item,
+        order: index + 1 // Update order field based on new position
+      }));
+      
+      // Get all items from other categories
+      const otherItems = Object.entries(groupedItems)
+        .filter(([id]) => id !== categoryId)
+        .flatMap(([, items]) => items);
+
+      // Combine with reordered items from this category
+      const allItems = [...otherItems, ...updatedReorderedItems];
+      
+      onReorder(allItems);
     }
   };
 
+  if (menuItems.length === 0) {
+    return (
+      <Card className="p-8 bg-white shadow-soft border border-warm-beige text-center">
+        <p className="text-text-secondary text-lg">Henüz ürün eklenmemiş</p>
+      </Card>
+    );
+  }
+
   return (
-    <div className="space-y-4">
-      {menuItems.length === 0 ? (
-        <Card className="p-8 bg-white shadow-soft border border-warm-beige text-center">
-          <p className="text-text-secondary text-lg">Henüz ürün eklenmemiş</p>
-        </Card>
-      ) : isManageMode ? (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={menuItems.map(item => item.id)} strategy={rectSortingStrategy}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {menuItems.map((item) => (
-                <div key={item.id} className="relative">
-                  <SortableMenuItem
-                    item={item}
-                    categories={categories}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    deleteConfirm={deleteConfirm}
-                    setDeleteConfirm={setDeleteConfirm}
-                    isManageMode={isManageMode}
-                  />
-                </div>
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {menuItems.map((item) => (
-            <Card key={item.id} className="p-6 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300">
-              <div className="space-y-4">
-                {item.image && (
-                  <div className="aspect-video overflow-hidden rounded-lg">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      width={400}
-                      height={300}
-                      className="w-full h-full object-cover"
-                      style={{
-                        width: '100%',
-                        height: 'auto'
-                      }}
-                    />
-                  </div>
-                )}
-                
-                <div>
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-semibold text-text-primary">{item.name}</h3>
-                    <span className="text-lg font-bold text-sage">₺{item.price}</span>
-                  </div>
-                  
-                  <p className="text-text-secondary text-sm mb-3 line-clamp-2">{item.description}</p>
-                  
-                  <div className="flex items-center justify-between mb-3">
-                    <Badge variant="outline" className="bg-sage/10 border-sage/30 text-sage">
-                      {categories.find(cat => cat.id === item.category)?.name || item.category}
-                    </Badge>
-                    
-                    <div className="flex space-x-1">
-                      {item.isVegetarian && <span className="text-green-600" title="Vejetaryen">🌱</span>}
-                      {item.isVegan && <span className="text-green-600" title="Vegan">🌿</span>}
-                      {item.isSpicy && <span className="text-red-500" title="Acılı">🌶️</span>}
-                      {item.isPopular && <span className="text-yellow-500" title="Popüler">⭐</span>}
-                      {item.isGlutenFree && <span className="text-blue-500" title="Glutensiz">🌾</span>}
-                      {item.isDairyFree && <span className="text-blue-500" title="Süt içermez">🥛</span>}
-                    </div>
-                  </div>
-                  
-                  <div className="flex space-x-2">
-                    <Button
-                      onClick={() => onEdit(item)}
-                      size="sm"
-                      className="bg-sage hover:bg-sage/90 text-white flex-1"
-                    >
-                      Düzenle
-                    </Button>
-                    
-                    {deleteConfirm === item.id ? (
-                      <div className="flex space-x-2 flex-1">
-                        <Button
-                          onClick={() => {
-                            if (deleteConfirm === item.id) {
-                              onDelete(item.id);
-                              setDeleteConfirm(null);
-                            } else {
-                              setDeleteConfirm(item.id);
-                            }
-                          }}
-                          size="sm"
-                          className="bg-destructive hover:bg-destructive/90 text-white"
-                        >
-                          Sil
-                        </Button>
-                        <Button
-                          onClick={() => setDeleteConfirm(null)}
-                          size="sm"
-                          variant="outline"
-                          className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige"
-                        >
-                          İptal
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button
-                        onClick={() => setDeleteConfirm(item.id)}
-                        size="sm"
-                        variant="outline"
-                        className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 flex-1"
-                      >
-                        Sil
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
+    <div className="space-y-8">
+      {sortedCategories.map((category) => (
+        <CategorySection
+          key={category.id}
+          category={category}
+          items={groupedItems[category.id] || []}
+          categories={categories}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onReorder={(items) => handleCategoryReorder(category.id, items)}
+          deleteConfirm={deleteConfirm}
+          setDeleteConfirm={setDeleteConfirm}
+          isManageMode={isManageMode}
+        />
+      ))}
     </div>
   );
 }
