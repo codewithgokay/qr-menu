@@ -98,13 +98,13 @@ export function MenuItemForm({
   };
 
   return (
-    <Card className="p-6 bg-white shadow-soft border border-warm-beige">
-      <h2 className="text-2xl font-bold text-text-primary mb-6 font-heading">
+    <Card className="p-4 sm:p-6 bg-white shadow-soft border border-warm-beige">
+      <h2 className="text-xl sm:text-2xl font-bold text-text-primary mb-4 sm:mb-6 font-heading">
         {isEditing ? 'Ürünü Düzenle' : 'Yeni Ürün Ekle'}
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <label className="block text-sm font-medium text-text-primary mb-2">
               Ürün Adı *
@@ -148,7 +148,7 @@ export function MenuItemForm({
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <label className="block text-sm font-medium text-text-primary mb-2">
               Kategori *
@@ -156,7 +156,7 @@ export function MenuItemForm({
             <select
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="w-full p-3 rounded-lg bg-soft-gray border border-warm-beige text-text-primary focus:border-sage focus:ring-sage"
+              className="w-full p-3 rounded-lg bg-soft-gray border border-warm-beige text-text-primary focus:border-sage focus:ring-sage text-sm sm:text-base"
               required
             >
               <option value="">Kategori seçin</option>
@@ -176,7 +176,7 @@ export function MenuItemForm({
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              className="w-full p-3 rounded-lg bg-soft-gray border border-warm-beige text-text-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sage file:text-white hover:file:bg-sage/90"
+              className="w-full p-3 rounded-lg bg-soft-gray border border-warm-beige text-text-primary file:mr-2 sm:file:mr-4 file:py-1 sm:file:py-2 file:px-2 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-sage file:text-white hover:file:bg-sage/90 text-sm sm:text-base"
             />
           </div>
         </div>
@@ -200,7 +200,7 @@ export function MenuItemForm({
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <div>
             <label className="block text-sm font-medium text-text-primary mb-2">
               Alerjenler
@@ -209,7 +209,7 @@ export function MenuItemForm({
               value={formData.allergens}
               onChange={(e) => setFormData({ ...formData, allergens: e.target.value })}
               placeholder="süt, gluten, fındık"
-              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage"
+              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage text-sm sm:text-base"
             />
           </div>
 
@@ -222,11 +222,11 @@ export function MenuItemForm({
               value={formData.calories}
               onChange={(e) => setFormData({ ...formData, calories: e.target.value })}
               placeholder="250"
-              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage"
+              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage text-sm sm:text-base"
             />
           </div>
 
-          <div>
+          <div className="sm:col-span-2 lg:col-span-1">
             <label className="block text-sm font-medium text-text-primary mb-2">
               Hazırlık Süresi (dakika)
             </label>
@@ -235,12 +235,12 @@ export function MenuItemForm({
               value={formData.prepTime}
               onChange={(e) => setFormData({ ...formData, prepTime: e.target.value })}
               placeholder="15"
-              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage"
+              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage text-sm sm:text-base"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -302,18 +302,18 @@ export function MenuItemForm({
           </label>
         </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4">
           <Button
             type="button"
             onClick={onCancel}
             variant="outline"
-            className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige hover:text-text-primary"
+            className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige hover:text-text-primary text-sm sm:text-base py-2 sm:py-3"
           >
             İptal
           </Button>
           <Button
             type="submit"
-            className="bg-sage hover:bg-sage/90 text-white"
+            className="bg-sage hover:bg-sage/90 text-white text-sm sm:text-base py-2 sm:py-3"
           >
             {isEditing ? 'Güncelle' : 'Kaydet'}
           </Button>

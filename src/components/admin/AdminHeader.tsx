@@ -15,27 +15,31 @@ export function AdminHeader() {
 
   return (
     <header className="bg-white shadow-soft border-b border-warm-beige sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-text-primary font-heading">Admin Paneli</h1>
-            <span className="text-text-secondary text-sm">Bella Vista Restoran</span>
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+        <div className="flex justify-between items-center h-14 sm:h-16">
+          <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
+            <h1 className="text-lg sm:text-2xl font-bold text-text-primary font-heading truncate">Admin Paneli</h1>
+            <span className="text-text-secondary text-xs sm:text-sm hidden sm:inline">Bella Vista Restoran</span>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Button
               onClick={handleBackToMenu}
               variant="outline"
-              className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige hover:text-text-primary"
+              size="sm"
+              className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige hover:text-text-primary text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2"
             >
-              Menüyü Görüntüle
+              <span className="hidden sm:inline">Menüyü Görüntüle</span>
+              <span className="sm:hidden">Menü</span>
             </Button>
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700"
+              size="sm"
+              className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2"
             >
-              Çıkış Yap
+              <span className="hidden sm:inline">Çıkış Yap</span>
+              <span className="sm:hidden">Çıkış</span>
             </Button>
           </div>
         </div>

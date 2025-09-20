@@ -36,14 +36,14 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-primary-cream flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8 bg-white shadow-soft border border-warm-beige">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-text-primary mb-2 font-heading">Admin Paneli</h1>
-          <p className="text-text-secondary">Bella Vista Restoran Yönetimi</p>
+    <div className="min-h-screen bg-primary-cream flex items-center justify-center p-3 sm:p-4">
+      <Card className="w-full max-w-md p-6 sm:p-8 bg-white shadow-soft border border-warm-beige">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-2 font-heading">Admin Paneli</h1>
+          <p className="text-text-secondary text-sm sm:text-base">Bella Vista Restoran Yönetimi</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-text-primary mb-2">
               Kullanıcı Adı
@@ -54,7 +54,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Kullanıcı adınızı girin"
-              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage"
+              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage text-sm sm:text-base py-3"
               required
             />
           </div>
@@ -69,7 +69,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Şifrenizi girin"
-              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage"
+              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage text-sm sm:text-base py-3"
               required
             />
           </div>
@@ -83,17 +83,17 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-sage hover:bg-sage/90 text-white font-semibold py-3 transition-colors"
+            className="w-full bg-sage hover:bg-sage/90 text-white font-semibold py-3 transition-colors text-sm sm:text-base"
           >
             {isLoading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
           </Button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-text-secondary text-sm">
+        <div className="mt-4 sm:mt-6 text-center">
+          <p className="text-text-secondary text-xs sm:text-sm">
             Varsayılan: admin / admin123
           </p>
-          <p className="text-text-secondary text-xs mt-2">
+          <p className="text-text-secondary text-xs mt-1 sm:mt-2">
             İlk girişten sonra şifrenizi değiştirin
           </p>
         </div>

@@ -49,12 +49,12 @@ export function CategoryForm({
   };
 
   return (
-    <Card className="p-6 bg-white shadow-soft border border-warm-beige">
-      <h2 className="text-2xl font-bold text-text-primary mb-6 font-heading">
+    <Card className="p-4 sm:p-6 bg-white shadow-soft border border-warm-beige">
+      <h2 className="text-xl sm:text-2xl font-bold text-text-primary mb-4 sm:mb-6 font-heading">
         {isEditing ? 'Kategoriyi Düzenle' : 'Yeni Kategori Ekle'}
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <div>
           <label className="block text-sm font-medium text-text-primary mb-2">
             Kategori Adı *
@@ -96,18 +96,18 @@ export function CategoryForm({
           </p>
         </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4">
           <Button
             type="button"
             onClick={onCancel}
             variant="outline"
-            className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige hover:text-text-primary"
+            className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige hover:text-text-primary text-sm sm:text-base py-2 sm:py-3"
           >
             İptal
           </Button>
           <Button
             type="submit"
-            className="bg-sage hover:bg-sage/90 text-white"
+            className="bg-sage hover:bg-sage/90 text-white text-sm sm:text-base py-2 sm:py-3"
           >
             {isEditing ? 'Güncelle' : 'Kaydet'}
           </Button>

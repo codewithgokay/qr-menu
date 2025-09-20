@@ -370,7 +370,7 @@ export function AdminPanel({
         </div>
       )}
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
         {showForm ? (
           <MenuItemForm
             item={editingItem}
@@ -387,60 +387,66 @@ export function AdminPanel({
             isEditing={!!editingCategory}
           />
         ) : (
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 bg-white shadow-soft border border-warm-beige">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white shadow-soft border border-warm-beige h-auto">
               <TabsTrigger 
                 value="dashboard" 
-                className="data-[state=active]:bg-sage data-[state=active]:text-white text-text-primary hover:text-sage"
+                className="data-[state=active]:bg-sage data-[state=active]:text-white text-text-primary hover:text-sage text-xs sm:text-sm py-2 sm:py-3 px-2 sm:px-4"
               >
-                📊 Kontrol Paneli
+                <span className="hidden sm:inline">📊 Kontrol Paneli</span>
+                <span className="sm:hidden">📊 Panel</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="items" 
-                className="data-[state=active]:bg-sage data-[state=active]:text-white text-text-primary hover:text-sage"
+                className="data-[state=active]:bg-sage data-[state=active]:text-white text-text-primary hover:text-sage text-xs sm:text-sm py-2 sm:py-3 px-2 sm:px-4"
               >
-                🍽️ Ürünler
+                <span className="hidden sm:inline">🍽️ Ürünler</span>
+                <span className="sm:hidden">🍽️ Ürün</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="categories" 
-                className="data-[state=active]:bg-sage data-[state=active]:text-white text-text-primary hover:text-sage"
+                className="data-[state=active]:bg-sage data-[state=active]:text-white text-text-primary hover:text-sage text-xs sm:text-sm py-2 sm:py-3 px-2 sm:px-4"
               >
-                📂 Kategoriler
+                <span className="hidden sm:inline">📂 Kategoriler</span>
+                <span className="sm:hidden">📂 Kategori</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="settings" 
-                className="data-[state=active]:bg-sage data-[state=active]:text-white text-text-primary hover:text-sage"
+                className="data-[state=active]:bg-sage data-[state=active]:text-white text-text-primary hover:text-sage text-xs sm:text-sm py-2 sm:py-3 px-2 sm:px-4"
               >
-                ⚙️ Ayarlar
+                <span className="hidden sm:inline">⚙️ Ayarlar</span>
+                <span className="sm:hidden">⚙️ Ayar</span>
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="dashboard" className="space-y-6">
+            <TabsContent value="dashboard" className="space-y-4 sm:space-y-6">
               <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-text-primary font-heading">Kontrol Paneli</h1>
+                <h1 className="text-xl sm:text-3xl font-bold text-text-primary font-heading">Kontrol Paneli</h1>
               </div>
               <AdminDashboard menuItems={menuItems} categories={categories} />
             </TabsContent>
 
-            <TabsContent value="items" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-text-primary font-heading">Menü Ürünleri</h1>
-                <div className="flex space-x-3">
+            <TabsContent value="items" className="space-y-4 sm:space-y-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+                <h1 className="text-xl sm:text-3xl font-bold text-text-primary font-heading">Menü Ürünleri</h1>
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                   {!isItemManageMode ? (
                     <>
                       <Button
                         onClick={toggleItemManageMode}
                         variant="outline"
-                        className="bg-white border-sage/30 text-sage hover:bg-sage/5 hover:border-sage/50 hover:text-sage shadow-soft hover:shadow-elevated transition-all duration-300 font-medium px-4 py-2 rounded-lg border-2 group"
+                        size="sm"
+                        className="bg-white border-sage/30 text-sage hover:bg-sage/5 hover:border-sage/50 hover:text-sage shadow-soft hover:shadow-elevated transition-all duration-300 font-medium px-3 sm:px-4 py-2 rounded-lg border-2 group text-xs sm:text-sm"
                       >
-                        <svg className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                         </svg>
                         <span className="font-heading">Sırala</span>
                       </Button>
                       <Button
                         onClick={handleAddItem}
-                        className="bg-sage hover:bg-sage/90 text-white"
+                        size="sm"
+                        className="bg-sage hover:bg-sage/90 text-white text-xs sm:text-sm px-3 sm:px-4 py-2"
                       >
                         + Yeni Ürün Ekle
                       </Button>
@@ -448,9 +454,10 @@ export function AdminPanel({
                   ) : (
                     <Button
                       onClick={toggleItemManageMode}
-                      className="bg-sage hover:bg-sage/90 text-white shadow-elevated hover:shadow-lg transition-all duration-300 font-medium px-4 py-2 rounded-lg group"
+                      size="sm"
+                      className="bg-sage hover:bg-sage/90 text-white shadow-elevated hover:shadow-lg transition-all duration-300 font-medium px-3 sm:px-4 py-2 rounded-lg group text-xs sm:text-sm"
                     >
-                      <svg className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="font-heading">Tamamla</span>
@@ -478,25 +485,27 @@ export function AdminPanel({
               />
             </TabsContent>
 
-            <TabsContent value="categories" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-text-primary font-heading">Kategoriler</h1>
-                <div className="flex space-x-3">
+            <TabsContent value="categories" className="space-y-4 sm:space-y-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+                <h1 className="text-xl sm:text-3xl font-bold text-text-primary font-heading">Kategoriler</h1>
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                   {!isCategoryManageMode ? (
                     <>
                       <Button
                         onClick={toggleCategoryManageMode}
                         variant="outline"
-                        className="bg-white border-terracotta/30 text-terracotta hover:bg-terracotta/5 hover:border-terracotta/50 hover:text-terracotta shadow-soft hover:shadow-elevated transition-all duration-300 font-medium px-4 py-2 rounded-lg border-2 group"
+                        size="sm"
+                        className="bg-white border-terracotta/30 text-terracotta hover:bg-terracotta/5 hover:border-terracotta/50 hover:text-terracotta shadow-soft hover:shadow-elevated transition-all duration-300 font-medium px-3 sm:px-4 py-2 rounded-lg border-2 group text-xs sm:text-sm"
                       >
-                        <svg className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                         </svg>
                         <span className="font-heading">Sırala</span>
                       </Button>
                       <Button
                         onClick={handleAddCategory}
-                        className="bg-sage hover:bg-sage/90 text-white"
+                        size="sm"
+                        className="bg-sage hover:bg-sage/90 text-white text-xs sm:text-sm px-3 sm:px-4 py-2"
                       >
                         + Yeni Kategori Ekle
                       </Button>
@@ -504,9 +513,10 @@ export function AdminPanel({
                   ) : (
                     <Button
                       onClick={toggleCategoryManageMode}
-                      className="bg-terracotta hover:bg-terracotta/90 text-white shadow-elevated hover:shadow-lg transition-all duration-300 font-medium px-4 py-2 rounded-lg group"
+                      size="sm"
+                      className="bg-terracotta hover:bg-terracotta/90 text-white shadow-elevated hover:shadow-lg transition-all duration-300 font-medium px-3 sm:px-4 py-2 rounded-lg group text-xs sm:text-sm"
                     >
-                      <svg className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="font-heading">Tamamla</span>
@@ -533,9 +543,9 @@ export function AdminPanel({
               />
             </TabsContent>
 
-            <TabsContent value="settings" className="space-y-6">
-              <h1 className="text-3xl font-bold text-text-primary font-heading">Ayarlar</h1>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <TabsContent value="settings" className="space-y-4 sm:space-y-6">
+              <h1 className="text-xl sm:text-3xl font-bold text-text-primary font-heading">Ayarlar</h1>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <PasswordChangeForm onPasswordChange={handlePasswordChange} />
                 
                 <div className="p-6 bg-white shadow-soft border border-warm-beige rounded-lg hover:shadow-elevated transition-all duration-300">
