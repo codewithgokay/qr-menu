@@ -40,7 +40,11 @@ function SortableCategoryItem({
   deleteConfirm, 
   setDeleteConfirm, 
   cancelDelete,
-  isManageMode 
+  isManageMode,
+  onMoveUp,
+  onMoveDown,
+  canMoveUp,
+  canMoveDown
 }: {
   category: MenuCategory;
   onEdit: (category: MenuCategory) => void;
@@ -49,6 +53,10 @@ function SortableCategoryItem({
   setDeleteConfirm: (id: string | null) => void;
   cancelDelete: () => void;
   isManageMode: boolean;
+  onMoveUp?: (category: MenuCategory) => void;
+  onMoveDown?: (category: MenuCategory) => void;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
 }) {
   const {
     attributes,
@@ -87,21 +95,6 @@ function SortableCategoryItem({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            {/* Drag Handle for Mobile */}
-            {isManageMode && (
-              <div className="flex-shrink-0 flex flex-col items-center justify-center text-text-secondary">
-                <div className="flex flex-col space-y-1">
-                  <div className="w-1 h-1 bg-current rounded-full"></div>
-                  <div className="w-1 h-1 bg-current rounded-full"></div>
-                  <div className="w-1 h-1 bg-current rounded-full"></div>
-                </div>
-                <div className="flex flex-col space-y-1 ml-1">
-                  <div className="w-1 h-1 bg-current rounded-full"></div>
-                  <div className="w-1 h-1 bg-current rounded-full"></div>
-                  <div className="w-1 h-1 bg-current rounded-full"></div>
-                </div>
-              </div>
-            )}
             {category.icon && (
               <span className="text-3xl">{category.icon}</span>
             )}
@@ -115,58 +108,85 @@ function SortableCategoryItem({
           <p className="text-text-secondary text-sm line-clamp-2">{category.description}</p>
         )}
         
-        {!isManageMode && (
-          <div className="flex space-x-2">
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(category);
-              }}
-              size="sm"
-              className="bg-sage hover:bg-sage/90 text-white flex-1"
-            >
-              Düzenle
-            </Button>
-            
-            {deleteConfirm === category.id ? (
-              <div className="flex space-x-2 flex-1">
+        <div className="flex space-x-2">
+          {isManageMode ? (
+            <div className="flex space-x-2 flex-1">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMoveUp?.(category);
+                }}
+                disabled={!canMoveUp}
+                size="sm"
+                className="bg-terracotta/10 hover:bg-terracotta/20 text-terracotta flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ↑ Yukarı
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMoveDown?.(category);
+                }}
+                disabled={!canMoveDown}
+                size="sm"
+                className="bg-terracotta/10 hover:bg-terracotta/20 text-terracotta flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ↓ Aşağı
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(category);
+                }}
+                size="sm"
+                className="bg-sage hover:bg-sage/90 text-white flex-1"
+              >
+                Düzenle
+              </Button>
+              
+              {deleteConfirm === category.id ? (
+                <div className="flex space-x-2 flex-1">
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(category.id);
+                    }}
+                    size="sm"
+                    className="bg-destructive hover:bg-destructive/90 text-white"
+                  >
+                    Sil
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      cancelDelete();
+                    }}
+                    size="sm"
+                    variant="outline"
+                    className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige"
+                  >
+                    İptal
+                  </Button>
+                </div>
+              ) : (
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDelete(category.id);
                   }}
                   size="sm"
-                  className="bg-destructive hover:bg-destructive/90 text-white"
+                  variant="outline"
+                  className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 flex-1"
                 >
                   Sil
                 </Button>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    cancelDelete();
-                  }}
-                  size="sm"
-                  variant="outline"
-                  className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige"
-                >
-                  İptal
-                </Button>
-              </div>
-            ) : (
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(category.id);
-                }}
-                size="sm"
-                variant="outline"
-                className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 flex-1"
-              >
-                Sil
-              </Button>
-            )}
-          </div>
-        )}
+              )}
+            </>
+          )}
+        </div>
         
       </div>
     </Card>
@@ -175,6 +195,24 @@ function SortableCategoryItem({
 
 export function CategoryList({ categories, onEdit, onDelete, onReorder, isManageMode = false }: CategoryListProps) {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+
+  const handleMoveUp = (category: MenuCategory) => {
+    const currentIndex = categories.findIndex(c => c.id === category.id);
+    if (currentIndex > 0) {
+      const newCategories = [...categories];
+      [newCategories[currentIndex - 1], newCategories[currentIndex]] = [newCategories[currentIndex], newCategories[currentIndex - 1]];
+      onReorder(newCategories);
+    }
+  };
+
+  const handleMoveDown = (category: MenuCategory) => {
+    const currentIndex = categories.findIndex(c => c.id === category.id);
+    if (currentIndex < categories.length - 1) {
+      const newCategories = [...categories];
+      [newCategories[currentIndex], newCategories[currentIndex + 1]] = [newCategories[currentIndex + 1], newCategories[currentIndex]];
+      onReorder(newCategories);
+    }
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -227,7 +265,7 @@ export function CategoryList({ categories, onEdit, onDelete, onReorder, isManage
             strategy={rectSortingStrategy}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categories.map((category) => (
+              {categories.map((category, index) => (
                 <SortableCategoryItem
                   key={category.id}
                   category={category}
@@ -237,6 +275,10 @@ export function CategoryList({ categories, onEdit, onDelete, onReorder, isManage
                   setDeleteConfirm={setDeleteConfirm}
                   cancelDelete={cancelDelete}
                   isManageMode={isManageMode}
+                  onMoveUp={handleMoveUp}
+                  onMoveDown={handleMoveDown}
+                  canMoveUp={index > 0}
+                  canMoveDown={index < categories.length - 1}
                 />
               ))}
             </div>

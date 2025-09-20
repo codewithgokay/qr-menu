@@ -43,7 +43,11 @@ function SortableMenuItem({
   onDelete, 
   deleteConfirm, 
   setDeleteConfirm,
-  isManageMode = false
+  isManageMode = false,
+  onMoveUp,
+  onMoveDown,
+  canMoveUp,
+  canMoveDown
 }: {
   item: MenuItem;
   categories: MenuCategory[];
@@ -52,6 +56,10 @@ function SortableMenuItem({
   deleteConfirm: string | null;
   setDeleteConfirm: (id: string | null) => void;
   isManageMode?: boolean;
+  onMoveUp?: (item: MenuItem) => void;
+  onMoveDown?: (item: MenuItem) => void;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
 }) {
   const {
     attributes,
@@ -96,22 +104,6 @@ function SortableMenuItem({
       }`}
     >
       <div className="flex items-center space-x-4">
-        {/* Drag Handle for Mobile */}
-        {isManageMode && (
-          <div className="flex-shrink-0 flex flex-col items-center justify-center text-text-secondary">
-            <div className="flex flex-col space-y-1">
-              <div className="w-1 h-1 bg-current rounded-full"></div>
-              <div className="w-1 h-1 bg-current rounded-full"></div>
-              <div className="w-1 h-1 bg-current rounded-full"></div>
-            </div>
-            <div className="flex flex-col space-y-1 ml-1">
-              <div className="w-1 h-1 bg-current rounded-full"></div>
-              <div className="w-1 h-1 bg-current rounded-full"></div>
-              <div className="w-1 h-1 bg-current rounded-full"></div>
-            </div>
-          </div>
-        )}
-        
         {/* Item Image */}
         {item.image && (
           <div className="flex-shrink-0 w-16 h-16 overflow-hidden rounded-lg">
@@ -152,53 +144,82 @@ function SortableMenuItem({
         
         {/* Action Buttons */}
         <div className="flex flex-col space-y-2 flex-shrink-0">
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(item);
-            }}
-            size="sm"
-            className="bg-sage hover:bg-sage/90 text-white text-xs px-3 py-1"
-          >
-            Düzenle
-          </Button>
-          
-          {deleteConfirm === item.id ? (
-            <div className="flex space-x-1">
+          {isManageMode ? (
+            <div className="flex flex-col space-y-1">
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDelete(item.id);
+                  onMoveUp?.(item);
                 }}
+                disabled={!canMoveUp}
                 size="sm"
-                className="bg-destructive hover:bg-destructive/90 text-white text-xs px-2 py-1"
+                className="bg-sage/10 hover:bg-sage/20 text-sage text-xs px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Sil
+                ↑
               </Button>
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
-                  cancelDelete();
+                  onMoveDown?.(item);
                 }}
+                disabled={!canMoveDown}
                 size="sm"
-                variant="outline"
-                className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige text-xs px-2 py-1"
+                className="bg-sage/10 hover:bg-sage/20 text-sage text-xs px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                İptal
+                ↓
               </Button>
             </div>
           ) : (
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(item.id);
-              }}
-              size="sm"
-              variant="outline"
-              className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs px-3 py-1"
-            >
-              Sil
-            </Button>
+            <>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(item);
+                }}
+                size="sm"
+                className="bg-sage hover:bg-sage/90 text-white text-xs px-3 py-1"
+              >
+                Düzenle
+              </Button>
+              
+              {deleteConfirm === item.id ? (
+                <div className="flex space-x-1">
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(item.id);
+                    }}
+                    size="sm"
+                    className="bg-destructive hover:bg-destructive/90 text-white text-xs px-2 py-1"
+                  >
+                    Sil
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      cancelDelete();
+                    }}
+                    size="sm"
+                    variant="outline"
+                    className="bg-soft-gray border-warm-beige text-text-primary hover:bg-warm-beige text-xs px-2 py-1"
+                  >
+                    İptal
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(item.id);
+                  }}
+                  size="sm"
+                  variant="outline"
+                  className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs px-3 py-1"
+                >
+                  Sil
+                </Button>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -228,6 +249,23 @@ function CategorySection({
   setDeleteConfirm: (id: string | null) => void;
   isManageMode: boolean;
 }) {
+  const handleMoveUp = (item: MenuItem) => {
+    const currentIndex = items.findIndex(i => i.id === item.id);
+    if (currentIndex > 0) {
+      const newItems = [...items];
+      [newItems[currentIndex - 1], newItems[currentIndex]] = [newItems[currentIndex], newItems[currentIndex - 1]];
+      onReorder?.(newItems);
+    }
+  };
+
+  const handleMoveDown = (item: MenuItem) => {
+    const currentIndex = items.findIndex(i => i.id === item.id);
+    if (currentIndex < items.length - 1) {
+      const newItems = [...items];
+      [newItems[currentIndex], newItems[currentIndex + 1]] = [newItems[currentIndex + 1], newItems[currentIndex]];
+      onReorder?.(newItems);
+    }
+  };
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -277,7 +315,7 @@ function CategorySection({
         >
           <SortableContext items={items.map(item => item.id)} strategy={rectSortingStrategy}>
             <div className="space-y-3">
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <SortableMenuItem
                   key={item.id}
                   item={item}
@@ -287,6 +325,10 @@ function CategorySection({
                   deleteConfirm={deleteConfirm}
                   setDeleteConfirm={setDeleteConfirm}
                   isManageMode={isManageMode}
+                  onMoveUp={handleMoveUp}
+                  onMoveDown={handleMoveDown}
+                  canMoveUp={index > 0}
+                  canMoveDown={index < items.length - 1}
                 />
               ))}
             </div>
@@ -294,7 +336,7 @@ function CategorySection({
         </DndContext>
       ) : (
         <div className="space-y-3">
-          {items.map((item) => (
+          {items.map((item, index) => (
             <SortableMenuItem
               key={item.id}
               item={item}
@@ -304,6 +346,10 @@ function CategorySection({
               deleteConfirm={deleteConfirm}
               setDeleteConfirm={setDeleteConfirm}
               isManageMode={isManageMode}
+              onMoveUp={handleMoveUp}
+              onMoveDown={handleMoveDown}
+              canMoveUp={index > 0}
+              canMoveDown={index < items.length - 1}
             />
           ))}
         </div>
