@@ -138,6 +138,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(transformedItem, { status: 201 })
   } catch (error) {
     console.error('Error creating menu item:', error)
-    return NextResponse.json({ error: 'Failed to create menu item' }, { status: 500 })
+    return NextResponse.json({ 
+      error: 'Database not available. Please ensure your database is properly configured.',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
   }
 }
