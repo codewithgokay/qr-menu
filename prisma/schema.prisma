@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_URL")
+  // Note: channel_binding=require is handled in src/lib/prisma.ts
 }
 
 model Restaurant {
