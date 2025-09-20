@@ -472,6 +472,9 @@ export function AdminPanel({
                     <strong>💡 İpucu:</strong> Ürünleri kategoriler içinde yeniden sıralamak için sürükleyip bırakın. 
                     Her kategori içindeki sıralama ayrı ayrı düzenlenebilir ve otomatik olarak kaydedilir.
                   </p>
+                  <p className="text-sage text-xs mt-2">
+                    📱 Mobil: Ürünleri sürüklemek için parmağınızla basılı tutun ve hareket ettirin.
+                  </p>
                 </div>
               )}
               
@@ -530,6 +533,9 @@ export function AdminPanel({
                   <p className="text-terracotta text-sm">
                     <strong>💡 İpucu:</strong> Kategorileri yeniden sıralamak için sürükleyip bırakın. 
                     Sıralama otomatik olarak kaydedilir.
+                  </p>
+                  <p className="text-terracotta text-xs mt-2">
+                    📱 Mobil: Kategorileri sürüklemek için parmağınızla basılı tutun ve hareket ettirin.
                   </p>
                 </div>
               )}

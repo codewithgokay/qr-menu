@@ -79,7 +79,7 @@ function SortableCategoryItem({
       style={style}
       {...(isManageMode ? { ...attributes, ...listeners } : {})}
       className={`p-6 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300 ${
-        isManageMode ? 'cursor-grab active:cursor-grabbing' : ''
+        isManageMode ? 'cursor-grab active:cursor-grabbing touch-manipulation' : ''
       } ${
         isDragging ? 'opacity-50 scale-105 shadow-lg' : isManageMode ? 'hover:scale-105' : ''
       }`}
@@ -87,6 +87,21 @@ function SortableCategoryItem({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
+            {/* Drag Handle for Mobile */}
+            {isManageMode && (
+              <div className="flex-shrink-0 flex flex-col items-center justify-center text-text-secondary">
+                <div className="flex flex-col space-y-1">
+                  <div className="w-1 h-1 bg-current rounded-full"></div>
+                  <div className="w-1 h-1 bg-current rounded-full"></div>
+                  <div className="w-1 h-1 bg-current rounded-full"></div>
+                </div>
+                <div className="flex flex-col space-y-1 ml-1">
+                  <div className="w-1 h-1 bg-current rounded-full"></div>
+                  <div className="w-1 h-1 bg-current rounded-full"></div>
+                  <div className="w-1 h-1 bg-current rounded-full"></div>
+                </div>
+              </div>
+            )}
             {category.icon && (
               <span className="text-3xl">{category.icon}</span>
             )}
@@ -162,7 +177,11 @@ export function CategoryList({ categories, onEdit, onDelete, onReorder, isManage
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
