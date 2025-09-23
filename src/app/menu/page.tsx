@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { MenuGrid } from '@/components/menu/MenuGrid';
@@ -11,27 +11,34 @@ import { MenuProvider } from '@/lib/context/MenuContext';
 import { restaurant } from '@/data/menu';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { PerformanceMonitor } from '@/components/common/PerformanceMonitor';
+import { ResourceHints, initializeResourceHints } from '@/components/common/ResourceHints';
+import { cacheUtils } from '@/lib/cache';
 
-// Preload critical resources
+// Initialize resource hints and caching
 if (typeof window !== 'undefined') {
-  // Preload Cloudinary images for better performance
-  const preloadImage = (src: string) => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = src;
-    document.head.appendChild(link);
-  };
+  // Initialize resource hints
+  initializeResourceHints();
   
-  // Preload common Cloudinary transformations
-  const cloudinaryBase = 'https://res.cloudinary.com/dmudabrcn/image/upload';
-  preloadImage(`${cloudinaryBase}/f_auto,q_auto,w_96,h_96,c_fill/placeholder.jpg`);
+  // Preload critical data
+  cacheUtils.preloadMenuData();
+  
+  // Register service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('Service Worker registered:', registration);
+      })
+      .catch((error) => {
+        console.log('Service Worker registration failed:', error);
+      });
+  }
 }
 
 export default function MenuPage() {
   return (
     <MenuProvider>
       <PerformanceMonitor />
+      <ResourceHints />
       <div className="min-h-screen bg-primary-cream">
         <Header restaurant={restaurant} />
         
