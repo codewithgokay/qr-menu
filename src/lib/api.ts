@@ -1,68 +1,47 @@
 import { MenuItem, MenuCategory } from '@/lib/types'
-import { apiCache } from '@/lib/cache'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
-// Enhanced caching with fallback strategies
+// Cache for API responses
+const cache = new Map<string, { data: unknown; timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// Helper function to get cached data or fetch fresh
 async function getCachedData<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
-  // Try to get from advanced cache first
-  const cached = apiCache.get(key);
-  if (cached) {
-    return cached as T;
+  const cached = cache.get(key);
+  const now = Date.now();
+  
+  if (cached && (now - cached.timestamp) < CACHE_DURATION) {
+    return cached.data as T;
   }
   
   try {
     const data = await fetcher();
-    // Cache the successful response
-    apiCache.set(key, data);
+    cache.set(key, { data, timestamp: now });
     return data;
   } catch (error) {
-    // Try to get stale data from cache as fallback
-    const staleData = apiCache.get(key);
-    if (staleData) {
+    // If fetch fails and we have stale cache, return it
+    if (cached) {
       console.warn('Using stale cache due to fetch error:', error);
-      return staleData as T;
+      return cached.data as T;
     }
     throw error;
   }
-}
-
-// Request deduplication to prevent multiple identical requests
-const pendingRequests = new Map<string, Promise<unknown>>();
-
-async function deduplicatedFetch<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
-  // If request is already pending, return the existing promise
-  if (pendingRequests.has(key)) {
-    return pendingRequests.get(key)! as Promise<T>;
-  }
-
-  // Create new request
-  const request = getCachedData(key, fetcher).finally(() => {
-    // Clean up pending request
-    pendingRequests.delete(key);
-  });
-
-  // Store pending request
-  pendingRequests.set(key, request);
-  
-  return request;
 }
 
 // Menu Items API
 export const menuItemsApi = {
   // Get all menu items
   getAll: async (): Promise<MenuItem[]> => {
-    return deduplicatedFetch('menu-items', async () => {
+    return getCachedData('menu-items', async () => {
       const response = await fetch(`${API_BASE_URL}/api/menu-items`, {
         next: { revalidate: 300 }, // Revalidate every 5 minutes
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600'
         }
       });
       if (!response.ok) {
-        throw new Error(`Failed to fetch menu items: ${response.status}`)
+        throw new Error('Failed to fetch menu items')
       }
       return response.json()
     });
@@ -145,17 +124,15 @@ export const menuItemsApi = {
 export const categoriesApi = {
   // Get all categories
   getAll: async (): Promise<MenuCategory[]> => {
-    return deduplicatedFetch('categories', async () => {
+    return getCachedData('categories', async () => {
       const response = await fetch(`${API_BASE_URL}/api/categories`, {
         next: { revalidate: 300 }, // Revalidate every 5 minutes
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600'
         }
       });
       if (!response.ok) {
-        throw new Error(`Failed to fetch categories: ${response.status}`)
+        throw new Error('Failed to fetch categories')
       }
       return response.json()
     });

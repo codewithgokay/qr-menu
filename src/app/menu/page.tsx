@@ -11,44 +11,27 @@ import { MenuProvider } from '@/lib/context/MenuContext';
 import { restaurant } from '@/data/menu';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { PerformanceMonitor } from '@/components/common/PerformanceMonitor';
-import { ResourceHints, initializeResourceHints } from '@/components/common/ResourceHints';
-import { cacheUtils } from '@/lib/cache';
 
-// Initialize resource hints and caching (non-blocking)
+// Preload critical resources
 if (typeof window !== 'undefined') {
-  // Use requestIdleCallback for non-critical operations
-  const initOptimizations = () => {
-    // Initialize resource hints
-    initializeResourceHints();
-    
-    // Preload critical data
-    cacheUtils.preloadMenuData();
-    
-    // Register service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered:', registration);
-        })
-        .catch((error) => {
-          console.log('Service Worker registration failed:', error);
-        });
-    }
+  // Preload Cloudinary images for better performance
+  const preloadImage = (src: string) => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = src;
+    document.head.appendChild(link);
   };
-
-  // Run optimizations after page load
-  if (window.requestIdleCallback) {
-    window.requestIdleCallback(initOptimizations);
-  } else {
-    setTimeout(initOptimizations, 100);
-  }
+  
+  // Preload common Cloudinary transformations
+  const cloudinaryBase = 'https://res.cloudinary.com/dmudabrcn/image/upload';
+  preloadImage(`${cloudinaryBase}/f_auto,q_auto,w_96,h_96,c_fill/placeholder.jpg`);
 }
 
 export default function MenuPage() {
   return (
     <MenuProvider>
       <PerformanceMonitor />
-      <ResourceHints />
       <div className="min-h-screen bg-primary-cream">
         <Header restaurant={restaurant} />
         

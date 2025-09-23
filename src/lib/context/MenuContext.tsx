@@ -248,9 +248,21 @@ export function MenuProvider({
         // Set categories first
         dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
         
-        // Set all items immediately for fast loading
+        // Progressive loading of menu items
         dispatch({ type: 'SET_ITEMS', payload: allItems });
-        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
+        
+        // Start progressive item reveal
+        const batchSize = Math.max(1, Math.ceil(allItems.length / 10)); // Show items in batches
+        
+        for (let i = 0; i <= allItems.length; i += batchSize) {
+          const visibleItems = allItems.slice(0, i);
+          dispatch({ type: 'SET_VISIBLE_ITEMS', payload: visibleItems });
+          
+          if (i < allItems.length) {
+            await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay between batches
+          }
+        }
+        
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 100 });
         
       } catch (error) {

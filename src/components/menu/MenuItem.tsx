@@ -87,7 +87,6 @@ export function MenuItem({ item, index }: MenuItemProps) {
                   fallbackText="No Image"
                   lazy={true}
                   priority={index < 3} // Prioritize first 3 items
-                  preset="thumbnail"
                 />
               </div>
               
@@ -140,7 +139,6 @@ export function MenuItem({ item, index }: MenuItemProps) {
                 fallbackText="No Image"
                 lazy={false} // Don't lazy load in modal
                 priority={true}
-                preset="hero"
               />
             </div>
 

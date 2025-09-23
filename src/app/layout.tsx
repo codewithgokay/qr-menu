@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   description: 'Authentic Italian cuisine with a modern twist - Digital Menu',
   keywords: 'restaurant, menu, italian, food, dining, qr menu',
   authors: [{ name: 'Bella Vista Restaurant' }],
-  manifest: '/manifest.json',
   openGraph: {
     title: 'Bella Vista - QR Menu',
     description: 'Authentic Italian cuisine with a modern twist',
@@ -35,14 +34,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-  },
-  other: {
-    'mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-status-bar-style': 'default',
-    'apple-mobile-web-app-title': 'QR Menu',
-    'msapplication-TileColor': '#6b7280',
-    'msapplication-config': '/browserconfig.xml',
   },
 };
 

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { getCloudinaryUrl, cloudinaryPresets } from '@/lib/cloudinary';
+import { getCloudinaryUrl } from '@/lib/cloudinary';
 
 interface ImageOptimizedProps {
   src?: string;
@@ -17,8 +17,6 @@ interface ImageOptimizedProps {
   gravity?: string;
   priority?: boolean;
   lazy?: boolean;
-  preset?: 'thumbnail' | 'hero' | 'placeholder' | 'retina';
-  responsive?: boolean;
 }
 
 export function ImageOptimized({ 
@@ -33,9 +31,7 @@ export function ImageOptimized({
   crop = 'fill',
   gravity = 'auto',
   priority = false,
-  lazy = true,
-  preset,
-  responsive = false
+  lazy = true
 }: ImageOptimizedProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -65,17 +61,14 @@ export function ImageOptimized({
 
   // Determine the image source - prioritize Cloudinary if publicId is provided
   const imageSrc = cloudinaryPublicId 
-    ? (preset 
-        ? cloudinaryPresets[preset](cloudinaryPublicId, width, height)
-        : getCloudinaryUrl(cloudinaryPublicId, {
-            width,
-            height,
-            quality,
-            crop,
-            gravity,
-            format: 'auto',
-            responsive
-          }))
+    ? getCloudinaryUrl(cloudinaryPublicId, {
+        width,
+        height,
+        quality,
+        crop,
+        gravity,
+        format: 'auto'
+      })
     : src;
 
   if (imageError || !imageSrc) {
