@@ -14,23 +14,33 @@ import { PerformanceMonitor } from '@/components/common/PerformanceMonitor';
 import { ResourceHints, initializeResourceHints } from '@/components/common/ResourceHints';
 import { cacheUtils } from '@/lib/cache';
 
-// Initialize resource hints and caching
+// Initialize resource hints and caching (non-blocking)
 if (typeof window !== 'undefined') {
-  // Initialize resource hints
-  initializeResourceHints();
-  
-  // Preload critical data
-  cacheUtils.preloadMenuData();
-  
-  // Register service worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        console.log('Service Worker registered:', registration);
-      })
-      .catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
+  // Use requestIdleCallback for non-critical operations
+  const initOptimizations = () => {
+    // Initialize resource hints
+    initializeResourceHints();
+    
+    // Preload critical data
+    cacheUtils.preloadMenuData();
+    
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered:', registration);
+        })
+        .catch((error) => {
+          console.log('Service Worker registration failed:', error);
+        });
+    }
+  };
+
+  // Run optimizations after page load
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(initOptimizations);
+  } else {
+    setTimeout(initOptimizations, 100);
   }
 }
 

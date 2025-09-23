@@ -255,10 +255,19 @@ export const apiCache = new AdvancedCache({
 
 // Cache utilities
 export const cacheUtils = {
-  // Preload critical data
+  // Preload critical data (non-blocking)
   async preloadMenuData() {
     try {
-      const response = await fetch('/api/menu-items');
+      // Use a timeout to prevent blocking
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+      
+      const response = await fetch('/api/menu-items', {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
       if (response.ok) {
         const data = await response.json();
         menuCache.set('menu-items', data);
