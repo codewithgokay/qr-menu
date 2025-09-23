@@ -1,73 +1,44 @@
 'use client';
 
-import { ComponentType, Suspense, lazy, ReactNode } from 'react';
+import { Suspense, lazy, ReactNode } from 'react';
 import { LoadingSpinner } from './LoadingSpinner';
 
-// Higher-order component for lazy loading
-export function withLazyLoading<T extends object>(
-  importFunc: () => Promise<{ default: ComponentType<T> }>,
-  fallback?: ReactNode
-) {
-  const LazyComponent = lazy(importFunc);
-  
-  return function LazyWrapper(props: T) {
-    return (
-      <Suspense fallback={fallback || <LoadingSpinner />}>
-        <LazyComponent {...props} />
-      </Suspense>
-    );
-  };
+// Simple lazy loading wrapper
+function LazyWrapper({ children, fallback }: { children: ReactNode; fallback?: ReactNode }) {
+  return (
+    <Suspense fallback={fallback || <LoadingSpinner />}>
+      {children}
+    </Suspense>
+  );
 }
 
 // Lazy load heavy components
-export const LazyAdminPanel = withLazyLoading(
-  () => import('@/components/admin/AdminPanel'),
-  <div className="flex items-center justify-center p-8">
-    <LoadingSpinner />
-  </div>
+export const LazyAdminPanel = lazy(() => 
+  import('@/components/admin/AdminPanel').then(module => ({ default: module.AdminPanel }))
 );
-
-export const LazyMenuItemForm = withLazyLoading(
-  () => import('@/components/admin/MenuItemForm'),
-  <div className="flex items-center justify-center p-8">
-    <LoadingSpinner />
-  </div>
+export const LazyMenuItemForm = lazy(() => 
+  import('@/components/admin/MenuItemForm').then(module => ({ default: module.MenuItemForm }))
 );
-
-export const LazyCategoryForm = withLazyLoading(
-  () => import('@/components/admin/CategoryForm'),
-  <div className="flex items-center justify-center p-8">
-    <LoadingSpinner />
-  </div>
+export const LazyCategoryForm = lazy(() => 
+  import('@/components/admin/CategoryForm').then(module => ({ default: module.CategoryForm }))
 );
 
 // Lazy load heavy UI components
-export const LazyDialog = withLazyLoading(
-  () => import('@/components/ui/dialog'),
-  <div className="flex items-center justify-center p-4">
-    <LoadingSpinner />
-  </div>
+export const LazyDialog = lazy(() => 
+  import('@/components/ui/dialog').then(module => ({ default: module.Dialog }))
 );
-
-export const LazySheet = withLazyLoading(
-  () => import('@/components/ui/sheet'),
-  <div className="flex items-center justify-center p-4">
-    <LoadingSpinner />
-  </div>
+export const LazySheet = lazy(() => 
+  import('@/components/ui/sheet').then(module => ({ default: module.Sheet }))
 );
 
 // Lazy load utility components
-export const LazyVirtualScroll = withLazyLoading(
-  () => import('@/components/common/VirtualScroll'),
-  <div className="flex items-center justify-center p-4">
-    <LoadingSpinner />
-  </div>
+export const LazyVirtualScroll = lazy(() => 
+  import('@/components/common/VirtualScroll').then(module => ({ default: module.VirtualScroll }))
 );
 
 // Lazy load heavy libraries
-export const LazyFramerMotion = withLazyLoading(
-  () => import('framer-motion').then(module => ({ default: module.motion.div })),
-  <div className="animate-pulse bg-gray-200 rounded" />
+export const LazyFramerMotion = lazy(() => 
+  import('framer-motion').then(module => ({ default: module.motion.div }))
 );
 
 // Preload critical components
@@ -90,23 +61,9 @@ export function preloadCriticalComponents() {
 }
 
 // Route-based code splitting
-export const LazyMenuPage = withLazyLoading(
-  () => import('@/app/menu/page'),
-  <div className="min-h-screen flex items-center justify-center">
-    <LoadingSpinner />
-  </div>
-);
+export const LazyMenuPage = lazy(() => import('@/app/menu/page'));
+export const LazyAdminPage = lazy(() => import('@/app/admin/page'));
+export const LazyAboutPage = lazy(() => import('@/app/about/page'));
 
-export const LazyAdminPage = withLazyLoading(
-  () => import('@/app/admin/page'),
-  <div className="min-h-screen flex items-center justify-center">
-    <LoadingSpinner />
-  </div>
-);
-
-export const LazyAboutPage = withLazyLoading(
-  () => import('@/app/about/page'),
-  <div className="min-h-screen flex items-center justify-center">
-    <LoadingSpinner />
-  </div>
-);
+// Export the wrapper for custom usage
+export { LazyWrapper };

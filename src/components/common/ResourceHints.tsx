@@ -79,17 +79,17 @@ function preloadMenuImages(menuItems: Array<{ imagePublicId?: string; image?: st
   
   // Preload remaining images with lower priority
   const remainingItems = menuItems.slice(6);
-  remainingItems.forEach((item, index) => {
+  remainingItems.forEach((item, itemIndex) => {
     if (item.imagePublicId) {
       const thumbnailUrl = cloudinaryPresets.thumbnail(item.imagePublicId, 96, 96);
       // Use lower priority for remaining images
       setTimeout(() => {
         preloadResource(thumbnailUrl, 'image');
-      }, index * 100); // Stagger the preloading
+      }, itemIndex * 100); // Stagger the preloading
     } else if (item.image) {
       setTimeout(() => {
-        preloadResource(item.image, 'image');
-      }, index * 100);
+        preloadResource(item.image!, 'image');
+      }, itemIndex * 100);
     }
   });
 }
@@ -104,7 +104,7 @@ function preloadCategoryIcons(categories: Array<{ icon?: string }>) {
   });
 }
 
-// Preload additional images
+  // Preload additional images
 function preloadImages(images: string[]) {
   images.forEach((imageUrl, index) => {
     setTimeout(() => {

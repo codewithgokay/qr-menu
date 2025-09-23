@@ -1,5 +1,5 @@
 import { MenuItem, MenuCategory } from '@/lib/types'
-import { apiCache, cacheUtils } from '@/lib/cache'
+import { apiCache } from '@/lib/cache'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
@@ -28,12 +28,12 @@ async function getCachedData<T>(key: string, fetcher: () => Promise<T>): Promise
 }
 
 // Request deduplication to prevent multiple identical requests
-const pendingRequests = new Map<string, Promise<any>>();
+const pendingRequests = new Map<string, Promise<unknown>>();
 
 async function deduplicatedFetch<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
   // If request is already pending, return the existing promise
   if (pendingRequests.has(key)) {
-    return pendingRequests.get(key)!;
+    return pendingRequests.get(key)! as Promise<T>;
   }
 
   // Create new request

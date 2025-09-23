@@ -54,34 +54,34 @@ export function VirtualScroll<T>({
     onScroll?.(newScrollTop);
   };
 
-  // Smooth scroll to item
-  const scrollToItem = (index: number) => {
-    if (containerRef.current) {
-      const targetScrollTop = index * itemHeight;
-      containerRef.current.scrollTo({
-        top: targetScrollTop,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  // Scroll to top
-  const scrollToTop = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   // Expose methods via ref
   useEffect(() => {
+    // Smooth scroll to item
+    const scrollToItem = (index: number) => {
+      if (containerRef.current) {
+        const targetScrollTop = index * itemHeight;
+        containerRef.current.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    // Scroll to top
+    const scrollToTop = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    };
+
     if (containerRef.current) {
-      (containerRef.current as any).scrollToItem = scrollToItem;
-      (containerRef.current as any).scrollToTop = scrollToTop;
+      (containerRef.current as unknown as HTMLElement & { scrollToItem: typeof scrollToItem; scrollToTop: typeof scrollToTop }).scrollToItem = scrollToItem;
+      (containerRef.current as unknown as HTMLElement & { scrollToItem: typeof scrollToItem; scrollToTop: typeof scrollToTop }).scrollToTop = scrollToTop;
     }
-  }, []);
+  }, [itemHeight]);
 
   return (
     <div
@@ -131,7 +131,7 @@ export function useVirtualScroll<T>(
 ) {
   const [scrollTop, setScrollTop] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleScroll = (newScrollTop: number) => {
     setScrollTop(newScrollTop);

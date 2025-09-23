@@ -11,7 +11,7 @@ export function getCloudinaryUrl(
     effect?: string;
     fetchFormat?: string;
     flags?: string[];
-    dpr?: number;
+    dpr?: number | string;
     responsive?: boolean;
   } = {}
 ): string {

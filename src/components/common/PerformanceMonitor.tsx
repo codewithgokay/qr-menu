@@ -20,7 +20,6 @@ export function PerformanceMonitor() {
 
     // Only show in development or when explicitly enabled
     const isDev = process.env.NODE_ENV === 'development';
-    const isEnabled = process.env.NEXT_PUBLIC_PERFORMANCE_MONITOR === 'true';
     
     if (isDev) {
       setIsVisible(true);
@@ -133,8 +132,8 @@ export function PerformanceMonitor() {
       </div>
       <div className="mt-2 pt-2 border-t border-gray-600">
         <div className="text-gray-400">
-          Memory: {(performance as any).memory?.usedJSHeapSize ? 
-            `${Math.round((performance as any).memory.usedJSHeapSize / 1024 / 1024)}MB` : 'N/A'}
+          Memory: {(performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ? 
+            `${Math.round((performance as Performance & { memory?: { usedJSHeapSize: number } }).memory!.usedJSHeapSize / 1024 / 1024)}MB` : 'N/A'}
         </div>
       </div>
     </div>
