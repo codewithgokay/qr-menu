@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 import { MenuItem as MenuItemType } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,17 +14,17 @@ interface MobileMenuItemProps {
   index: number;
 }
 
-export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
+const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuItemProps) {
   const [showDetails, setShowDetails] = useState(false);
 
-  const formatPrice = (price: number) => {
+  const formatPrice = useCallback((price: number) => {
     return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
       currency: 'TRY'
     }).format(price);
-  };
+  }, []);
 
-  const getDietaryIcon = (type: string) => {
+  const getDietaryIcon = useCallback((type: string) => {
     switch (type) {
       case 'vegetarian': return <Leaf className="h-3 w-3" />;
       case 'vegan': return <Leaf className="h-3 w-3" />;
@@ -33,9 +33,9 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
       case 'spicy': return <Zap className="h-3 w-3" />;
       default: return null;
     }
-  };
+  }, []);
 
-  const translateDietaryInfo = (type: string) => {
+  const translateDietaryInfo = useCallback((type: string) => {
     switch (type) {
       case 'vegetarian': return 'vejetaryen';
       case 'vegan': return 'vegan';
@@ -44,9 +44,9 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
       case 'spicy': return 'acılı';
       default: return type;
     }
-  };
+  }, []);
 
-  const translateAllergen = (allergen: string) => {
+  const translateAllergen = useCallback((allergen: string) => {
     switch (allergen) {
       case 'dairy': return 'süt ürünleri';
       case 'eggs': return 'yumurta';
@@ -56,7 +56,7 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
       case 'soy': return 'soya';
       default: return allergen;
     }
-  };
+  }, []);
 
   const dietaryInfo = [
     item.isVegetarian && 'vegetarian',
@@ -227,4 +227,6 @@ export function MobileMenuItem({ item, index }: MobileMenuItemProps) {
       </Sheet>
     </motion.div>
   );
-}
+});
+
+export { MobileMenuItem };

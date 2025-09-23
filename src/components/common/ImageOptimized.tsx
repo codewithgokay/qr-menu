@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import Image from 'next/image';
 import { getCloudinaryUrl } from '@/lib/cloudinary';
 
@@ -19,7 +19,7 @@ interface ImageOptimizedProps {
   lazy?: boolean;
 }
 
-export function ImageOptimized({ 
+const ImageOptimized = memo(function ImageOptimized({ 
   src, 
   alt, 
   width = 400, 
@@ -33,14 +33,13 @@ export function ImageOptimized({
   priority = false,
   lazy = true
 }: ImageOptimizedProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [isInView, setIsInView] = useState(!lazy);
   const imgRef = useRef<HTMLDivElement>(null);
 
-  // Intersection Observer for lazy loading
+  // Intersection Observer for lazy loading - simplified
   useEffect(() => {
-    if (!lazy || !imgRef.current) return;
+    if (!lazy || !imgRef.current || isInView) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -50,14 +49,14 @@ export function ImageOptimized({
         }
       },
       { 
-        rootMargin: '50px',
+        rootMargin: '100px', // Increased margin for better UX
         threshold: 0.1 
       }
     );
 
     observer.observe(imgRef.current);
     return () => observer.disconnect();
-  }, [lazy]);
+  }, [lazy, isInView]);
 
   // Determine the image source - prioritize Cloudinary if publicId is provided
   const imageSrc = cloudinaryPublicId 
@@ -92,16 +91,13 @@ export function ImageOptimized({
           height={height}
           priority={priority}
           loading={priority ? 'eager' : 'lazy'}
-          className={`object-cover transition-all duration-300 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="object-cover transition-opacity duration-200"
           style={{
             width: '100%',
-            height: 'auto',
-            aspectRatio: `${width}/${height}`
+            height: '100%',
+            objectFit: 'cover'
           }}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          onLoad={() => setImageLoaded(true)}
           onError={() => setImageError(true)}
           placeholder="blur"
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
@@ -114,15 +110,8 @@ export function ImageOptimized({
           </div>
         </div>
       )}
-      
-      {isInView && !imageLoaded && (
-        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-2xl mb-2">🍽️</div>
-            <p className="text-xs text-muted-foreground">Loading...</p>
-          </div>
-        </div>
-      )}
     </div>
   );
-}
+});
+
+export { ImageOptimized };

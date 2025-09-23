@@ -15,15 +15,12 @@ export function MenuGrid() {
     filters,
     isLoading,
     isLoadingProgress,
-    isInitialLoad,
-    visibleItems
+    isInitialLoad
   } = useMenu();
 
   const filteredItems = useMemo(() => {
-    // During initial load, use visibleItems for progressive loading
-    // After initial load, use all items for filtering
-    const sourceItems = isInitialLoad ? visibleItems : items;
-    let filtered = sourceItems;
+    // Use all items for filtering (no more progressive loading)
+    let filtered = items;
 
     // Filter by category
     if (filters.category !== 'all') {
@@ -41,7 +38,7 @@ export function MenuGrid() {
     }
 
     return filtered;
-  }, [items, visibleItems, isInitialLoad, filters.category, filters.search]);
+  }, [items, filters.category, filters.search]);
 
   const groupedItems = useMemo(() => {
     if (filters.category !== 'all') {

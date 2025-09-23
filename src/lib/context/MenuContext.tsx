@@ -208,10 +208,14 @@ export function MenuProvider({
         dispatch({ type: 'SET_ERROR', payload: null });
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 0 });
 
-        // Try to load from API first
+        // Try to load from API first with timeout
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('API timeout')), 5000)
+        );
+
         const [itemsResult, categoriesResult] = await Promise.allSettled([
-          menuItemsApi.getAll(),
-          categoriesApi.getAll()
+          Promise.race([menuItemsApi.getAll(), timeoutPromise]),
+          Promise.race([categoriesApi.getAll(), timeoutPromise])
         ]);
         
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 50 });
@@ -221,16 +225,16 @@ export function MenuProvider({
         let allCategories: MenuCategoryType[] = [];
         
         // Handle menu items result
-        if (itemsResult.status === 'fulfilled' && itemsResult.value.length > 0) {
-          allItems = itemsResult.value;
+        if (itemsResult.status === 'fulfilled' && Array.isArray(itemsResult.value) && itemsResult.value.length > 0) {
+          allItems = itemsResult.value as MenuItemType[];
           hasApiData = true;
         } else if (itemsResult.status === 'rejected') {
           console.warn('Failed to load menu items from API:', itemsResult.reason);
         }
         
         // Handle categories result
-        if (categoriesResult.status === 'fulfilled' && categoriesResult.value.length > 0) {
-          allCategories = categoriesResult.value;
+        if (categoriesResult.status === 'fulfilled' && Array.isArray(categoriesResult.value) && categoriesResult.value.length > 0) {
+          allCategories = categoriesResult.value as MenuCategoryType[];
           hasApiData = true;
         } else if (categoriesResult.status === 'rejected') {
           console.warn('Failed to load categories from API:', categoriesResult.reason);
@@ -248,20 +252,9 @@ export function MenuProvider({
         // Set categories first
         dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
         
-        // Progressive loading of menu items
+        // Load all items at once for better performance
         dispatch({ type: 'SET_ITEMS', payload: allItems });
-        
-        // Start progressive item reveal
-        const batchSize = Math.max(1, Math.ceil(allItems.length / 10)); // Show items in batches
-        
-        for (let i = 0; i <= allItems.length; i += batchSize) {
-          const visibleItems = allItems.slice(0, i);
-          dispatch({ type: 'SET_VISIBLE_ITEMS', payload: visibleItems });
-          
-          if (i < allItems.length) {
-            await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay between batches
-          }
-        }
+        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
         
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 100 });
         

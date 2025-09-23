@@ -57,8 +57,9 @@ export async function GET() {
 
     const response = NextResponse.json(transformedItems)
     
-    // Add caching headers for better performance
-    response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300')
+    // Add aggressive caching headers for better performance
+    response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600, max-age=60')
+    response.headers.set('ETag', `"menu-items-${Date.now()}"`)
     
     return response
   } catch (error) {

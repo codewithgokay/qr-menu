@@ -20,7 +20,13 @@ export async function GET() {
       order: category.order
     }))
 
-    return NextResponse.json(transformedCategories)
+    const response = NextResponse.json(transformedCategories)
+    
+    // Add aggressive caching headers for better performance
+    response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600, max-age=60')
+    response.headers.set('ETag', `"categories-${Date.now()}"`)
+    
+    return response
   } catch (error) {
     console.error('Database error, falling back to static data:', error)
     
