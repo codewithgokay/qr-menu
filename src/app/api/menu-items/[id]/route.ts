@@ -32,6 +32,7 @@ export async function GET(
       price: menuItem.price,
       category: menuItem.category.id,
       image: menuItem.image,
+      imagePublicId: menuItem.imagePublicId,
       allergens: menuItem.allergens.map(a => a.allergen.name),
       isVegetarian: menuItem.isVegetarian,
       isVegan: menuItem.isVegan,
@@ -59,7 +60,7 @@ export async function PUT(
   try {
     const { id } = await params
     const body = await request.json()
-    const { name, description, price, category, image, allergens, ...otherFields } = body
+    const { name, description, price, category, image, imagePublicId, allergens, ...otherFields } = body
 
     // Handle allergens - always delete existing ones first
     await prisma.menuItemAllergen.deleteMany({
@@ -93,6 +94,7 @@ export async function PUT(
         description,
         price: parseFloat(price),
         image,
+        imagePublicId,
         ...otherFields
       },
       include: {
@@ -113,6 +115,7 @@ export async function PUT(
       price: menuItem.price,
       category: menuItem.category.id,
       image: menuItem.image,
+      imagePublicId: menuItem.imagePublicId,
       allergens: menuItem.allergens.map(a => a.allergen.name),
       isVegetarian: menuItem.isVegetarian,
       isVegan: menuItem.isVegan,

@@ -2,20 +2,49 @@ import { MenuItem, MenuCategory } from '@/lib/types'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
+// Cache for API responses
+const cache = new Map<string, { data: unknown; timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// Helper function to get cached data or fetch fresh
+async function getCachedData<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
+  const cached = cache.get(key);
+  const now = Date.now();
+  
+  if (cached && (now - cached.timestamp) < CACHE_DURATION) {
+    return cached.data as T;
+  }
+  
+  try {
+    const data = await fetcher();
+    cache.set(key, { data, timestamp: now });
+    return data;
+  } catch (error) {
+    // If fetch fails and we have stale cache, return it
+    if (cached) {
+      console.warn('Using stale cache due to fetch error:', error);
+      return cached.data as T;
+    }
+    throw error;
+  }
+}
+
 // Menu Items API
 export const menuItemsApi = {
   // Get all menu items
   getAll: async (): Promise<MenuItem[]> => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/menu-items`)
+    return getCachedData('menu-items', async () => {
+      const response = await fetch(`${API_BASE_URL}/api/menu-items`, {
+        next: { revalidate: 300 }, // Revalidate every 5 minutes
+        headers: {
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600'
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch menu items')
       }
       return response.json()
-    } catch (error) {
-      console.error('API Error:', error);
-      throw error;
-    }
+    });
   },
 
   // Get a specific menu item
@@ -95,16 +124,18 @@ export const menuItemsApi = {
 export const categoriesApi = {
   // Get all categories
   getAll: async (): Promise<MenuCategory[]> => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/categories`)
+    return getCachedData('categories', async () => {
+      const response = await fetch(`${API_BASE_URL}/api/categories`, {
+        next: { revalidate: 300 }, // Revalidate every 5 minutes
+        headers: {
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600'
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch categories')
       }
       return response.json()
-    } catch (error) {
-      console.error('API Error:', error);
-      throw error;
-    }
+    });
   },
 
   // Get a specific category

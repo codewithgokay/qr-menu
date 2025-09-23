@@ -15,6 +15,7 @@ export async function GET() {
         price: true,
         categoryId: true,
         image: true,
+        imagePublicId: true,
         isVegetarian: true,
         isVegan: true,
         isSpicy: true,
@@ -41,6 +42,7 @@ export async function GET() {
       price: item.price,
       category: item.categoryId,
       image: item.image,
+      imagePublicId: item.imagePublicId,
       allergens: item.allergens.map(a => a.allergen.name),
       isVegetarian: item.isVegetarian,
       isVegan: item.isVegan,
@@ -90,7 +92,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, description, price, category, image, allergens, ...otherFields } = body
+    const { name, description, price, category, image, imagePublicId, allergens, ...otherFields } = body
 
     // First, get or create allergens
     const allergenIds = []
@@ -120,6 +122,7 @@ export async function POST(request: NextRequest) {
         description,
         price: parseFloat(price),
         image,
+        imagePublicId,
         ...otherFields,
         allergens: {
           create: allergenIds.map(allergenId => ({
@@ -145,6 +148,7 @@ export async function POST(request: NextRequest) {
       price: menuItem.price,
       category: menuItem.category.id,
       image: menuItem.image,
+      imagePublicId: menuItem.imagePublicId,
       allergens: menuItem.allergens.map(a => a.allergen.name),
       isVegetarian: menuItem.isVegetarian,
       isVegan: menuItem.isVegan,

@@ -208,11 +208,11 @@ export function MenuGrid() {
               {items.map((item, itemIndex) => (
                 <motion.div
                   key={item.id}
-                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ 
-                    delay: isInitialLoad ? itemIndex * 0.05 : 0,
-                    duration: 0.4,
+                    delay: isInitialLoad ? Math.min(itemIndex * 0.02, 0.3) : 0,
+                    duration: 0.2,
                     ease: "easeOut"
                   }}
                 >

@@ -40,6 +40,8 @@ export function MenuItemForm({
   });
 
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [imagePublicId, setImagePublicId] = useState<string>('');
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (item) {
@@ -60,29 +62,54 @@ export function MenuItemForm({
         isDairyFree: item.isDairyFree || false
       });
       setImagePreview(item.image || '');
+      setImagePublicId((item as MenuItem & { imagePublicId?: string }).imagePublicId || '');
     }
   }, [item]);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    setIsUploading(true);
+    
+    try {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('folder', 'qr-menu/menu-items');
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setImagePreview(result.url);
+        setImagePublicId(result.publicId);
+        setFormData(prev => ({ ...prev, image: result.url }));
+      } else {
+        console.error('Upload failed:', result.error);
+        alert('Resim yüklenirken hata oluştu: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Resim yüklenirken hata oluştu');
+    } finally {
+      setIsUploading(false);
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const itemData: Omit<MenuItem, 'id'> = {
+    const itemData: Omit<MenuItem, 'id'> & { imagePublicId?: string } = {
       name: formData.name,
       description: formData.description,
       price: parseFloat(formData.price),
       category: formData.category,
       image: imagePreview,
+      imagePublicId: imagePublicId,
       allergens: formData.allergens ? formData.allergens.split(',').map(a => a.trim()).filter(a => a.length > 0) : [],
       calories: formData.calories ? parseInt(formData.calories) : undefined,
       prepTime: formData.prepTime ? parseInt(formData.prepTime) : undefined,
@@ -186,8 +213,12 @@ export function MenuItemForm({
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              className="w-full p-3 rounded-lg bg-soft-gray border border-warm-beige text-text-primary file:mr-2 sm:file:mr-4 file:py-1 sm:file:py-2 file:px-2 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-sage file:text-white hover:file:bg-sage/90 text-sm sm:text-base"
+              disabled={isUploading}
+              className="w-full p-3 rounded-lg bg-soft-gray border border-warm-beige text-text-primary file:mr-2 sm:file:mr-4 file:py-1 sm:file:py-2 file:px-2 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-sage file:text-white hover:file:bg-sage/90 text-sm sm:text-base disabled:opacity-50"
             />
+            {isUploading && (
+              <p className="text-sm text-sage mt-1">Resim yükleniyor...</p>
+            )}
           </div>
         </div>
 
