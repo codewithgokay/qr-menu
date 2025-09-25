@@ -13,7 +13,18 @@ import { PerformanceMonitor } from '@/components/common/PerformanceMonitor';
 
 // Preload critical resources
 if (typeof window !== 'undefined') {
-  // Preload Cloudinary images for better performance
+  // Preload API endpoints immediately
+  const preloadApi = (url: string) => {
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = url;
+    document.head.appendChild(link);
+  };
+  
+  preloadApi('/api/menu-items');
+  preloadApi('/api/categories');
+  
+  // Preload critical images for better performance
   const preloadImage = (src: string) => {
     const link = document.createElement('link');
     link.rel = 'preload';
@@ -25,17 +36,6 @@ if (typeof window !== 'undefined') {
   // Preload common Cloudinary transformations
   const cloudinaryBase = 'https://res.cloudinary.com/dmudabrcn/image/upload';
   preloadImage(`${cloudinaryBase}/f_auto,q_auto,w_96,h_96,c_fill/placeholder.jpg`);
-  
-  // Preload API endpoints
-  const preloadApi = (url: string) => {
-    const link = document.createElement('link');
-    link.rel = 'prefetch';
-    link.href = url;
-    document.head.appendChild(link);
-  };
-  
-  preloadApi('/api/menu-items');
-  preloadApi('/api/categories');
 }
 
 export default function MenuPage() {

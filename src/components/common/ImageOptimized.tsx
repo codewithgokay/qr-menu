@@ -59,7 +59,9 @@ const ImageOptimized = memo(function ImageOptimized({
   }, [lazy, isInView]);
 
   // Determine the image source - prioritize Cloudinary if publicId is provided
-  const imageSrc = cloudinaryPublicId 
+  // If the src is already a Cloudinary URL, use it directly for better performance
+  const isCloudinaryUrl = src && src.includes('res.cloudinary.com');
+  const imageSrc = cloudinaryPublicId && !isCloudinaryUrl
     ? getCloudinaryUrl(cloudinaryPublicId, {
         width,
         height,
@@ -69,6 +71,7 @@ const ImageOptimized = memo(function ImageOptimized({
         format: 'auto'
       })
     : src;
+
 
   if (imageError || !imageSrc) {
     return (

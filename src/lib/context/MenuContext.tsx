@@ -208,9 +208,16 @@ export function MenuProvider({
         dispatch({ type: 'SET_ERROR', payload: null });
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 0 });
 
-        // Try to load from API first with timeout
+        // Load static data first for immediate display
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 25 });
+        dispatch({ type: 'SET_CATEGORIES', payload: fallbackCategories });
+        dispatch({ type: 'SET_ITEMS', payload: fallbackMenuItems });
+        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: fallbackMenuItems });
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 50 });
+
+        // Try to load from API with timeout
         const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('API timeout')), 5000)
+          setTimeout(() => reject(new Error('API timeout')), 2000)
         );
 
         const [itemsResult, categoriesResult] = await Promise.allSettled([
@@ -218,11 +225,11 @@ export function MenuProvider({
           Promise.race([categoriesApi.getAll(), timeoutPromise])
         ]);
         
-        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 50 });
+        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 75 });
         
         let hasApiData = false;
-        let allItems: MenuItemType[] = [];
-        let allCategories: MenuCategoryType[] = [];
+        let allItems: MenuItemType[] = fallbackMenuItems;
+        let allCategories: MenuCategoryType[] = fallbackCategories;
         
         // Handle menu items result
         if (itemsResult.status === 'fulfilled' && Array.isArray(itemsResult.value) && itemsResult.value.length > 0) {
@@ -240,30 +247,21 @@ export function MenuProvider({
           console.warn('Failed to load categories from API:', categoriesResult.reason);
         }
         
-        // If no API data was loaded, fall back to static data
-        if (!hasApiData) {
-          console.log('No API data available, using static fallback data');
-          allItems = fallbackMenuItems;
-          allCategories = fallbackCategories;
+        // Update with API data if available, otherwise keep static data
+        if (hasApiData) {
+          console.log('API data loaded successfully, updating menu');
+          dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
+          dispatch({ type: 'SET_ITEMS', payload: allItems });
+          dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
+        } else {
+          console.log('Using static fallback data');
         }
-        
-        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 75 });
-        
-        // Set categories first
-        dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
-        
-        // Load all items at once for better performance
-        dispatch({ type: 'SET_ITEMS', payload: allItems });
-        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
         
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 100 });
         
       } catch (error) {
         console.error('Unexpected error in loadData:', error);
-        // Fall back to static data on any error
-        dispatch({ type: 'SET_ITEMS', payload: fallbackMenuItems });
-        dispatch({ type: 'SET_CATEGORIES', payload: fallbackCategories });
-        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: fallbackMenuItems });
+        // Keep static data that was already loaded
         dispatch({ type: 'SET_ERROR', payload: null });
       } finally {
         dispatch({ type: 'SET_LOADING', payload: false });

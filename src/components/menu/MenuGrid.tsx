@@ -69,7 +69,7 @@ export function MenuGrid() {
   }, [filteredItems, filters.category, categories]);
 
   // Show full-screen loading for initial load
-  if (isLoading && isInitialLoad && isLoadingProgress < 100) {
+  if (isLoading && isInitialLoad) {
     return (
       <motion.div
         initial={{ opacity: 1 }}
@@ -152,7 +152,8 @@ export function MenuGrid() {
     );
   }
 
-  if (filteredItems.length === 0) {
+  // Only show "no items" message if we're not loading and not in initial load state
+  if (!isLoading && !isInitialLoad && filteredItems.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}

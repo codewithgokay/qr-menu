@@ -82,7 +82,7 @@ export function MenuItem({ item, index }: MenuItemProps) {
                   alt={item.name}
                   width={96}
                   height={96}
-                  cloudinaryPublicId={(item as MenuItemType & { imagePublicId?: string }).imagePublicId}
+                  cloudinaryPublicId={item.imagePublicId}
                   className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
                   fallbackText="No Image"
                   lazy={true}
@@ -134,7 +134,7 @@ export function MenuItem({ item, index }: MenuItemProps) {
                 alt={item.name}
                 width={600}
                 height={400}
-                cloudinaryPublicId={(item as MenuItemType & { imagePublicId?: string }).imagePublicId}
+                cloudinaryPublicId={item.imagePublicId}
                 className="w-full h-full object-cover"
                 fallbackText="No Image"
                 lazy={false} // Don't lazy load in modal
