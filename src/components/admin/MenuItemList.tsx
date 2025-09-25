@@ -33,6 +33,7 @@ interface MenuItemListProps {
   onDelete: (itemId: string) => void;
   onReorder?: (items: MenuItem[]) => void;
   isManageMode?: boolean;
+  operationLoading?: { [key: string]: boolean };
 }
 
 // Sortable Menu Item Component
@@ -47,7 +48,8 @@ function SortableMenuItem({
   onMoveUp,
   onMoveDown,
   canMoveUp,
-  canMoveDown
+  canMoveDown,
+  operationLoading
 }: {
   item: MenuItem;
   categories: MenuCategory[];
@@ -60,6 +62,7 @@ function SortableMenuItem({
   onMoveDown?: (item: MenuItem) => void;
   canMoveUp?: boolean;
   canMoveDown?: boolean;
+  operationLoading?: { [key: string]: boolean };
 }) {
   const {
     attributes,
@@ -177,9 +180,10 @@ function SortableMenuItem({
                   onEdit(item);
                 }}
                 size="sm"
-                className="bg-sage hover:bg-sage/90 text-white text-xs px-3 py-1"
+                disabled={operationLoading?.[`update-${item.id}`] || false}
+                className="bg-sage hover:bg-sage/90 text-white text-xs px-3 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Düzenle
+                {operationLoading?.[`update-${item.id}`] ? '...' : 'Düzenle'}
               </Button>
               
               {deleteConfirm === item.id ? (
@@ -190,9 +194,10 @@ function SortableMenuItem({
                       handleDelete(item.id);
                     }}
                     size="sm"
-                    className="bg-destructive hover:bg-destructive/90 text-white text-xs px-2 py-1"
+                    disabled={operationLoading?.[`delete-${item.id}`] || false}
+                    className="bg-destructive hover:bg-destructive/90 text-white text-xs px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Sil
+                    {operationLoading?.[`delete-${item.id}`] ? '...' : 'Sil'}
                   </Button>
                   <Button
                     onClick={(e) => {
@@ -214,9 +219,10 @@ function SortableMenuItem({
                   }}
                   size="sm"
                   variant="outline"
-                  className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs px-3 py-1"
+                  disabled={operationLoading?.[`delete-${item.id}`] || false}
+                  className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs px-3 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Sil
+                  {operationLoading?.[`delete-${item.id}`] ? '...' : 'Sil'}
                 </Button>
               )}
             </>
@@ -237,7 +243,8 @@ function CategorySection({
   onReorder, 
   deleteConfirm, 
   setDeleteConfirm, 
-  isManageMode 
+  isManageMode,
+  operationLoading
 }: {
   category: MenuCategory;
   items: MenuItem[];
@@ -248,6 +255,7 @@ function CategorySection({
   deleteConfirm: string | null;
   setDeleteConfirm: (id: string | null) => void;
   isManageMode: boolean;
+  operationLoading?: { [key: string]: boolean };
 }) {
   const handleMoveUp = (item: MenuItem) => {
     const currentIndex = items.findIndex(i => i.id === item.id);
@@ -329,6 +337,7 @@ function CategorySection({
                   onMoveDown={handleMoveDown}
                   canMoveUp={index > 0}
                   canMoveDown={index < items.length - 1}
+                  operationLoading={operationLoading}
                 />
               ))}
             </div>
@@ -350,6 +359,7 @@ function CategorySection({
               onMoveDown={handleMoveDown}
               canMoveUp={index > 0}
               canMoveDown={index < items.length - 1}
+              operationLoading={operationLoading}
             />
           ))}
         </div>
@@ -364,7 +374,8 @@ export function MenuItemList({
   onEdit, 
   onDelete, 
   onReorder,
-  isManageMode = false 
+  isManageMode = false,
+  operationLoading = {}
 }: MenuItemListProps) {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
@@ -437,6 +448,7 @@ export function MenuItemList({
           deleteConfirm={deleteConfirm}
           setDeleteConfirm={setDeleteConfirm}
           isManageMode={isManageMode}
+          operationLoading={operationLoading}
         />
       ))}
     </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { MenuItem, MenuCategory } from '@/lib/types';
-import { menuItemsApi, categoriesApi } from '@/lib/api';
+import { menuItemsApi, categoriesApi, clearApiCache } from '@/lib/api';
 import { AdminHeader } from './AdminHeader';
 import { AdminDashboard } from './AdminDashboard';
 import { MenuItemForm } from './MenuItemForm';
@@ -37,6 +37,7 @@ export function AdminPanel({
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [sessionInfo, setSessionInfo] = useState<{ loginTime: number; lastActivity: number; sessionId: string } | null>(null);
+  const [operationLoading, setOperationLoading] = useState<{ [key: string]: boolean }>({});
 
   // Show message function
   const showMessage = (type: 'success' | 'error', text: string) => {
@@ -110,6 +111,9 @@ export function AdminPanel({
   };
 
   const handleSaveItem = async (itemData: Omit<MenuItem, 'id'>) => {
+    const operationKey = editingItem ? `update-${editingItem.id}` : 'create';
+    setOperationLoading(prev => ({ ...prev, [operationKey]: true }));
+    
     try {
       let updatedItem: MenuItem;
       
@@ -131,7 +135,8 @@ export function AdminPanel({
         showMessage('success', 'Ürün başarıyla eklendi');
       }
       
-      // Trigger menu page refresh
+      // Clear API cache and trigger menu page refresh
+      clearApiCache();
       if (typeof window !== 'undefined') {
         localStorage.setItem('menu_updated', Date.now().toString());
         window.dispatchEvent(new CustomEvent('menuUpdated'));
@@ -142,17 +147,22 @@ export function AdminPanel({
     } catch (error) {
       console.error('Error saving menu item:', error);
       showMessage('error', 'Ürün kaydedilirken hata oluştu');
+    } finally {
+      setOperationLoading(prev => ({ ...prev, [operationKey]: false }));
     }
   };
 
   const handleDeleteItem = async (itemId: string) => {
+    setOperationLoading(prev => ({ ...prev, [`delete-${itemId}`]: true }));
+    
     try {
       await menuItemsApi.delete(itemId);
       const updatedItems = menuItems.filter(item => item.id !== itemId);
       setMenuItems(updatedItems);
       onMenuUpdate(updatedItems);
       
-      // Trigger menu page refresh
+      // Clear API cache and trigger menu page refresh
+      clearApiCache();
       if (typeof window !== 'undefined') {
         localStorage.setItem('menu_updated', Date.now().toString());
         window.dispatchEvent(new CustomEvent('menuUpdated'));
@@ -162,6 +172,8 @@ export function AdminPanel({
     } catch (error) {
       console.error('Error deleting menu item:', error);
       showMessage('error', 'Ürün silinirken hata oluştu');
+    } finally {
+      setOperationLoading(prev => ({ ...prev, [`delete-${itemId}`]: false }));
     }
   };
 
@@ -209,6 +221,13 @@ export function AdminPanel({
         showMessage('success', 'Kategori başarıyla eklendi');
       }
       
+      // Clear API cache and trigger menu page refresh
+      clearApiCache();
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('menu_updated', Date.now().toString());
+        window.dispatchEvent(new CustomEvent('menuUpdated'));
+      }
+      
       setShowCategoryForm(false);
       setEditingCategory(null);
     } catch (error) {
@@ -231,6 +250,14 @@ export function AdminPanel({
       const updatedCategories = categories.filter(cat => cat.id !== categoryId);
       setCategories(updatedCategories);
       onCategoryUpdate(updatedCategories);
+      
+      // Clear API cache and trigger menu page refresh
+      clearApiCache();
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('menu_updated', Date.now().toString());
+        window.dispatchEvent(new CustomEvent('menuUpdated'));
+      }
+      
       showMessage('success', 'Kategori başarıyla silindi');
     } catch (error) {
       console.error('Error deleting category:', error);
@@ -300,7 +327,8 @@ export function AdminPanel({
 
       await menuItemsApi.reorder(itemsWithOrder);
       
-      // Trigger menu page refresh by updating localStorage
+      // Clear API cache and trigger menu page refresh
+      clearApiCache();
       if (typeof window !== 'undefined') {
         localStorage.setItem('menu_updated', Date.now().toString());
         // Also dispatch a custom event to trigger immediate refresh
@@ -378,6 +406,7 @@ export function AdminPanel({
             onSave={handleSaveItem}
             onCancel={handleCancelForm}
             isEditing={!!editingItem}
+            isLoading={operationLoading[editingItem ? `update-${editingItem.id}` : 'create'] || false}
           />
         ) : showCategoryForm ? (
           <CategoryForm
@@ -492,6 +521,7 @@ export function AdminPanel({
                 onDelete={handleDeleteItem}
                 onReorder={handleItemReorder}
                 isManageMode={isItemManageMode}
+                operationLoading={operationLoading}
               />
             </TabsContent>
 

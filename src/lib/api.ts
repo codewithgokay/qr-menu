@@ -2,9 +2,9 @@ import { MenuItem, MenuCategory } from '@/lib/types'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
-// Cache for API responses
+// Cache for API responses - Reduced cache duration for immediate updates
 const cache = new Map<string, { data: unknown; timestamp: number }>();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 30 * 1000; // 30 seconds instead of 5 minutes
 
 // Helper function to get cached data or fetch fresh
 async function getCachedData<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
@@ -29,15 +29,22 @@ async function getCachedData<T>(key: string, fetcher: () => Promise<T>): Promise
   }
 }
 
+// Function to clear cache when updates are made
+export function clearApiCache() {
+  cache.clear();
+  console.log('API cache cleared');
+}
+
 // Menu Items API
 export const menuItemsApi = {
   // Get all menu items
   getAll: async (): Promise<MenuItem[]> => {
     return getCachedData('menu-items', async () => {
-      const response = await fetch(`${API_BASE_URL}/api/menu-items`, {
-        next: { revalidate: 300 }, // Revalidate every 5 minutes
+      const cacheBuster = `?t=${Date.now()}`;
+      const response = await fetch(`${API_BASE_URL}/api/menu-items${cacheBuster}`, {
+        cache: 'no-store', // Disable Next.js caching for immediate updates
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600'
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
         }
       });
       if (!response.ok) {
@@ -125,10 +132,11 @@ export const categoriesApi = {
   // Get all categories
   getAll: async (): Promise<MenuCategory[]> => {
     return getCachedData('categories', async () => {
-      const response = await fetch(`${API_BASE_URL}/api/categories`, {
-        next: { revalidate: 300 }, // Revalidate every 5 minutes
+      const cacheBuster = `?t=${Date.now()}`;
+      const response = await fetch(`${API_BASE_URL}/api/categories${cacheBuster}`, {
+        cache: 'no-store', // Disable Next.js caching for immediate updates
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600'
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
         }
       });
       if (!response.ok) {

@@ -274,6 +274,12 @@ export function MenuProvider({
     // Listen for menu updates from admin panel
     const handleMenuUpdate = () => {
       console.log('Menu updated, refreshing data...');
+      // Clear any existing cache and reload data
+      if (typeof window !== 'undefined') {
+        // Clear localStorage cache
+        localStorage.removeItem('qr_menu_items');
+        localStorage.removeItem('qr_menu_categories');
+      }
       loadData();
     };
 

@@ -62,27 +62,40 @@ export async function PUT(
     const body = await request.json()
     const { name, description, price, category, image, imagePublicId, allergens, ...otherFields } = body
 
-    // Handle allergens - always delete existing ones first
-    await prisma.menuItemAllergen.deleteMany({
-      where: { menuItemId: id }
-    })
-
-    // Only create new allergens if there are any
+    // Handle allergens efficiently with batch operations
     if (allergens && allergens.length > 0) {
-      for (const allergenName of allergens) {
-        const allergen = await prisma.allergen.upsert({
+      // Delete existing allergens
+      await prisma.menuItemAllergen.deleteMany({
+        where: { menuItemId: id }
+      })
+
+      // Batch upsert allergens
+      const allergenUpserts = allergens.map((allergenName: string) =>
+        prisma.allergen.upsert({
           where: { name: allergenName },
           update: {},
           create: { name: allergenName }
         })
-
-        await prisma.menuItemAllergen.create({
+      )
+      
+      const upsertedAllergens = await Promise.all(allergenUpserts)
+      
+      // Batch create menu item allergen relationships
+      const menuItemAllergenCreates = upsertedAllergens.map(allergen =>
+        prisma.menuItemAllergen.create({
           data: {
             menuItemId: id,
             allergenId: allergen.id
           }
         })
-      }
+      )
+      
+      await Promise.all(menuItemAllergenCreates)
+    } else {
+      // Only delete if no allergens provided
+      await prisma.menuItemAllergen.deleteMany({
+        where: { menuItemId: id }
+      })
     }
 
     // Update the menu item
@@ -142,42 +155,29 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    console.log('DELETE request for menu item:', id)
     
-    // Test database connection first
-    await prisma.$connect()
-    console.log('Database connected for delete operation')
-    
-    // Check if menu item exists
-    const existingItem = await prisma.menuItem.findUnique({
-      where: { id }
-    })
-    
-    if (!existingItem) {
-      console.log('Menu item not found:', id)
-      return NextResponse.json({ 
-        error: 'Menu item not found' 
-      }, { status: 404 })
-    }
-    
-    // Update the menu item
-    await prisma.menuItem.update({
-      where: { id },
+    // Check if menu item exists and soft delete in one operation
+    const result = await prisma.menuItem.updateMany({
+      where: { 
+        id,
+        isActive: true // Only update if currently active
+      },
       data: { isActive: false }
     })
-
-    console.log('Menu item successfully deleted:', id)
-    await prisma.$disconnect()
+    
+    if (result.count === 0) {
+      return NextResponse.json({ 
+        error: 'Menu item not found or already deleted' 
+      }, { status: 404 })
+    }
     
     return NextResponse.json({ message: 'Menu item deleted successfully' })
   } catch (error) {
     console.error('Error deleting menu item:', error)
-    await prisma.$disconnect()
     
     return NextResponse.json({ 
       error: 'Failed to delete menu item',
-      details: error instanceof Error ? error.message : 'Unknown error',
-      type: 'database_error'
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 })
   }
 }

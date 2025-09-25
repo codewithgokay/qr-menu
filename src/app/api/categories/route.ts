@@ -22,9 +22,10 @@ export async function GET() {
 
     const response = NextResponse.json(transformedCategories)
     
-    // Add aggressive caching headers for better performance
-    response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600, max-age=60')
-    response.headers.set('ETag', `"categories-${Date.now()}"`)
+    // Disable caching for immediate updates
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+    response.headers.set('Pragma', 'no-cache')
+    response.headers.set('Expires', '0')
     
     return response
   } catch (error) {

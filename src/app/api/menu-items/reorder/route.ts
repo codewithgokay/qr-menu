@@ -11,15 +11,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Items must be an array' }, { status: 400 })
     }
 
-    // Update each item's order
-    const updatePromises = items.map((item: { id: string; order: number }) =>
-      prisma.menuItem.update({
-        where: { id: item.id },
-        data: { order: item.order }
-      })
+    // Use a single transaction for better performance
+    await prisma.$transaction(
+      items.map((item: { id: string; order: number }) =>
+        prisma.menuItem.update({
+          where: { id: item.id },
+          data: { order: item.order }
+        })
+      )
     )
-
-    await Promise.all(updatePromises)
 
     return NextResponse.json({ message: 'Menu items reordered successfully' })
   } catch (error) {

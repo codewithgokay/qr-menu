@@ -13,6 +13,7 @@ interface MenuItemFormProps {
   onSave: (item: Omit<MenuItem, 'id'>) => void;
   onCancel: () => void;
   isEditing?: boolean;
+  isLoading?: boolean;
 }
 
 export function MenuItemForm({ 
@@ -20,7 +21,8 @@ export function MenuItemForm({
   categories, 
   onSave, 
   onCancel, 
-  isEditing = false 
+  isEditing = false,
+  isLoading = false
 }: MenuItemFormProps) {
   const [formData, setFormData] = useState({
     name: '',
@@ -354,9 +356,17 @@ export function MenuItemForm({
           </Button>
           <Button
             type="submit"
-            className="bg-sage hover:bg-sage/90 text-white text-sm sm:text-base py-2 sm:py-3"
+            disabled={isLoading}
+            className="bg-sage hover:bg-sage/90 text-white text-sm sm:text-base py-2 sm:py-3 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isEditing ? 'Güncelle' : 'Kaydet'}
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <span>{isEditing ? 'Güncelleniyor...' : 'Kaydediliyor...'}</span>
+              </div>
+            ) : (
+              isEditing ? 'Güncelle' : 'Kaydet'
+            )}
           </Button>
         </div>
       </form>

@@ -106,9 +106,10 @@ export async function GET() {
     
     const response = NextResponse.json(transformedItems)
     
-    // Add caching headers for better performance
-    response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600, max-age=60')
-    response.headers.set('ETag', `"menu-items-${dataSource}-${Date.now()}"`)
+    // Disable caching for immediate updates
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+    response.headers.set('Pragma', 'no-cache')
+    response.headers.set('Expires', '0')
     
     return response
   } catch (error) {
@@ -146,17 +147,19 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { name, description, price, category, image, imagePublicId, allergens, ...otherFields } = body
 
-    // First, get or create allergens
-    const allergenIds = []
+    // Batch upsert allergens for better performance
+    let allergenIds = []
     if (allergens && allergens.length > 0) {
-      for (const allergenName of allergens) {
-        const allergen = await prisma.allergen.upsert({
+      const allergenUpserts = allergens.map((allergenName: string) =>
+        prisma.allergen.upsert({
           where: { name: allergenName },
           update: {},
           create: { name: allergenName }
         })
-        allergenIds.push(allergen.id)
-      }
+      )
+      
+      const upsertedAllergens = await Promise.all(allergenUpserts)
+      allergenIds = upsertedAllergens.map(allergen => allergen.id)
     }
 
     // Get the first restaurant (assuming single restaurant for now)
