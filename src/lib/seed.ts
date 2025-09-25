@@ -3,17 +3,14 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting database seeding...')
 
   // Clear all existing data first
-  console.log('🗑️  Clearing existing data...')
   await prisma.menuItemAllergen.deleteMany()
   await prisma.menuItem.deleteMany()
   await prisma.menuCategory.deleteMany()
   await prisma.restaurantOperatingHours.deleteMany()
   await prisma.restaurant.deleteMany()
   await prisma.allergen.deleteMany()
-  console.log('✅ Data cleared successfully')
 
   // Create restaurant
   const restaurant = await prisma.restaurant.create({
@@ -569,7 +566,6 @@ async function main() {
     }
   }
 
-  console.log('Database seeding completed successfully!')
 }
 
 main()

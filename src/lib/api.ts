@@ -22,7 +22,6 @@ async function getCachedData<T>(key: string, fetcher: () => Promise<T>): Promise
   } catch (error) {
     // If fetch fails and we have stale cache, return it
     if (cached) {
-      console.warn('Using stale cache due to fetch error:', error);
       return cached.data as T;
     }
     throw error;
@@ -32,7 +31,6 @@ async function getCachedData<T>(key: string, fetcher: () => Promise<T>): Promise
 // Function to clear cache when updates are made
 export function clearApiCache() {
   cache.clear();
-  console.log('API cache cleared');
 }
 
 // Menu Items API
@@ -95,12 +93,9 @@ export const menuItemsApi = {
 
   // Delete a menu item
   delete: async (id: string): Promise<void> => {
-    console.log('Attempting to delete menu item:', id)
     const response = await fetch(`${API_BASE_URL}/api/menu-items/${id}`, {
       method: 'DELETE',
     })
-    console.log('Delete response status:', response.status)
-    console.log('Delete response ok:', response.ok)
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
@@ -108,8 +103,7 @@ export const menuItemsApi = {
       throw new Error(`Failed to delete menu item: ${errorData.error || 'Unknown error'}`)
     }
     
-    const result = await response.json()
-    console.log('Delete successful:', result)
+    await response.json()
   },
 
   // Reorder menu items

@@ -158,8 +158,7 @@ function menuReducer(state: ExtendedMenuState, action: MenuAction): ExtendedMenu
               items: parsedItems,
               filteredItems: parsedItems
             };
-          } catch (error) {
-            console.error('Error loading menu items from localStorage:', error);
+          } catch {
           }
         }
       }
@@ -236,7 +235,6 @@ export function MenuProvider({
           allItems = itemsResult.value as MenuItemType[];
           hasApiData = true;
         } else if (itemsResult.status === 'rejected') {
-          console.warn('Failed to load menu items from API:', itemsResult.reason);
         }
         
         // Handle categories result
@@ -244,17 +242,14 @@ export function MenuProvider({
           allCategories = categoriesResult.value as MenuCategoryType[];
           hasApiData = true;
         } else if (categoriesResult.status === 'rejected') {
-          console.warn('Failed to load categories from API:', categoriesResult.reason);
         }
         
         // Update with API data if available, otherwise keep static data
         if (hasApiData) {
-          console.log('API data loaded successfully, updating menu');
           dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
           dispatch({ type: 'SET_ITEMS', payload: allItems });
           dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
         } else {
-          console.log('Using static fallback data');
         }
         
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 100 });
@@ -273,7 +268,6 @@ export function MenuProvider({
 
     // Listen for menu updates from admin panel
     const handleMenuUpdate = () => {
-      console.log('Menu updated, refreshing data...');
       // Clear any existing cache and reload data
       if (typeof window !== 'undefined') {
         // Clear localStorage cache

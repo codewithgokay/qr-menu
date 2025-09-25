@@ -72,6 +72,19 @@ export function MenuItemForm({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Lütfen geçerli bir resim dosyası seçin');
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      alert('Dosya boyutu 10MB\'dan küçük olmalıdır');
+      return;
+    }
+
     setIsUploading(true);
     
     try {
@@ -84,19 +97,26 @@ export function MenuItemForm({
         body: uploadFormData,
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const result = await response.json();
 
-      if (result.success) {
+      if (result.success && result.url) {
         setImagePreview(result.url);
-        setImagePublicId(result.publicId);
+        setImagePublicId(result.publicId || '');
         setFormData(prev => ({ ...prev, image: result.url }));
       } else {
-        console.error('Upload failed:', result.error);
-        alert('Resim yüklenirken hata oluştu: ' + result.error);
+        throw new Error(result.error || 'Upload failed');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Resim yüklenirken hata oluştu');
+      const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
+      alert(`Resim yüklenirken hata oluştu: ${errorMessage}`);
+      
+      // Reset file input
+      e.target.value = '';
     } finally {
       setIsUploading(false);
     }

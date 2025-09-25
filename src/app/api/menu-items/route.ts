@@ -35,11 +35,9 @@ export async function GET() {
     })
 
     let transformedItems
-    let dataSource = ''
 
     if (dbMenuItems.length > 0) {
       // Database has data - use it but replace Cloudinary URLs with working images
-      console.log(`🔄 API: Found ${dbMenuItems.length} items in database, replacing Cloudinary URLs with working images`);
       
       transformedItems = dbMenuItems.map(item => {
         let workingImage = item.image
@@ -75,10 +73,8 @@ export async function GET() {
           order: item.order || 0
         }
       })
-      dataSource = 'database'
     } else {
       // No database data - use static fallback
-      console.log('🔄 API: No database data found, using static fallback data');
       
       transformedItems = menuItems.map((item, index) => ({
         id: item.id,
@@ -99,10 +95,8 @@ export async function GET() {
         prepTime: item.prepTime || 0,
         order: index + 1
       }))
-      dataSource = 'static'
     }
 
-    console.log(`✅ API: Returning ${transformedItems.length} menu items from ${dataSource} with working images`);
     
     const response = NextResponse.json(transformedItems)
     
@@ -113,10 +107,9 @@ export async function GET() {
     
     return response
   } catch (error) {
-    console.error('❌ API: Error fetching menu items:', error)
+    console.error('Error fetching menu items:', error)
     
     // Fallback to static data on error
-    console.log('🔄 API: Database error, falling back to static data');
     const transformedItems = menuItems.map((item, index) => ({
       id: item.id,
       name: item.name,

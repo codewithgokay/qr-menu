@@ -19,6 +19,13 @@ export function getCloudinaryUrl(
     gravity = 'auto',
   } = options;
 
+  // Check if Cloudinary cloud name is available
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  if (!cloudName) {
+    console.error('NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME environment variable is not set');
+    return publicId; // Return the publicId as fallback
+  }
+
   const transformations = [];
   
   if (width) transformations.push(`w_${width}`);
@@ -30,5 +37,5 @@ export function getCloudinaryUrl(
 
   const transformationString = transformations.join(',');
   
-  return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${transformationString}/${publicId}`;
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${transformationString}/${publicId}`;
 }
