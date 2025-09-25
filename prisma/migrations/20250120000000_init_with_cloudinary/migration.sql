@@ -1,3 +1,6 @@
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
+
 -- CreateTable
 CREATE TABLE "public"."restaurants" (
     "id" TEXT NOT NULL,
@@ -16,6 +19,8 @@ CREATE TABLE "public"."restaurants" (
     "language" TEXT NOT NULL DEFAULT 'tr',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "coverImagePublicId" TEXT,
+    "logoPublicId" TEXT,
 
     CONSTRAINT "restaurants_pkey" PRIMARY KEY ("id")
 );
@@ -43,6 +48,7 @@ CREATE TABLE "public"."menu_categories" (
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "iconPublicId" TEXT,
 
     CONSTRAINT "menu_categories_pkey" PRIMARY KEY ("id")
 );
@@ -68,6 +74,7 @@ CREATE TABLE "public"."menu_items" (
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "imagePublicId" TEXT,
 
     CONSTRAINT "menu_items_pkey" PRIMARY KEY ("id")
 );
@@ -94,6 +101,15 @@ CREATE TABLE "public"."menu_item_allergens" (
 CREATE UNIQUE INDEX "restaurant_operating_hours_restaurantId_dayOfWeek_key" ON "public"."restaurant_operating_hours"("restaurantId", "dayOfWeek");
 
 -- CreateIndex
+CREATE INDEX "menu_items_isActive_order_idx" ON "public"."menu_items"("isActive", "order");
+
+-- CreateIndex
+CREATE INDEX "menu_items_restaurantId_isActive_idx" ON "public"."menu_items"("restaurantId", "isActive");
+
+-- CreateIndex
+CREATE INDEX "menu_items_categoryId_isActive_idx" ON "public"."menu_items"("categoryId", "isActive");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "allergens_name_key" ON "public"."allergens"("name");
 
 -- CreateIndex
@@ -106,13 +122,14 @@ ALTER TABLE "public"."restaurant_operating_hours" ADD CONSTRAINT "restaurant_ope
 ALTER TABLE "public"."menu_categories" ADD CONSTRAINT "menu_categories_restaurantId_fkey" FOREIGN KEY ("restaurantId") REFERENCES "public"."restaurants"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "public"."menu_items" ADD CONSTRAINT "menu_items_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "public"."menu_categories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "public"."menu_items" ADD CONSTRAINT "menu_items_restaurantId_fkey" FOREIGN KEY ("restaurantId") REFERENCES "public"."restaurants"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."menu_items" ADD CONSTRAINT "menu_items_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "public"."menu_categories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."menu_item_allergens" ADD CONSTRAINT "menu_item_allergens_allergenId_fkey" FOREIGN KEY ("allergenId") REFERENCES "public"."allergens"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."menu_item_allergens" ADD CONSTRAINT "menu_item_allergens_menuItemId_fkey" FOREIGN KEY ("menuItemId") REFERENCES "public"."menu_items"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
-ALTER TABLE "public"."menu_item_allergens" ADD CONSTRAINT "menu_item_allergens_allergenId_fkey" FOREIGN KEY ("allergenId") REFERENCES "public"."allergens"("id") ON DELETE CASCADE ON UPDATE CASCADE;
