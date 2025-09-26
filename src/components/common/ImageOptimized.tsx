@@ -61,7 +61,13 @@ const ImageOptimized = memo(function ImageOptimized({
   // Determine the image source - prioritize Cloudinary if publicId is provided
   // If the src is already a Cloudinary URL, use it directly for better performance
   const isCloudinaryUrl = src && src.includes('res.cloudinary.com');
-  const imageSrc = cloudinaryPublicId && !isCloudinaryUrl
+  
+  // Skip Cloudinary URL generation for placeholder or invalid publicIds
+  const imageSrc = cloudinaryPublicId && 
+                   !isCloudinaryUrl && 
+                   cloudinaryPublicId !== 'placeholder.jpg' &&
+                   !cloudinaryPublicId.includes('placeholder') &&
+                   cloudinaryPublicId.trim() !== ''
     ? getCloudinaryUrl(cloudinaryPublicId, {
         width,
         height,

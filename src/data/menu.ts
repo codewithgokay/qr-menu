@@ -2,266 +2,63 @@ import { MenuItem, MenuCategory, Restaurant } from '@/lib/types';
 
 export const restaurant: Restaurant = {
   id: '1',
-  name: 'Bella Vista',
-  description: 'Modern dokunuşlarla otantik İtalyan mutfağı',
+  name: 'Dükkan',
+  description: 'Çanakkale\'nin en sevilen kahve dükkanı - özel kahve çekirdekleri ve ev yapımı lezzetler',
   logo: '/images/logo.png',
   coverImage: '/images/restaurant-cover.jpg',
-  address: '123 Ana Cadde, Şehir Merkezi',
-  phone: '+90 (555) 123-4567',
-  email: 'info@bellavista.com',
-  website: 'https://bellavista.com',
+  address: 'Çanakkale Merkez, Türkiye',
+  phone: '+90 (286) 123-4567',
+  email: 'info@dukkancanakkale.com',
+  website: 'https://dukkancanakkale.com',
   socialMedia: {
-    instagram: '@bellavista_restaurant',
-    facebook: 'BellaVistaRestaurant',
-    twitter: '@BellaVistaEats'
+    instagram: '@dukkancanakkale',
+    facebook: 'DukkanCanakkale',
+    twitter: '@DukkanCanakkale'
   },
   operatingHours: {
-    monday: { open: '11:00', close: '22:00' },
-    tuesday: { open: '11:00', close: '22:00' },
-    wednesday: { open: '11:00', close: '22:00' },
-    thursday: { open: '11:00', close: '22:00' },
-    friday: { open: '11:00', close: '23:00' },
-    saturday: { open: '10:00', close: '23:00' },
-    sunday: { open: '10:00', close: '21:00' }
+    Pazartesi: { open: '07:00', close: '22:00' },
+    Salı: { open: '07:00', close: '22:00' },
+    Çarşamba: { open: '07:00', close: '22:00' },
+    Perşembe: { open: '07:00', close: '22:00' },
+    Cuma: { open: '07:00', close: '23:00' },
+    Cumartesi: { open: '08:00', close: '23:00' },
+    Pazar: { open: '08:00', close: '22:00' }
   },
   currency: 'TRY',
   language: 'tr'
 };
 
 export const categories: MenuCategory[] = [
-  { id: 'appetizers', name: 'Mezeler', description: 'Yemeğinizi doğru şekilde başlatın', icon: '🥗', order: 1 },
-  { id: 'pasta', name: 'Makarna', description: 'Taze makarna yemekleri', icon: '🍝', order: 2 },
-  { id: 'pizza', name: 'Pizza', description: 'Odun ateşinde pişmiş pizzalar', icon: '🍕', order: 3 },
-  { id: 'mains', name: 'Ana Yemekler', description: 'Doyurucu ana yemekler', icon: '🍖', order: 4 },
-  { id: 'desserts', name: 'Tatlılar', description: 'Tatlı sonlar', icon: '🍰', order: 5 },
-  { id: 'beverages', name: 'İçecekler', description: 'İçecekler ve daha fazlası', icon: '🥤', order: 6 }
+  { id: 'coffee', name: 'Kahveler', description: 'Özel çekirdeklerden hazırlanan kahveler', icon: '☕', order: 1 },
+  { id: 'cold-drinks', name: 'Soğuk İçecekler', description: 'Serinletici içecekler', icon: '🧊', order: 2 },
+  { id: 'pastries', name: 'Pastalar & Tatlılar', description: 'Ev yapımı pastalar ve tatlılar', icon: '🧁', order: 3 },
+  { id: 'sandwiches', name: 'Sandviçler', description: 'Taze sandviçler ve tostlar', icon: '🥪', order: 4 },
+  { id: 'breakfast', name: 'Kahvaltı', description: 'Günün en önemli öğünü', icon: '🍳', order: 5 },
+  { id: 'snacks', name: 'Atıştırmalıklar', description: 'Hafif atıştırmalıklar', icon: '🥜', order: 6 }
 ];
 
 export const menuItems: MenuItem[] = [
-  // Mezeler
+  // Kahveler
   {
     id: '1',
-    name: 'Bruschetta Classica',
-    description: 'Taze domates, fesleğen ve sarımsak ile süslenmiş ızgara ekmek',
-    price: 12.99,
-    category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    isVegetarian: true,
-    isVegan: true,
-    isGlutenFree: false,
-    calories: 180,
-    prepTime: 10
-  },
-  {
-    id: '2',
-    name: 'Antipasto Tabağı',
-    description: 'Kurutulmuş etler, peynirler, zeytinler ve sebzelerden seçmeler',
-    price: 18.99,
-    category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['dairy', 'nuts'],
-    calories: 320,
-    prepTime: 5
-  },
-  {
-    id: '3',
-    name: 'Kalamar Tava',
-    description: 'Marinara sos ile çıtır kızartılmış kalamar halkaları',
-    price: 16.99,
-    category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['seafood', 'gluten'],
-    calories: 280,
-    prepTime: 15
-  },
-
-  // Makarna
-  {
-    id: '4',
-    name: 'Spaghetti Carbonara',
-    description: 'Yumurta, pancetta ve pecorino peyniri ile klasik Roma makarnası',
-    price: 22.99,
-    category: 'pasta',
-    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['dairy', 'eggs', 'gluten'],
-    calories: 650,
-    prepTime: 20
-  },
-  {
-    id: '5',
-    name: 'Penne Arrabbiata',
-    description: 'Domates sosu ve kırmızı biber ile acılı penne makarnası',
-    price: 19.99,
-    category: 'pasta',
-    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    isVegetarian: true,
-    isVegan: true,
-    isSpicy: true,
-    isGlutenFree: false,
-    calories: 520,
-    prepTime: 18
-  },
-  {
-    id: '6',
-    name: 'Istakoz Ravioli',
-    description: 'Krem sos ile istakoz ve ricotta doldurulmuş ev yapımı ravioli',
-    price: 28.99,
-    category: 'pasta',
-    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['seafood', 'dairy', 'eggs', 'gluten'],
-    isPopular: true,
-    calories: 720,
-    prepTime: 25
-  },
-
-  // Pizza
-  {
-    id: '7',
-    name: 'Margherita',
-    description: 'Domates sosu, mozzarella ve taze fesleğen ile klasik pizza',
-    price: 16.99,
-    category: 'pizza',
-    image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    isVegetarian: true,
-    isGlutenFree: false,
-    calories: 480,
-    prepTime: 12
-  },
-  {
-    id: '8',
-    name: 'Quattro Stagioni',
-    description: 'Enginar, mantar, prosciutto ve zeytin ile dört mevsim pizzası',
-    price: 24.99,
-    category: 'pizza',
-    image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['dairy', 'gluten'],
-    calories: 620,
-    prepTime: 15
-  },
-  {
-    id: '9',
-    name: 'Diavola',
-    description: 'Domates sosu, mozzarella ve acılı salam ile acılı pizza',
-    price: 20.99,
-    category: 'pizza',
-    image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    isSpicy: true,
-    allergens: ['dairy', 'gluten'],
-    calories: 580,
-    prepTime: 12
-  },
-
-  // Ana Yemekler
-  {
-    id: '10',
-    name: 'Osso Buco',
-    description: 'Risotto ve gremolata ile yavaş pişmiş dana incik',
-    price: 32.99,
-    category: 'mains',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['dairy', 'gluten'],
-    isPopular: true,
-    calories: 850,
-    prepTime: 45
-  },
-  {
-    id: '11',
-    name: 'Branzino al Sale',
-    description: 'Otlar ile tuz kabuğunda pişirilmiş Akdeniz levreği',
-    price: 28.99,
-    category: 'mains',
-    image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['seafood'],
-    isGlutenFree: true,
-    calories: 420,
-    prepTime: 30
-  },
-  {
-    id: '12',
-    name: 'Vitello Tonnato',
-    description: 'Ton balığı sosu ve kapari ile soğuk dilimlenmiş dana eti',
-    price: 26.99,
-    category: 'mains',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['seafood', 'eggs'],
-    calories: 380,
-    prepTime: 20
-  },
-
-  // Tatlılar
-  {
-    id: '13',
-    name: 'Tiramisu',
-    description: 'Kahve, mascarpone ve kakao ile klasik İtalyan tatlısı',
-    price: 8.99,
-    category: 'desserts',
-    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['dairy', 'eggs', 'gluten'],
-    isVegetarian: true,
-    calories: 320,
-    prepTime: 5
-  },
-  {
-    id: '14',
-    name: 'Panna Cotta',
-    description: 'Meyve kompostosu ile vanilyalı panna cotta',
-    price: 7.99,
-    category: 'desserts',
-    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['dairy'],
-    isVegetarian: true,
-    isGlutenFree: true,
-    calories: 280,
-    prepTime: 5
-  },
-  {
-    id: '15',
-    name: 'Gelato Seçimi',
-    description: 'Üç top el yapımı gelato (vanilya, çikolata, çilek)',
-    price: 9.99,
-    category: 'desserts',
-    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
-    imagePublicId: undefined,
-    allergens: ['dairy'],
-    isVegetarian: true,
-    calories: 240,
-    prepTime: 3
-  },
-
-  // İçecekler
-  {
-    id: '16',
-    name: 'İtalyan Sodası',
-    description: 'Aromalı şurup ile maden suyu (limon, kiraz veya vanilya)',
-    price: 4.99,
-    category: 'beverages',
+    name: 'Türk Kahvesi',
+    description: 'Geleneksel Türk kahvesi, lokum eşliğinde',
+    price: 15.00,
+    category: 'coffee',
     image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center',
     imagePublicId: undefined,
     isVegan: true,
     isGlutenFree: true,
-    calories: 80,
-    prepTime: 2
+    calories: 5,
+    prepTime: 5,
+    isPopular: true
   },
   {
-    id: '17',
+    id: '2',
     name: 'Espresso',
-    description: 'Tek shot premium İtalyan espressosu',
-    price: 3.99,
-    category: 'beverages',
+    description: 'Tek shot özel çekirdek espressosu',
+    price: 12.00,
+    category: 'coffee',
     image: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop&crop=center',
     imagePublicId: undefined,
     isVegan: true,
@@ -270,16 +67,286 @@ export const menuItems: MenuItem[] = [
     prepTime: 3
   },
   {
-    id: '18',
-    name: 'Ev Şarabı',
-    description: 'Bardakta İtalyan şarapları seçimi (kırmızı, beyaz veya rosé)',
-    price: 12.99,
-    category: 'beverages',
+    id: '3',
+    name: 'Americano',
+    description: 'Espresso + sıcak su',
+    price: 14.00,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    isVegan: true,
+    isGlutenFree: true,
+    calories: 5,
+    prepTime: 3
+  },
+  {
+    id: '4',
+    name: 'Cappuccino',
+    description: 'Espresso + buharda ısıtılmış süt + süt köpüğü',
+    price: 18.00,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy'],
+    calories: 80,
+    prepTime: 4
+  },
+  {
+    id: '5',
+    name: 'Latte',
+    description: 'Espresso + bol sıcak süt + az köpük',
+    price: 20.00,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy'],
+    calories: 120,
+    prepTime: 4
+  },
+  {
+    id: '6',
+    name: 'Mocha',
+    description: 'Espresso + çikolata + sıcak süt + krema',
+    price: 22.00,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy'],
+    calories: 200,
+    prepTime: 5
+  },
+
+  // Soğuk İçecekler
+  {
+    id: '7',
+    name: 'Cold Brew',
+    description: '12 saat soğuk demleme, buz ile servis',
+    price: 16.00,
+    category: 'cold-drinks',
     image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center',
     imagePublicId: undefined,
     isVegan: true,
     isGlutenFree: true,
-    calories: 120,
+    calories: 5,
     prepTime: 2
+  },
+  {
+    id: '8',
+    name: 'Iced Latte',
+    description: 'Espresso + soğuk süt + buz',
+    price: 18.00,
+    category: 'cold-drinks',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy'],
+    calories: 100,
+    prepTime: 3
+  },
+  {
+    id: '9',
+    name: 'Frappé',
+    description: 'Buzlu kahve + süt + şeker, blender ile',
+    price: 20.00,
+    category: 'cold-drinks',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy'],
+    calories: 150,
+    prepTime: 4
+  },
+  {
+    id: '10',
+    name: 'Taze Sıkma Portakal Suyu',
+    description: 'Günlük taze sıkılmış portakal suyu',
+    price: 12.00,
+    category: 'cold-drinks',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    isVegan: true,
+    isGlutenFree: true,
+    calories: 110,
+    prepTime: 3
+  },
+
+  // Pastalar & Tatlılar
+  {
+    id: '11',
+    name: 'Cheesecake',
+    description: 'Ev yapımı New York usulü cheesecake',
+    price: 25.00,
+    category: 'pastries',
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy', 'eggs', 'gluten'],
+    isVegetarian: true,
+    calories: 350,
+    prepTime: 2,
+    isPopular: true
+  },
+  {
+    id: '12',
+    name: 'Brownie',
+    description: 'Çikolatalı brownie, dondurma ile',
+    price: 18.00,
+    category: 'pastries',
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy', 'eggs', 'gluten'],
+    isVegetarian: true,
+    calories: 280,
+    prepTime: 2
+  },
+  {
+    id: '13',
+    name: 'Tiramisu',
+    description: 'Kahve ve mascarpone ile klasik tiramisu',
+    price: 22.00,
+    category: 'pastries',
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy', 'eggs', 'gluten'],
+    isVegetarian: true,
+    calories: 320,
+    prepTime: 2
+  },
+  {
+    id: '14',
+    name: 'Croissant',
+    description: 'Tereyağlı kruvasan, reçel ile',
+    price: 8.00,
+    category: 'pastries',
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy', 'eggs', 'gluten'],
+    isVegetarian: true,
+    calories: 200,
+    prepTime: 1
+  },
+
+  // Sandviçler
+  {
+    id: '15',
+    name: 'Club Sandviç',
+    description: 'Tavuk, domates, marul, mayonez',
+    price: 28.00,
+    category: 'sandwiches',
+    image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['gluten', 'eggs'],
+    calories: 450,
+    prepTime: 8
+  },
+  {
+    id: '16',
+    name: 'Tuna Melt',
+    description: 'Ton balığı, kaşar peyniri, soğan',
+    price: 26.00,
+    category: 'sandwiches',
+    image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['seafood', 'dairy', 'gluten'],
+    calories: 420,
+    prepTime: 7
+  },
+  {
+    id: '17',
+    name: 'Veggie Sandviç',
+    description: 'Avokado, domates, salatalık, marul',
+    price: 22.00,
+    category: 'sandwiches',
+    image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    isVegetarian: true,
+    isVegan: true,
+    isGlutenFree: false,
+    calories: 300,
+    prepTime: 5
+  },
+
+  // Kahvaltı
+  {
+    id: '18',
+    name: 'Menemen',
+    description: 'Yumurta, domates, biber, soğan',
+    price: 24.00,
+    category: 'breakfast',
+    image: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['eggs'],
+    isVegetarian: true,
+    calories: 250,
+    prepTime: 10,
+    isPopular: true
+  },
+  {
+    id: '19',
+    name: 'Omlet',
+    description: '3 yumurta, peynir, mantar, domates',
+    price: 20.00,
+    category: 'breakfast',
+    image: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['eggs', 'dairy'],
+    isVegetarian: true,
+    calories: 300,
+    prepTime: 8
+  },
+  {
+    id: '20',
+    name: 'Pancake',
+    description: '3 adet pancake, bal ve tereyağı',
+    price: 18.00,
+    category: 'breakfast',
+    image: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy', 'eggs', 'gluten'],
+    isVegetarian: true,
+    calories: 400,
+    prepTime: 12
+  },
+
+  // Atıştırmalıklar
+  {
+    id: '21',
+    name: 'Çikolatalı Kurabiye',
+    description: 'Ev yapımı çikolatalı kurabiye',
+    price: 6.00,
+    category: 'snacks',
+    image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['dairy', 'eggs', 'gluten'],
+    isVegetarian: true,
+    calories: 150,
+    prepTime: 1
+  },
+  {
+    id: '22',
+    name: 'Granola Bar',
+    description: 'Yulaf, kuruyemiş, bal ile ev yapımı',
+    price: 8.00,
+    category: 'snacks',
+    image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['nuts'],
+    isVegetarian: true,
+    isVegan: true,
+    isGlutenFree: true,
+    calories: 200,
+    prepTime: 1
+  },
+  {
+    id: '23',
+    name: 'Kuruyemiş Karışımı',
+    description: 'Badem, ceviz, fındık karışımı',
+    price: 12.00,
+    category: 'snacks',
+    image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop&crop=center',
+    imagePublicId: undefined,
+    allergens: ['nuts'],
+    isVegetarian: true,
+    isVegan: true,
+    isGlutenFree: true,
+    calories: 300,
+    prepTime: 1
   }
 ];

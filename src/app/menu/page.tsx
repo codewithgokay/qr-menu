@@ -33,9 +33,8 @@ if (typeof window !== 'undefined') {
     document.head.appendChild(link);
   };
   
-  // Preload common Cloudinary transformations
-  const cloudinaryBase = 'https://res.cloudinary.com/dmudabrcn/image/upload';
-  preloadImage(`${cloudinaryBase}/f_auto,q_auto,w_96,h_96,c_fill/placeholder.jpg`);
+  // Preload common placeholder image (using data URL to avoid 404)
+  preloadImage('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik00OCA0MEw1NiA0OEw0OCA1Nkw0MCA0OEw0OCA0MFoiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+');
 }
 
 export default function MenuPage() {

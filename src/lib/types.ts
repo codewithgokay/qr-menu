@@ -45,7 +45,6 @@ export interface Restaurant {
     [key: string]: {
       open: string;
       close: string;
-      isClosed?: boolean;
     };
   };
   currency: string;

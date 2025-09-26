@@ -131,8 +131,8 @@ Update restaurant details in `src/data/menu.ts`:
 
 ```typescript
 export const restaurant: Restaurant = {
-  name: 'Your Restaurant Name',
-  description: 'Your restaurant description',
+  name: 'Dükkan',
+  description: 'Çanakkale\'nin en sevilen kahve dükkanı',
   address: 'Your address',
   phone: 'Your phone number',
   // ... other details

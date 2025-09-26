@@ -2,54 +2,31 @@ import { MenuItem, MenuCategory } from '@/lib/types'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
 
-// Cache for API responses - Reduced cache duration for immediate updates
-const cache = new Map<string, { data: unknown; timestamp: number }>();
-const CACHE_DURATION = 30 * 1000; // 30 seconds instead of 5 minutes
-
-// Helper function to get cached data or fetch fresh
-async function getCachedData<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
-  const cached = cache.get(key);
-  const now = Date.now();
-  
-  if (cached && (now - cached.timestamp) < CACHE_DURATION) {
-    return cached.data as T;
-  }
-  
-  try {
-    const data = await fetcher();
-    cache.set(key, { data, timestamp: now });
-    return data;
-  } catch (error) {
-    // If fetch fails and we have stale cache, return it
-    if (cached) {
-      return cached.data as T;
-    }
-    throw error;
-  }
-}
-
 // Function to clear cache when updates are made
 export function clearApiCache() {
-  cache.clear();
+  // No caching - always fetch fresh data
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('qr_menu_items');
+    localStorage.removeItem('qr_menu_categories');
+    localStorage.removeItem('menu_updated');
+  }
 }
 
 // Menu Items API
 export const menuItemsApi = {
   // Get all menu items
   getAll: async (): Promise<MenuItem[]> => {
-    return getCachedData('menu-items', async () => {
-      const cacheBuster = `?t=${Date.now()}`;
-      const response = await fetch(`${API_BASE_URL}/api/menu-items${cacheBuster}`, {
-        cache: 'no-store', // Disable Next.js caching for immediate updates
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate'
-        }
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch menu items')
+    const cacheBuster = `?t=${Date.now()}`;
+    const response = await fetch(`${API_BASE_URL}/api/menu-items${cacheBuster}`, {
+      cache: 'no-store', // Disable Next.js caching for immediate updates
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
       }
-      return response.json()
     });
+    if (!response.ok) {
+      throw new Error('Failed to fetch menu items')
+    }
+    return response.json()
   },
 
   // Get a specific menu item
@@ -125,19 +102,17 @@ export const menuItemsApi = {
 export const categoriesApi = {
   // Get all categories
   getAll: async (): Promise<MenuCategory[]> => {
-    return getCachedData('categories', async () => {
-      const cacheBuster = `?t=${Date.now()}`;
-      const response = await fetch(`${API_BASE_URL}/api/categories${cacheBuster}`, {
-        cache: 'no-store', // Disable Next.js caching for immediate updates
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate'
-        }
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch categories')
+    const cacheBuster = `?t=${Date.now()}`;
+    const response = await fetch(`${API_BASE_URL}/api/categories${cacheBuster}`, {
+      cache: 'no-store', // Disable Next.js caching for immediate updates
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
       }
-      return response.json()
     });
+    if (!response.ok) {
+      throw new Error('Failed to fetch categories')
+    }
+    return response.json()
   },
 
   // Get a specific category

@@ -16,20 +16,20 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Bella Vista - QR Menu',
-  description: 'Authentic Italian cuisine with a modern twist - Digital Menu',
-  keywords: 'restaurant, menu, italian, food, dining, qr menu',
-  authors: [{ name: 'Bella Vista Restaurant' }],
+  title: 'Dükkan - QR Menu',
+  description: 'Lezzetli yemekler ve içecekler - Dijital Menü',
+  keywords: 'restaurant, menu, food, dining, qr menu, dükkan',
+  authors: [{ name: 'Dükkan' }],
   openGraph: {
-    title: 'Bella Vista - QR Menu',
-    description: 'Authentic Italian cuisine with a modern twist',
+    title: 'Dükkan - QR Menu',
+    description: 'Lezzetli yemekler ve içecekler',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Bella Vista - QR Menu',
-    description: 'Authentic Italian cuisine with a modern twist',
+    title: 'Dükkan - QR Menu',
+    description: 'Lezzetli yemekler ve içecekler',
   },
   robots: {
     index: true,

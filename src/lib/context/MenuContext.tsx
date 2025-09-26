@@ -147,21 +147,7 @@ function menuReducer(state: ExtendedMenuState, action: MenuAction): ExtendedMenu
       };
     
     case 'UPDATE_ITEMS':
-      // Load items from localStorage
-      if (typeof window !== 'undefined') {
-        const savedItems = localStorage.getItem('qr_menu_items');
-        if (savedItems) {
-          try {
-            const parsedItems = JSON.parse(savedItems);
-            return {
-              ...state,
-              items: parsedItems,
-              filteredItems: parsedItems
-            };
-          } catch {
-          }
-        }
-      }
+      // This case is no longer needed - we always fetch fresh data
       return state;
     
     case 'SET_LOADING_PROGRESS':
@@ -207,57 +193,51 @@ export function MenuProvider({
         dispatch({ type: 'SET_ERROR', payload: null });
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 0 });
 
-        // Load static data first for immediate display
+        // Always load fresh data from API first - no static data fallback
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 25 });
-        dispatch({ type: 'SET_CATEGORIES', payload: fallbackCategories });
-        dispatch({ type: 'SET_ITEMS', payload: fallbackMenuItems });
-        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: fallbackMenuItems });
-        dispatch({ type: 'SET_LOADING_PROGRESS', payload: 50 });
-
-        // Try to load from API with timeout
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('API timeout')), 2000)
-        );
 
         const [itemsResult, categoriesResult] = await Promise.allSettled([
-          Promise.race([menuItemsApi.getAll(), timeoutPromise]),
-          Promise.race([categoriesApi.getAll(), timeoutPromise])
+          menuItemsApi.getAll(),
+          categoriesApi.getAll()
         ]);
         
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 75 });
         
-        let hasApiData = false;
-        let allItems: MenuItemType[] = fallbackMenuItems;
-        let allCategories: MenuCategoryType[] = fallbackCategories;
+        let allItems: MenuItemType[] = [];
+        let allCategories: MenuCategoryType[] = [];
         
         // Handle menu items result
         if (itemsResult.status === 'fulfilled' && Array.isArray(itemsResult.value) && itemsResult.value.length > 0) {
           allItems = itemsResult.value as MenuItemType[];
-          hasApiData = true;
-        } else if (itemsResult.status === 'rejected') {
+        } else {
+          // Only use fallback if API completely fails
+          allItems = fallbackMenuItems;
+          console.warn('Using fallback menu items');
         }
         
         // Handle categories result
         if (categoriesResult.status === 'fulfilled' && Array.isArray(categoriesResult.value) && categoriesResult.value.length > 0) {
           allCategories = categoriesResult.value as MenuCategoryType[];
-          hasApiData = true;
-        } else if (categoriesResult.status === 'rejected') {
+        } else {
+          // Only use fallback if API completely fails
+          allCategories = fallbackCategories;
+          console.warn('Using fallback categories');
         }
         
-        // Update with API data if available, otherwise keep static data
-        if (hasApiData) {
-          dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
-          dispatch({ type: 'SET_ITEMS', payload: allItems });
-          dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
-        } else {
-        }
+        // Update with fresh data
+        dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
+        dispatch({ type: 'SET_ITEMS', payload: allItems });
+        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
         
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 100 });
         
       } catch (error) {
-        console.error('Unexpected error in loadData:', error);
-        // Keep static data that was already loaded
-        dispatch({ type: 'SET_ERROR', payload: null });
+        console.error('Error loading menu data:', error);
+        // Only use fallback data if everything fails
+        dispatch({ type: 'SET_CATEGORIES', payload: fallbackCategories });
+        dispatch({ type: 'SET_ITEMS', payload: fallbackMenuItems });
+        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: fallbackMenuItems });
+        dispatch({ type: 'SET_ERROR', payload: 'Failed to load menu data' });
       } finally {
         dispatch({ type: 'SET_LOADING', payload: false });
         dispatch({ type: 'SET_INITIAL_LOAD', payload: false });
@@ -268,12 +248,7 @@ export function MenuProvider({
 
     // Listen for menu updates from admin panel
     const handleMenuUpdate = () => {
-      // Clear any existing cache and reload data
-      if (typeof window !== 'undefined') {
-        // Clear localStorage cache
-        localStorage.removeItem('qr_menu_items');
-        localStorage.removeItem('qr_menu_categories');
-      }
+      // Simply reload fresh data from API
       loadData();
     };
 

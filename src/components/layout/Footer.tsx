@@ -2,6 +2,7 @@
 
 import { Restaurant } from '@/lib/types';
 import { motion } from 'framer-motion';
+import { Instagram } from 'lucide-react';
 
 interface FooterProps {
   restaurant: Restaurant;
@@ -25,9 +26,25 @@ export function Footer({ restaurant }: FooterProps) {
             </p>
             <div className="space-y-2 text-sm text-text-secondary">
               <p>{restaurant.address}</p>
-              <p>{restaurant.phone}</p>
-              <p>{restaurant.email}</p>
             </div>
+            
+            {/* Social Media Links */}
+            {restaurant.socialMedia?.instagram && (
+              <div className="pt-2">
+                <a 
+                  href={`https://instagram.com/${restaurant.socialMedia.instagram.replace('@', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-3 text-text-secondary hover:text-sage transition-colors p-3 rounded-lg hover:bg-sage/10 group"
+                  aria-label="Instagram'da takip edin"
+                >
+                  <Instagram className="h-7 w-7 flex-shrink-0" />
+                  <span className="text-sm font-medium group-hover:text-sage transition-colors">
+                    {restaurant.socialMedia.instagram}
+                  </span>
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Operating Hours */}
@@ -36,11 +53,11 @@ export function Footer({ restaurant }: FooterProps) {
             <div className="space-y-2 text-sm">
               {Object.entries(restaurant.operatingHours).map(([day, hours]) => (
                 <div key={day} className="flex justify-between">
-                  <span className="capitalize text-text-secondary">
+                  <span className="text-text-secondary">
                     {day}
                   </span>
                   <span className="text-text-primary font-medium">
-                    {hours.isClosed ? 'Kapalı' : `${hours.open} - ${hours.close}`}
+                    {`${hours.open} - ${hours.close}`}
                   </span>
                 </div>
               ))}
@@ -49,7 +66,7 @@ export function Footer({ restaurant }: FooterProps) {
         </div>
 
         <div className="mt-12 pt-8 border-t border-warm-beige/50 text-center text-sm text-text-secondary">
-          <p>&copy; 2024 {restaurant.name}. Tüm hakları saklıdır.</p>
+          <p>&copy; 2025 {restaurant.name}. Tüm hakları saklıdır.</p>
           <p className="mt-1">QR Menü Teknolojisi ile güçlendirilmiştir</p>
         </div>
       </div>

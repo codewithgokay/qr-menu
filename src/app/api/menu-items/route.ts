@@ -100,10 +100,12 @@ export async function GET() {
     
     const response = NextResponse.json(transformedItems)
     
-    // Disable caching for immediate updates
-    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+    // Disable all forms of caching for immediate updates
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
     response.headers.set('Pragma', 'no-cache')
     response.headers.set('Expires', '0')
+    response.headers.set('Last-Modified', new Date().toUTCString())
+    response.headers.set('ETag', `"${Date.now()}"`)
     
     return response
   } catch (error) {

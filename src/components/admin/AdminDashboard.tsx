@@ -12,9 +12,6 @@ export function AdminDashboard({ menuItems, categories }: AdminDashboardProps) {
   // Calculate statistics
   const totalItems = menuItems.length;
   const totalCategories = categories.length;
-  const averagePrice = menuItems.length > 0 
-    ? menuItems.reduce((sum, item) => sum + item.price, 0) / menuItems.length 
-    : 0;
   
   const itemsByCategory = categories.map(category => ({
     name: category.name,
@@ -28,7 +25,7 @@ export function AdminDashboard({ menuItems, categories }: AdminDashboardProps) {
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Mobile-first stats grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
         <Card className="p-4 sm:p-6 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300">
           <div className="flex items-center">
             <div className="p-2 sm:p-3 rounded-full bg-sage/10">
@@ -53,17 +50,6 @@ export function AdminDashboard({ menuItems, categories }: AdminDashboardProps) {
           </div>
         </Card>
 
-        <Card className="p-4 sm:p-6 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300">
-          <div className="flex items-center">
-            <div className="p-2 sm:p-3 rounded-full bg-golden-accent/10">
-              <span className="text-lg sm:text-2xl">💰</span>
-            </div>
-            <div className="ml-3 sm:ml-4 min-w-0">
-              <p className="text-text-secondary text-xs sm:text-sm truncate">Ortalama Fiyat</p>
-              <p className="text-lg sm:text-2xl font-bold text-text-primary">₺{averagePrice.toFixed(2)}</p>
-            </div>
-          </div>
-        </Card>
 
         <Card className="p-4 sm:p-6 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300">
           <div className="flex items-center">

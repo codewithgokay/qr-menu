@@ -4,26 +4,31 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface SlidingImage {
-  src: string;
+  publicId: string;
   alt: string;
   id: number;
 }
 
 const foodImages: SlidingImage[] = [
   {
-    src: '/images/slider1.png',
-    alt: 'Bella Vista Restaurant - Image 1',
+    publicId: '/images/slider1.jpg',
+    alt: 'Dükkan - Coffee Shop Interior',
     id: 1
   },
   {
-    src: '/images/slider2.jpg',
-    alt: 'Bella Vista Restaurant - Image 2',
+    publicId: '/images/slider2.jpg',
+    alt: 'Dükkan - Coffee and Pastries',
     id: 2
   },
   {
-    src: '/images/slider3.jpg',
-    alt: 'Bella Vista Restaurant - Image 3',
+    publicId: '/images/slider3.jpg',
+    alt: 'Dükkan - Cozy Atmosphere',
     id: 3
+  },
+  {
+    publicId: '/images/slider4.jpg',
+    alt: 'Dükkan - Fresh Coffee',
+    id: 4
   }
 ];
 
@@ -51,7 +56,7 @@ export function SlidingBackground() {
       {/* Main sliding image */}
       <div className="relative w-full h-full">
         <Image
-          src={foodImages[currentImageIndex].src}
+          src={foodImages[currentImageIndex].publicId}
           alt={foodImages[currentImageIndex].alt}
           fill
           className={`object-cover transition-all duration-1000 ${
@@ -60,7 +65,6 @@ export function SlidingBackground() {
           priority
           sizes="100vw"
           quality={75}
-          unoptimized={false}
         />
         
         {/* Overlay for better text readability */}

@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Restaurant } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Phone, MapPin, Clock, Globe, Instagram, Facebook, Twitter, ChevronDown, Menu } from 'lucide-react';
+import { MapPin, Instagram, ChevronDown, Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ImageOptimized } from '@/components/common/ImageOptimized';
 
 interface HeaderProps {
   restaurant: Restaurant;
@@ -17,8 +18,6 @@ export function Header({ restaurant }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
-
-  const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() as keyof typeof restaurant.operatingHours;
 
 
   // Scroll detection
@@ -41,10 +40,27 @@ export function Header({ restaurant }: HeaderProps) {
       }`}
     >
       <div className={`px-6 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-8'}`}>
-        <div className="flex justify-between items-start">
-          <div className="flex-1 min-w-0">
-            <h1 className={`font-bold text-text-primary tracking-tight font-heading transition-all duration-300 ${
-              isScrolled ? 'text-2xl' : 'text-3xl'
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-3 flex-1 min-w-0">
+            {/* Logo */}
+            <div className={`relative flex-shrink-0 transition-all duration-300 ${
+              isScrolled ? 'w-10 h-10' : 'w-12 h-12'
+            }`}>
+              <ImageOptimized
+                src="https://res.cloudinary.com/dmudabrcn/image/upload/v1758914089/523085767_17926849875094634_313448216608259249_n_irrpd6.jpg"
+                alt="Dükkan Logo"
+                width={isScrolled ? 40 : 48}
+                height={isScrolled ? 40 : 48}
+                className="w-full h-full object-contain"
+                fallbackText="Dükkan"
+                priority={true}
+                lazy={false}
+              />
+            </div>
+            
+            {/* Restaurant Name */}
+            <h1 className={`font-bold text-text-primary tracking-tight font-heading transition-all duration-300 truncate ${
+              isScrolled ? 'text-xl' : 'text-2xl'
             }`}>
               {restaurant.name}
             </h1>
@@ -118,71 +134,26 @@ export function Header({ restaurant }: HeaderProps) {
           transition={{ duration: 0.3 }}
         >
           <div className="mt-6 pt-6 border-t border-warm-beige/30 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+            <div className="text-sm">
               <div className="flex items-center space-x-3 min-w-0">
                 <MapPin className="h-4 w-4 text-text-secondary flex-shrink-0" />
                 <span className="text-text-secondary truncate">{restaurant.address}</span>
               </div>
-              <div className="flex items-center space-x-3 min-w-0">
-                <Phone className="h-4 w-4 text-text-secondary flex-shrink-0" />
-                <a 
-                  href={`tel:${restaurant.phone}`}
-                  className="text-text-secondary hover:text-text-primary transition-colors truncate"
-                >
-                  {restaurant.phone}
-                </a>
-              </div>
-              <div className="flex items-center space-x-3 min-w-0 sm:col-span-2 lg:col-span-1">
-                <Clock className="h-4 w-4 text-text-secondary flex-shrink-0" />
-                <span className="text-text-secondary truncate">
-                  {restaurant.operatingHours[currentDay]?.isClosed 
-                    ? "Bugün Kapalı" 
-                    : `${restaurant.operatingHours[currentDay]?.open} - ${restaurant.operatingHours[currentDay]?.close}`
-                  }
-                </span>
-              </div>
             </div>
 
             {/* Social Media Links */}
-            <div className="flex items-center space-x-4 pt-2">
+            <div className="pt-2">
               {restaurant.socialMedia?.instagram && (
                 <a 
                   href={`https://instagram.com/${restaurant.socialMedia.instagram.replace('@', '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-sage transition-colors p-2 rounded-full hover:bg-sage/10"
+                  className="flex items-center space-x-3 text-text-secondary hover:text-sage transition-colors p-2 rounded-lg hover:bg-sage/10 group"
                 >
-                  <Instagram className="h-5 w-5" />
-                </a>
-              )}
-              {restaurant.socialMedia?.facebook && (
-                <a 
-                  href={`https://facebook.com/${restaurant.socialMedia.facebook}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-sage transition-colors p-2 rounded-full hover:bg-sage/10"
-                >
-                  <Facebook className="h-5 w-5" />
-                </a>
-              )}
-              {restaurant.socialMedia?.twitter && (
-                <a 
-                  href={`https://twitter.com/${restaurant.socialMedia.twitter.replace('@', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-sage transition-colors p-2 rounded-full hover:bg-sage/10"
-                >
-                  <Twitter className="h-5 w-5" />
-                </a>
-              )}
-              {restaurant.website && (
-                <a 
-                  href={restaurant.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-sage transition-colors p-2 rounded-full hover:bg-sage/10"
-                >
-                  <Globe className="h-5 w-5" />
+                  <Instagram className="h-5 w-5 flex-shrink-0" />
+                  <span className="text-sm font-medium group-hover:text-sage transition-colors">
+                    {restaurant.socialMedia.instagram}
+                  </span>
                 </a>
               )}
             </div>

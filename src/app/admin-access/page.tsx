@@ -12,7 +12,7 @@ export default function AdminAccessPage() {
   const [generatedUrl, setGeneratedUrl] = useState('');
 
   // Simple admin access key (in production, this should be more secure)
-  const ADMIN_ACCESS_KEY = 'admin2024';
+  const ADMIN_ACCESS_KEY = 'admindukkan';
 
   const handleGenerateUrl = () => {
     if (adminKey !== ADMIN_ACCESS_KEY) {

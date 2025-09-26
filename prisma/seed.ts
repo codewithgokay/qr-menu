@@ -19,31 +19,32 @@ async function main() {
   const restaurant = await prisma.restaurant.create({
     data: {
       id: '1',
-      name: 'Bella Vista',
-      description: 'Modern dokunuşlarla otantik İtalyan mutfağı',
+      name: 'Dükkan',
+      description: 'Çanakkale\'nin en sevilen kahve dükkanı - özel kahve çekirdekleri ve ev yapımı lezzetler',
       logo: '/images/logo.png',
       coverImage: '/images/restaurant-cover.jpg',
-      address: '123 Ana Cadde, Şehir Merkezi',
-      phone: '+90 (555) 123-4567',
-      email: 'info@bellavista.com',
-      website: 'https://bellavista.com',
-      instagram: '@bellavista_restaurant',
-      facebook: 'BellaVistaRestaurant',
-      twitter: '@BellaVistaEats',
+      address: 'Çanakkale Merkez, Türkiye',
+      phone: '+90 (286) 123-4567',
+      email: 'info@dukkancanakkale.com',
+      website: 'https://dukkancanakkale.com',
+      instagram: '@dukkancanakkale',
+      facebook: 'DukkanCanakkale',
+      twitter: '@DukkanCanakkale',
       currency: 'TRY',
       language: 'tr'
     }
   })
+  console.log('✅ Restaurant created:', restaurant.name)
 
   // Create operating hours
   const operatingHours = [
-    { dayOfWeek: 'monday', openTime: '11:00', closeTime: '22:00' },
-    { dayOfWeek: 'tuesday', openTime: '11:00', closeTime: '22:00' },
-    { dayOfWeek: 'wednesday', openTime: '11:00', closeTime: '22:00' },
-    { dayOfWeek: 'thursday', openTime: '11:00', closeTime: '22:00' },
-    { dayOfWeek: 'friday', openTime: '11:00', closeTime: '23:00' },
-    { dayOfWeek: 'saturday', openTime: '10:00', closeTime: '23:00' },
-    { dayOfWeek: 'sunday', openTime: '10:00', closeTime: '21:00' }
+    { dayOfWeek: 'monday', openTime: '07:00', closeTime: '22:00' },
+    { dayOfWeek: 'tuesday', openTime: '07:00', closeTime: '22:00' },
+    { dayOfWeek: 'wednesday', openTime: '07:00', closeTime: '22:00' },
+    { dayOfWeek: 'thursday', openTime: '07:00', closeTime: '22:00' },
+    { dayOfWeek: 'friday', openTime: '07:00', closeTime: '23:00' },
+    { dayOfWeek: 'saturday', openTime: '08:00', closeTime: '23:00' },
+    { dayOfWeek: 'sunday', openTime: '08:00', closeTime: '22:00' }
   ]
 
   for (const hours of operatingHours) {
@@ -54,15 +55,16 @@ async function main() {
       }
     })
   }
+  console.log('✅ Operating hours created')
 
   // Create categories
   const categories = [
-    { id: 'appetizers', name: 'Başlangıçlar', description: 'Yemeğinizi doğru şekilde başlatın', icon: '🥗', order: 1 },
-    { id: 'pizza', name: 'Pizzalar', description: 'Odun ateşinde pişmiş pizzalar', icon: '🍕', order: 2 },
-    { id: 'pasta', name: 'Makarnalar', description: 'Taze makarna yemekleri', icon: '🍝', order: 3 },
-    { id: 'mains', name: 'Ana Yemekler', description: 'Doyurucu ana yemekler', icon: '🍖', order: 4 },
-    { id: 'desserts', name: 'Tatlılar', description: 'Tatlı sonlar', icon: '🍰', order: 5 },
-    { id: 'beverages', name: 'İçecekler', description: 'İçecekler ve daha fazlası', icon: '🥤', order: 6 }
+    { id: 'coffee', name: 'Kahveler', description: 'Özel çekirdeklerden hazırlanan kahveler', icon: '☕', order: 1 },
+    { id: 'cold-drinks', name: 'Soğuk İçecekler', description: 'Serinletici içecekler', icon: '🧊', order: 2 },
+    { id: 'pastries', name: 'Pastalar & Tatlılar', description: 'Ev yapımı pastalar ve tatlılar', icon: '🧁', order: 3 },
+    { id: 'sandwiches', name: 'Sandviçler', description: 'Taze sandviçler ve tostlar', icon: '🥪', order: 4 },
+    { id: 'breakfast', name: 'Kahvaltı', description: 'Günün en önemli öğünü', icon: '🍳', order: 5 },
+    { id: 'snacks', name: 'Atıştırmalıklar', description: 'Hafif atıştırmalıklar', icon: '🥜', order: 6 }
   ]
 
   for (const category of categories) {
@@ -73,6 +75,7 @@ async function main() {
       }
     })
   }
+  console.log('✅ Categories created')
 
   // Create allergens
   const allergenNames = ['dairy', 'nuts', 'seafood', 'gluten', 'eggs', 'sulfites']
@@ -81,459 +84,273 @@ async function main() {
       data: { name: allergenName }
     })
   }
+  console.log('✅ Allergens created')
 
   // Create menu items
   const menuItems = [
-    // Başlangıçlar
+    // Kahveler
     {
       id: '1',
-      name: 'Zeytinyağlı Yaprak Sarma',
-      description: 'İnce asma yapraklarına sarılı pirinç, kuş üzümü ve fıstık dolması.',
-      price: 45.00,
-      categoryId: 'appetizers',
-      calories: 220,
-      prepTime: 15,
+      name: 'Türk Kahvesi',
+      description: 'Geleneksel Türk kahvesi, lokum eşliğinde',
+      price: 15.00,
+      categoryId: 'coffee',
+      calories: 5,
+      prepTime: 5,
       order: 1,
-      allergens: ['gluten', 'nuts']
+      allergens: []
     },
     {
       id: '2',
-      name: 'Fava',
-      description: 'Ege usulü bakla ezmesi, zeytinyağı ve dereotu ile sunulur.',
-      price: 35.00,
-      categoryId: 'appetizers',
-      calories: 180,
-      prepTime: 10,
+      name: 'Espresso',
+      description: 'Tek shot özel çekirdek espressosu',
+      price: 12.00,
+      categoryId: 'coffee',
+      calories: 5,
+      prepTime: 3,
       order: 2,
       allergens: []
     },
     {
       id: '3',
-      name: 'Çerkez Tavuğu',
-      description: 'Didiklenmiş tavuk, ceviz ve sarımsaklı yoğurtla harmanlanır.',
-      price: 55.00,
-      categoryId: 'appetizers',
-      calories: 260,
-      prepTime: 15,
+      name: 'Americano',
+      description: 'Espresso + sıcak su',
+      price: 14.00,
+      categoryId: 'coffee',
+      calories: 5,
+      prepTime: 3,
       order: 3,
-      allergens: ['nuts', 'dairy']
+      allergens: []
     },
     {
       id: '4',
-      name: 'Köz Patlıcan Salatası',
-      description: 'Odun ateşinde közlenmiş patlıcan, domates ve biber ile.',
-      price: 40.00,
-      categoryId: 'appetizers',
-      calories: 90,
-      prepTime: 10,
+      name: 'Cappuccino',
+      description: 'Espresso + buharda ısıtılmış süt + süt köpüğü',
+      price: 18.00,
+      categoryId: 'coffee',
+      calories: 80,
+      prepTime: 4,
       order: 4,
-      allergens: []
+      allergens: ['dairy']
     },
     {
       id: '5',
-      name: 'Levrek Marine',
-      description: 'Balık narenciye ve zeytinyağıyla marine edilmiş ince levrek dilimleri.',
-      price: 65.00,
-      categoryId: 'appetizers',
-      calories: 150,
-      prepTime: 20,
+      name: 'Latte',
+      description: 'Espresso + bol sıcak süt + az köpük',
+      price: 20.00,
+      categoryId: 'coffee',
+      calories: 120,
+      prepTime: 4,
       order: 5,
-      allergens: ['seafood']
+      allergens: ['dairy']
     },
-    
-    // Pizzalar
     {
       id: '6',
-      name: 'Türk Usulü Lahmacun Pizza',
-      description: 'İnce hamur, baharatlı kıyma harcı, maydanoz ve limon.',
-      price: 85.00,
-      categoryId: 'pizza',
-      calories: 300,
-      prepTime: 15,
+      name: 'Mocha',
+      description: 'Espresso + çikolata + sıcak süt + krema',
+      price: 22.00,
+      categoryId: 'coffee',
+      calories: 200,
+      prepTime: 5,
       order: 6,
-      allergens: ['gluten']
+      allergens: ['dairy']
     },
+    
+    // Soğuk İçecekler
     {
       id: '7',
-      name: 'Sucuklu Pizza',
-      description: 'Türk sucuğu, mozarella ve domates sosu.',
-      price: 95.00,
-      categoryId: 'pizza',
-      calories: 420,
-      prepTime: 20,
+      name: 'Cold Brew',
+      description: '12 saat soğuk demleme, buz ile servis',
+      price: 16.00,
+      categoryId: 'cold-drinks',
+      calories: 5,
+      prepTime: 2,
       order: 7,
-      allergens: ['gluten', 'dairy']
+      allergens: []
     },
     {
       id: '8',
-      name: 'Pastırmalı Pizza',
-      description: 'Kayseri pastırması, kaşar ve taze domates.',
-      price: 105.00,
-      categoryId: 'pizza',
-      calories: 400,
-      prepTime: 20,
+      name: 'Iced Latte',
+      description: 'Espresso + soğuk süt + buz',
+      price: 18.00,
+      categoryId: 'cold-drinks',
+      calories: 100,
+      prepTime: 3,
       order: 8,
-      allergens: ['gluten', 'dairy']
+      allergens: ['dairy']
     },
     {
       id: '9',
-      name: 'Sebzeli Pizza',
-      description: 'Közlenmiş sebzeler ve siyah zeytin.',
-      price: 80.00,
-      categoryId: 'pizza',
-      calories: 320,
-      prepTime: 18,
+      name: 'Frappé',
+      description: 'Buzlu kahve + süt + şeker, blender ile',
+      price: 20.00,
+      categoryId: 'cold-drinks',
+      calories: 150,
+      prepTime: 4,
       order: 9,
-      allergens: ['gluten', 'dairy']
+      allergens: ['dairy']
     },
     {
       id: '10',
-      name: 'Mantarlı Beyaz Peynirli Pizza',
-      description: 'Taze mantar, ezine peyniri ve roka.',
-      price: 90.00,
-      categoryId: 'pizza',
-      calories: 350,
-      prepTime: 18,
+      name: 'Taze Sıkma Portakal Suyu',
+      description: 'Günlük taze sıkılmış portakal suyu',
+      price: 12.00,
+      categoryId: 'cold-drinks',
+      calories: 110,
+      prepTime: 3,
       order: 10,
-      allergens: ['gluten', 'dairy']
+      allergens: []
     },
     
-    // Makarnalar
+    // Pastalar & Tatlılar
     {
       id: '11',
-      name: 'Deniz Mahsullü Linguine',
-      description: 'Karides, midye ve kalamar ile.',
-      price: 120.00,
-      categoryId: 'pasta',
-      calories: 480,
-      prepTime: 20,
+      name: 'Cheesecake',
+      description: 'Ev yapımı New York usulü cheesecake',
+      price: 25.00,
+      categoryId: 'pastries',
+      calories: 350,
+      prepTime: 2,
       order: 11,
-      allergens: ['gluten', 'seafood']
+      allergens: ['dairy', 'eggs', 'gluten']
     },
     {
       id: '12',
-      name: 'Kuzu Etli Ravioli',
-      description: 'El yapımı ravioli, kuzu eti dolgusu, yoğurtlu sos.',
-      price: 110.00,
-      categoryId: 'pasta',
-      calories: 500,
-      prepTime: 25,
+      name: 'Brownie',
+      description: 'Çikolatalı brownie, dondurma ile',
+      price: 18.00,
+      categoryId: 'pastries',
+      calories: 280,
+      prepTime: 2,
       order: 12,
-      allergens: ['gluten', 'dairy', 'eggs']
+      allergens: ['dairy', 'eggs', 'gluten']
     },
     {
       id: '13',
-      name: 'Trüf Mantarlı Tagliatelle',
-      description: 'Krema ve siyah trüf mantarıyla.',
-      price: 130.00,
-      categoryId: 'pasta',
-      calories: 450,
-      prepTime: 18,
+      name: 'Tiramisu',
+      description: 'Kahve ve mascarpone ile klasik tiramisu',
+      price: 22.00,
+      categoryId: 'pastries',
+      calories: 320,
+      prepTime: 2,
       order: 13,
-      allergens: ['gluten', 'dairy']
+      allergens: ['dairy', 'eggs', 'gluten']
     },
     {
       id: '14',
-      name: 'Domates ve Fesleğenli Penne',
-      description: 'Anadolu zeytinyağı dokunuşlu klasik sos.',
-      price: 75.00,
-      categoryId: 'pasta',
-      calories: 400,
-      prepTime: 15,
+      name: 'Croissant',
+      description: 'Tereyağlı kruvasan, reçel ile',
+      price: 8.00,
+      categoryId: 'pastries',
+      calories: 200,
+      prepTime: 1,
       order: 14,
-      allergens: ['gluten']
-    },
-    {
-      id: '15',
-      name: 'Gluten Izgara Sebzeli Spaghetti',
-      description: 'Közlenmiş sebzeler ve sarımsaklı zeytinyağı.',
-      price: 70.00,
-      categoryId: 'pasta',
-      calories: 380,
-      prepTime: 18,
-      order: 15,
-      allergens: ['gluten']
+      allergens: ['dairy', 'eggs', 'gluten']
     },
     
-    // Ana Yemekler
+    // Sandviçler
+    {
+      id: '15',
+      name: 'Club Sandviç',
+      description: 'Tavuk, domates, marul, mayonez',
+      price: 28.00,
+      categoryId: 'sandwiches',
+      calories: 450,
+      prepTime: 8,
+      order: 15,
+      allergens: ['gluten', 'eggs']
+    },
     {
       id: '16',
-      name: 'Kuzu İncik',
-      description: 'Düşük ısıda pişirilmiş incik, patates püresi eşliğinde.',
-      price: 180.00,
-      categoryId: 'mains',
-      calories: 600,
-      prepTime: 40,
+      name: 'Tuna Melt',
+      description: 'Ton balığı, kaşar peyniri, soğan',
+      price: 26.00,
+      categoryId: 'sandwiches',
+      calories: 420,
+      prepTime: 7,
       order: 16,
-      allergens: []
+      allergens: ['seafood', 'dairy', 'gluten']
     },
     {
       id: '17',
-      name: 'Fırında Levrek',
-      description: 'Kekik ve limon sosuyla taş fırında.',
-      price: 140.00,
-      categoryId: 'mains',
-      calories: 350,
-      prepTime: 25,
+      name: 'Veggie Sandviç',
+      description: 'Avokado, domates, salatalık, marul',
+      price: 22.00,
+      categoryId: 'sandwiches',
+      calories: 300,
+      prepTime: 5,
       order: 17,
-      allergens: ['seafood']
+      allergens: ['gluten']
     },
+    
+    // Kahvaltı
     {
       id: '18',
-      name: 'Dana Madalyon',
-      description: 'Izgara dana fileto, demiglace sos.',
-      price: 160.00,
-      categoryId: 'mains',
-      calories: 550,
-      prepTime: 30,
+      name: 'Menemen',
+      description: 'Yumurta, domates, biber, soğan',
+      price: 24.00,
+      categoryId: 'breakfast',
+      calories: 250,
+      prepTime: 10,
       order: 18,
-      allergens: []
+      allergens: ['eggs']
     },
     {
       id: '19',
-      name: 'Izgara Kuzu Pirzola',
-      description: 'Marine edilmiş pirzola, köz patlıcan püresiyle.',
-      price: 150.00,
-      categoryId: 'mains',
-      calories: 500,
-      prepTime: 25,
+      name: 'Omlet',
+      description: '3 yumurta, peynir, mantar, domates',
+      price: 20.00,
+      categoryId: 'breakfast',
+      calories: 300,
+      prepTime: 8,
       order: 19,
-      allergens: []
+      allergens: ['eggs', 'dairy']
     },
     {
       id: '20',
-      name: 'Tandır Tavuk',
-      description: 'Yavaş pişirilmiş tavuk, bulgur pilavı ve yoğurt sos.',
-      price: 120.00,
-      categoryId: 'mains',
-      calories: 420,
-      prepTime: 35,
+      name: 'Pancake',
+      description: '3 adet pancake, bal ve tereyağı',
+      price: 18.00,
+      categoryId: 'breakfast',
+      calories: 400,
+      prepTime: 12,
       order: 20,
-      allergens: ['dairy']
+      allergens: ['dairy', 'eggs', 'gluten']
     },
     
-    // Tatlılar
+    // Atıştırmalıklar
     {
       id: '21',
-      name: 'Baklava Trio',
-      description: 'Fıstıklı, cevizli ve kaymaklı küçük porsiyon baklava.',
-      price: 60.00,
-      categoryId: 'desserts',
-      calories: 280,
-      prepTime: 5,
+      name: 'Çikolatalı Kurabiye',
+      description: 'Ev yapımı çikolatalı kurabiye',
+      price: 6.00,
+      categoryId: 'snacks',
+      calories: 150,
+      prepTime: 1,
       order: 21,
-      allergens: ['gluten', 'nuts', 'dairy']
+      allergens: ['dairy', 'eggs', 'gluten']
     },
     {
       id: '22',
-      name: 'İncir Tatlısı',
-      description: 'Ceviz dolgulu kuru incir, kaymak ile.',
-      price: 50.00,
-      categoryId: 'desserts',
-      calories: 250,
-      prepTime: 8,
+      name: 'Granola Bar',
+      description: 'Yulaf, kuruyemiş, bal ile ev yapımı',
+      price: 8.00,
+      categoryId: 'snacks',
+      calories: 200,
+      prepTime: 1,
       order: 22,
-      allergens: ['nuts', 'dairy']
+      allergens: ['nuts']
     },
     {
       id: '23',
-      name: 'Sütlaç Brûlée',
-      description: 'Karamelize üst katmanlı geleneksel sütlaç.',
-      price: 45.00,
-      categoryId: 'desserts',
-      calories: 220,
-      prepTime: 10,
+      name: 'Kuruyemiş Karışımı',
+      description: 'Badem, ceviz, fındık karışımı',
+      price: 12.00,
+      categoryId: 'snacks',
+      calories: 300,
+      prepTime: 1,
       order: 23,
-      allergens: ['dairy']
-    },
-    {
-      id: '24',
-      name: 'Künefe',
-      description: 'Tel kadayıf içinde eriyen peynir, şerbetle.',
-      price: 55.00,
-      categoryId: 'desserts',
-      calories: 400,
-      prepTime: 20,
-      order: 24,
-      allergens: ['gluten', 'dairy']
-    },
-    {
-      id: '25',
-      name: 'Sakızlı Muhallebi',
-      description: 'Sakız aromalı muhallebi, fıstık ve meyve ile.',
-      price: 40.00,
-      categoryId: 'desserts',
-      calories: 200,
-      prepTime: 10,
-      order: 25,
-      allergens: ['dairy']
-    },
-    
-    // İçecekler
-    {
-      id: '26',
-      name: 'Şalgam Suyu',
-      description: 'Adana usulü, acılı veya acısız.',
-      price: 15.00,
-      categoryId: 'beverages',
-      calories: 30,
-      prepTime: 2,
-      order: 26,
-      allergens: []
-    },
-    {
-      id: '27',
-      name: 'Ev Yapımı Ayran',
-      description: 'Bakır kaplarda köpüklü servis.',
-      price: 12.00,
-      categoryId: 'beverages',
-      calories: 90,
-      prepTime: 3,
-      order: 27,
-      allergens: ['dairy']
-    },
-    {
-      id: '28',
-      name: 'Nar Şerbeti',
-      description: 'Osmanlı usulü, baharatlarla tatlandırılmış.',
-      price: 18.00,
-      categoryId: 'beverages',
-      calories: 70,
-      prepTime: 2,
-      order: 28,
-      allergens: []
-    },
-    {
-      id: '29',
-      name: 'Demirhindi Şerbeti',
-      description: 'Ekşimsi ferahlatıcı geleneksel içecek.',
-      price: 16.00,
-      categoryId: 'beverages',
-      calories: 60,
-      prepTime: 2,
-      order: 29,
-      allergens: []
-    },
-    {
-      id: '30',
-      name: 'Kızılcık Şerbeti',
-      description: 'Soğuk servis edilen doğal şerbet.',
-      price: 14.00,
-      categoryId: 'beverages',
-      calories: 50,
-      prepTime: 2,
-      order: 30,
-      allergens: []
-    },
-    {
-      id: '31',
-      name: 'Taze Sıkma Portakal Suyu',
-      description: 'Günlük taze sıkılmış.',
-      price: 20.00,
-      categoryId: 'beverages',
-      calories: 110,
-      prepTime: 3,
-      order: 31,
-      allergens: []
-    },
-    {
-      id: '32',
-      name: 'Ev Yapımı Limonata',
-      description: 'Naneli ve ferahlatıcı.',
-      price: 15.00,
-      categoryId: 'beverages',
-      calories: 80,
-      prepTime: 3,
-      order: 32,
-      allergens: []
-    },
-    {
-      id: '33',
-      name: 'Taze Nane-Soğuk Çay',
-      description: 'Çay, nane ve limon karışımı.',
-      price: 12.00,
-      categoryId: 'beverages',
-      calories: 40,
-      prepTime: 4,
-      order: 33,
-      allergens: []
-    },
-    {
-      id: '34',
-      name: 'Türk Kahvesi',
-      description: 'Bakır cezvede, lokum eşliğinde.',
-      price: 25.00,
-      categoryId: 'beverages',
-      calories: 20,
-      prepTime: 5,
-      order: 34,
-      allergens: []
-    },
-    {
-      id: '35',
-      name: 'Menengiç Kahvesi',
-      description: 'Sütlü ve aromatik yöresel kahve.',
-      price: 30.00,
-      categoryId: 'beverages',
-      calories: 60,
-      prepTime: 5,
-      order: 35,
-      allergens: []
-    },
-    {
-      id: '36',
-      name: 'Dibek Kahvesi',
-      description: 'Yoğun aromalı, taş dibekte öğütülmüş.',
-      price: 28.00,
-      categoryId: 'beverages',
-      calories: 25,
-      prepTime: 5,
-      order: 36,
-      allergens: []
-    },
-    {
-      id: '37',
-      name: 'Demleme Rize Çayı',
-      description: 'İnce belli bardakta, geleneksel servis.',
-      price: 8.00,
-      categoryId: 'beverages',
-      calories: 0,
-      prepTime: 5,
-      order: 37,
-      allergens: []
-    },
-    {
-      id: '38',
-      name: 'Bitki Çayları',
-      description: 'Ihlamur, adaçayı, kuşburnu, papatya.',
-      price: 10.00,
-      categoryId: 'beverages',
-      calories: 5,
-      prepTime: 5,
-      order: 38,
-      allergens: []
-    },
-    {
-      id: '39',
-      name: 'Nostaljik Gazoz',
-      description: 'Cam şişede, meyve aromalı yerli gazoz.',
-      price: 18.00,
-      categoryId: 'beverages',
-      calories: 120,
-      prepTime: 1,
-      order: 39,
-      allergens: []
-    },
-    {
-      id: '40',
-      name: 'Şarap Seçkisi',
-      description: 'Yerli bağlardan kırmızı, beyaz, roze.',
-      price: 45.00,
-      categoryId: 'beverages',
-      calories: 150,
-      prepTime: 1,
-      order: 40,
-      allergens: ['sulfites']
+      allergens: ['nuts']
     }
   ]
 
@@ -568,18 +385,13 @@ async function main() {
       }
     }
   }
-
-  console.log('✅ Restaurant created:', restaurant.name)
-  console.log('✅ Operating hours created')
-  console.log('✅ Categories created')
-  console.log('✅ Allergens created')
   console.log('✅ Menu items created')
   console.log('🎉 Database seed completed successfully!')
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Error during seed:', e)
+    console.error('Error during seeding:', e)
     process.exit(1)
   })
   .finally(async () => {

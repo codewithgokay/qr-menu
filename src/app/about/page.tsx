@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { restaurant } from '@/data/menu';
 import { motion } from 'framer-motion';
-import { Clock, MapPin, Phone, Heart, Users, Award, ChefHat } from 'lucide-react';
+import { Clock, MapPin, Phone, Heart, Users, Award, Coffee } from 'lucide-react';
 
 export default function AboutPage() {
   return (
@@ -24,8 +24,8 @@ export default function AboutPage() {
               Hakkımızda
             </h1>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto leading-relaxed">
-              Bella Vista olarak, 2015 yılından beri İtalya&apos;nın en otantik lezzetlerini 
-              sizlere sunmanın gururunu yaşıyoruz.
+              Dükkan olarak, 2020 yılından beri Çanakkale&apos;de en kaliteli kahve çekirdekleri 
+              ve ev yapımı lezzetlerle sizlere hizmet vermenin gururunu yaşıyoruz.
             </p>
           </motion.div>
 
@@ -43,27 +43,28 @@ export default function AboutPage() {
                 </h2>
                 <div className="space-y-4 text-text-secondary leading-relaxed">
                   <p>
-                    Bella Vista, İtalya&apos;nın güneyindeki küçük bir kasabada doğan bir aşk hikayesidir. 
-                    Kurucumuz Mario&apos;nun büyükannesi Maria&apos;nın mutfağında başlayan bu yolculuk, 
-                    bugün İstanbul&apos;un kalbinde en seçkin İtalyan restoranlarından biri olarak devam ediyor.
+                    Dükkan, Çanakkale&apos;nin kalbinde doğan bir kahve tutkusunun hikayesidir. 
+                    Kurucumuzun dünya çapında kahve çekirdekleri keşfetme yolculuğu, 
+                    bugün şehrin en sevilen kahve dükkanı olarak devam ediyor.
                   </p>
                   <p>
-                    Her yemeğimizde, İtalya&apos;nın sıcaklığını, ailenin sıcaklığını ve geleneksel 
-                    lezzetlerin büyüsünü hissedeceksiniz. Taze malzemeler, geleneksel tarifler ve 
-                    modern sunum teknikleriyle harmanladığımız mutfağımız, sizleri İtalya&apos;ya götürüyor.
+                    Her fincan kahvemizde, dünyanın dört bir yanından gelen en kaliteli çekirdeklerin 
+                    aromasını, ev yapımı pastalarımızın sıcaklığını ve samimi atmosferimizin 
+                    büyüsünü hissedeceksiniz. Taze çekirdekler, özel demleme teknikleri ve 
+                    modern sunumla harmanladığımız kahve deneyimimiz, sizleri farklı lezzet dünyalarına götürüyor.
                   </p>
                   <p>
-                    Sadece yemek değil, bir deneyim sunuyoruz. Her ziyaretinizde, sıcak bir karşılama, 
-                    samimi bir atmosfer ve unutulmaz lezzetlerle dolu bir akşam geçireceksiniz.
+                    Sadece kahve değil, bir yaşam tarzı sunuyoruz. Her ziyaretinizde, sıcak bir karşılama, 
+                    rahat bir atmosfer ve unutulmaz kahve deneyimleriyle dolu bir gün geçireceksiniz.
                   </p>
                 </div>
               </div>
               <div className="relative">
                 <div className="bg-gradient-to-br from-sage/20 to-warm-beige/20 rounded-2xl p-8 h-96 flex items-center justify-center">
                   <div className="text-center">
-                    <ChefHat className="h-16 w-16 text-sage mx-auto mb-4" />
-                    <h3 className="text-2xl font-bold text-text-primary mb-2">Geleneksel Lezzetler</h3>
-                    <p className="text-text-secondary">Aile tariflerimizle hazırlanan otantik İtalyan yemekleri</p>
+                    <Coffee className="h-16 w-16 text-sage mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-text-primary mb-2">Özel Kahve Çekirdekleri</h3>
+                    <p className="text-text-secondary">Dünyanın dört bir yanından seçilmiş en kaliteli kahve çekirdekleri</p>
                   </div>
                 </div>
               </div>
@@ -88,7 +89,7 @@ export default function AboutPage() {
                 <Heart className="h-12 w-12 text-sage mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-text-primary mb-3">Aşk</h3>
                 <p className="text-text-secondary">
-                  Yemek yapmaya olan aşkımız, her tabağımızda hissedilir. 
+                  Kahve yapmaya olan aşkımız, her fincanımızda hissedilir. 
                   Sadece lezzet değil, duygu da sunuyoruz.
                 </p>
               </motion.div>
@@ -112,8 +113,8 @@ export default function AboutPage() {
                 <Award className="h-12 w-12 text-sage mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-text-primary mb-3">Kalite</h3>
                 <p className="text-text-secondary">
-                  En taze malzemeler, geleneksel tarifler ve modern sunum 
-                  teknikleriyle en yüksek kaliteyi garanti ediyoruz.
+                  En taze çekirdekler, özel demleme teknikleri ve modern sunum 
+                  ile en yüksek kahve kalitesini garanti ediyoruz.
                 </p>
               </motion.div>
             </div>
@@ -151,8 +152,9 @@ export default function AboutPage() {
                 <Clock className="h-8 w-8 text-sage mx-auto mb-3" />
                 <h3 className="font-semibold text-text-primary mb-2">Çalışma Saatleri</h3>
                 <p className="text-text-secondary">
-                  Pazartesi - Pazar<br />
-                  11:00 - 23:00
+                  Pazartesi - Perşembe: 07:00 - 22:00<br />
+                  Cuma: 07:00 - 23:00<br />
+                  Cumartesi - Pazar: 08:00 - 23:00
                 </p>
               </div>
             </div>
