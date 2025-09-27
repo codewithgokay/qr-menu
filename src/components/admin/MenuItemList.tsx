@@ -123,8 +123,8 @@ function SortableMenuItem({
         {/* Item Details */}
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start mb-1">
-            <h3 className="text-lg font-semibold text-text-primary truncate">{item.name}</h3>
-            <span className="text-lg font-bold text-sage ml-2">₺{item.price}</span>
+            <h3 className="text-lg font-semibold text-text-primary leading-tight flex-1 mr-3">{item.name}</h3>
+            <span className="text-lg font-bold text-sage flex-shrink-0">₺{item.price}</span>
           </div>
           
           <p className="text-text-secondary text-sm mb-2 line-clamp-1">{item.description}</p>

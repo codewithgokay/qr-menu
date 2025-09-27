@@ -303,6 +303,15 @@ export function AdminPanel({
         }));
         
         await menuItemsApi.reorder(itemsWithOrder);
+        
+        // Clear API cache and trigger menu page refresh only once when done
+        clearApiCache();
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('menu_updated', Date.now().toString());
+          // Also dispatch a custom event to trigger immediate refresh
+          window.dispatchEvent(new CustomEvent('menuUpdated'));
+        }
+        
         showMessage('success', 'Ürün sıralaması başarıyla kaydedildi');
       } catch (error) {
         console.error('Error saving item order:', error);
@@ -313,33 +322,10 @@ export function AdminPanel({
     setIsItemManageMode(!isItemManageMode);
   };
 
-  const handleItemReorder = async (reorderedItems: MenuItem[]) => {
-    try {
-      // Update local state immediately for better UX
-      setMenuItems(reorderedItems);
-      onMenuUpdate(reorderedItems);
-
-      // Save to database
-      const itemsWithOrder = reorderedItems.map((item, index) => ({
-        id: item.id,
-        order: index + 1 // Start from 1, not 0
-      }));
-
-      await menuItemsApi.reorder(itemsWithOrder);
-      
-      // Clear API cache and trigger menu page refresh
-      clearApiCache();
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('menu_updated', Date.now().toString());
-        // Also dispatch a custom event to trigger immediate refresh
-        window.dispatchEvent(new CustomEvent('menuUpdated'));
-      }
-      
-      showMessage('success', 'Ürün sıralaması başarıyla kaydedildi');
-    } catch (error) {
-      console.error('Error reordering menu items:', error);
-      showMessage('error', 'Ürünler sıralanırken hata oluştu');
-    }
+  const handleItemReorder = (reorderedItems: MenuItem[]) => {
+    // Update local state immediately for better UX (like categories)
+    setMenuItems(reorderedItems);
+    onMenuUpdate(reorderedItems);
   };
 
   const handlePasswordChange = async (currentPassword: string, newPassword: string) => {
@@ -598,38 +584,6 @@ export function AdminPanel({
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <PasswordChangeForm onPasswordChange={handlePasswordChange} />
                 
-                <div className="p-6 bg-white shadow-soft border border-warm-beige rounded-lg hover:shadow-elevated transition-all duration-300">
-                  <h3 className="text-lg font-semibold text-text-primary mb-4 font-heading">Veri Yönetimi</h3>
-                  <div className="space-y-4">
-                    <Button
-                      onClick={() => {
-                        if (confirm('Tüm menü verilerini sıfırlamak istediğinizden emin misiniz?')) {
-                          setMenuItems([]);
-                          localStorage.removeItem('qr_menu_items');
-                        }
-                      }}
-                      className="w-full bg-destructive hover:bg-destructive/90 text-white"
-                    >
-                      Tüm Verileri Sıfırla
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        const dataStr = JSON.stringify(menuItems, null, 2);
-                        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                        const url = URL.createObjectURL(dataBlob);
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.download = 'menu-backup.json';
-                        link.click();
-                        URL.revokeObjectURL(url);
-                      }}
-                      className="w-full bg-sage hover:bg-sage/90 text-white"
-                    >
-                      Verileri Yedekle
-                    </Button>
-                  </div>
-                </div>
-
                 <div className="p-6 bg-white shadow-soft border border-warm-beige rounded-lg hover:shadow-elevated transition-all duration-300">
                   <h3 className="text-lg font-semibold text-text-primary mb-4 font-heading">Sistem Bilgileri</h3>
                   <div className="space-y-2 text-text-secondary">

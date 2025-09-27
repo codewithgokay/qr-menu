@@ -19,7 +19,7 @@ export default function HomePage() {
             Dükkan&apos;a Hoş Geldiniz
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 sm:mb-10 leading-relaxed drop-shadow-lg max-w-3xl mx-auto">
-            Çanakkale&apos;nin en sevilen kahve dükkanına hoş geldiniz. Özenle seçilmiş özel çekirdeklerden hazırlanan birinci sınıf kahvelerimiz, ev yapımı lezzetlerimiz ve sıcak atmosferimizle gününüzü güzelleştiriyoruz. Her yudumda fark edeceğiniz kalite ve lezzet arayışımızla, sizlere unutulmaz bir kahve deneyimi sunuyoruz.
+            Çanakkale&apos;nin en sevilen kahve dükkanında özel çekirdeklerden hazırlanan birinci sınıf kahveler ve ev yapımı lezzetler sizi bekliyor.
           </p>
           <div className="flex justify-center">
             <Link 

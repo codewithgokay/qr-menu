@@ -93,10 +93,10 @@ export function MenuItem({ item, index }: MenuItemProps) {
               {/* Content Section */}
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-lg text-text-primary truncate">
+                  <h3 className="font-semibold text-lg text-text-primary leading-tight flex-1 mr-3">
                     {item.name}
                   </h3>
-                  <span className="font-bold text-xl text-navy-slate ml-4">
+                  <span className="font-bold text-xl text-navy-slate flex-shrink-0">
                     {formatPrice(item.price)}
                   </span>
                 </div>

@@ -18,7 +18,7 @@ export function AdminHeader() {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
-            <h1 className="text-lg sm:text-2xl font-bold text-text-primary font-heading truncate">Admin Paneli</h1>
+            <h1 className="text-lg sm:text-2xl font-bold text-text-primary font-heading leading-tight">Admin Paneli</h1>
             <span className="text-text-secondary text-xs sm:text-sm hidden sm:inline">Dükkan</span>
           </div>
           
