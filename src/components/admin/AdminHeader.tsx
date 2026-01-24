@@ -3,10 +3,15 @@
 import { logout, redirectToCustomer } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 
-export function AdminHeader() {
+interface AdminHeaderProps {
+  onLogout?: () => void;
+}
+
+export function AdminHeader({ onLogout }: AdminHeaderProps) {
   const handleLogout = () => {
     logout();
     redirectToCustomer();
+    onLogout?.();
   };
 
   const handleBackToMenu = () => {
@@ -21,7 +26,7 @@ export function AdminHeader() {
             <h1 className="text-lg sm:text-2xl font-bold text-text-primary font-heading leading-tight">Admin Paneli</h1>
             <span className="text-text-secondary text-xs sm:text-sm hidden sm:inline">Dükkan</span>
           </div>
-          
+
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Button
               onClick={handleBackToMenu}
@@ -32,14 +37,14 @@ export function AdminHeader() {
               <span className="hidden sm:inline">Menüyü Görüntüle</span>
               <span className="sm:hidden">Menü</span>
             </Button>
+            {/* Logout Button */}
             <Button
-              onClick={handleLogout}
+              onClick={onLogout}
               variant="outline"
               size="sm"
-              className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2"
+              className="bg-white/10 hover:bg-white/20 border-white/20 text-white"
             >
-              <span className="hidden sm:inline">Çıkış Yap</span>
-              <span className="sm:hidden">Çıkış</span>
+              Çıkış Yap
             </Button>
           </div>
         </div>
