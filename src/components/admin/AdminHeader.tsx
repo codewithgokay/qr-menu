@@ -24,7 +24,7 @@ export function AdminHeader({ onLogout }: AdminHeaderProps) {
         <div className="flex justify-between items-center h-14 sm:h-16">
           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
             <h1 className="text-lg sm:text-2xl font-bold text-text-primary font-heading leading-tight">Admin Paneli</h1>
-            <span className="text-text-secondary text-xs sm:text-sm hidden sm:inline">Dükkan</span>
+            <span className="text-text-secondary text-xs sm:text-sm hidden sm:inline">Republic</span>
           </div>
 
           <div className="flex items-center space-x-2 sm:space-x-4">
@@ -42,7 +42,7 @@ export function AdminHeader({ onLogout }: AdminHeaderProps) {
               onClick={onLogout}
               variant="outline"
               size="sm"
-              className="bg-white/10 hover:bg-white/20 border-white/20 text-white"
+              className="bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:text-red-700 text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2"
             >
               Çıkış Yap
             </Button>
