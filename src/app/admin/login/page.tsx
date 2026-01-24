@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { restaurant } from '@/data/menu';
 
 export default function AdminLoginPage() {
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function AdminLoginPage() {
             const res = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password }),
+                body: JSON.stringify({ username, password }),
             });
 
             const data = await res.json();
@@ -31,7 +32,7 @@ export default function AdminLoginPage() {
                 router.push('/admin');
                 router.refresh(); // Refresh to update middleware state
             } else {
-                setError(data.message || 'Hatalı şifre');
+                setError(data.message || 'Kullanıcı adı veya şifre hatalı');
             }
         } catch (err) {
             setError('Bir hata oluştu. Lütfen tekrar deneyin.');
@@ -51,6 +52,21 @@ export default function AdminLoginPage() {
                 </div>
 
                 <form onSubmit={handleLogin} className="space-y-6">
+                    <div>
+                        <label htmlFor="username" className="block text-sm font-medium text-text-primary mb-2">
+                            Kullanıcı Adı
+                        </label>
+                        <Input
+                            id="username"
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Kullanıcı adı"
+                            className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage"
+                            required
+                        />
+                    </div>
+
                     <div>
                         <label htmlFor="password" className="block text-sm font-medium text-text-primary mb-2">
                             Şifre

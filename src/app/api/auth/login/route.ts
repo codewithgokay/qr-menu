@@ -3,10 +3,13 @@ import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
     try {
-        const { password } = await request.json();
-        const envPassword = process.env.ADMIN_PASSWORD || 'admin';
+        const { username, password } = await request.json();
 
-        if (password === envPassword) {
+        // Credentials from environment variables
+        const envUsername = process.env.ADMIN_USERNAME || 'republicadmin';
+        const envPassword = process.env.ADMIN_PASSWORD || 'republic1717';
+
+        if (username === envUsername && password === envPassword) {
             // Set secure HTTP-only cookie
             const cookieStore = await cookies();
             cookieStore.set('admin_session', 'authenticated', {
@@ -21,7 +24,7 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json(
-            { success: false, message: 'Invalid password' },
+            { success: false, message: 'Kullanıcı adı veya şifre hatalı' },
             { status: 401 }
         );
     } catch (error) {
