@@ -11,8 +11,8 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-export function SearchBar({ 
-  placeholder = "Menü öğelerini ara..." 
+export function SearchBar({
+  placeholder = "Menü öğelerini ara..."
 }: SearchBarProps) {
   const { filters, setSearchQuery } = useMenu();
   const [query, setQuery] = useState(filters.search);
@@ -33,20 +33,20 @@ export function SearchBar({
   }, [setSearchQuery]);
 
   return (
-    <div className="px-6 py-6 bg-gradient-to-b from-primary-cream to-soft-gray">
+    <div className="px-4 py-4 pt-6 bg-republic-cream">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative w-full max-w-2xl mx-auto"
+        className="relative w-full mx-auto"
       >
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-secondary h-5 w-5" />
+        <div className="relative group">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-republic-gold h-4 w-4 transition-colors group-focus-within:text-republic-green" />
           <Input
             type="text"
             placeholder={placeholder}
             value={query}
             onChange={(e) => handleSearch(e.target.value)}
-            className="pl-12 h-12 bg-white border-0 shadow-soft rounded-xl focus:shadow-elevated transition-all duration-200 text-base placeholder:text-text-secondary"
+            className="pl-11 h-11 bg-white border border-gray-200 shadow-sm rounded-xl focus:ring-1 focus:ring-republic-gold focus:border-republic-gold transition-all duration-200 text-sm placeholder:text-gray-400 w-full"
           />
           {query && (
             <motion.div
@@ -58,9 +58,9 @@ export function SearchBar({
                 variant="ghost"
                 size="sm"
                 onClick={clearSearch}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-warm-beige/50 rounded-full"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0 hover:bg-gray-100 rounded-full"
               >
-                <X className="h-4 w-4 text-text-secondary" />
+                <X className="h-3 w-3 text-gray-400" />
               </Button>
             </motion.div>
           )}
