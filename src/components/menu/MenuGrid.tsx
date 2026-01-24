@@ -9,9 +9,9 @@ import { motion } from 'framer-motion';
 import { useMenu } from '@/lib/context/MenuContext';
 
 export function MenuGrid() {
-  const { 
-    items, 
-    categories, 
+  const {
+    items,
+    categories,
     filters,
     isLoading,
     isLoadingProgress,
@@ -30,7 +30,7 @@ export function MenuGrid() {
     // Filter by search query
     if (filters.search.trim()) {
       const query = filters.search.toLowerCase();
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.name.toLowerCase().includes(query) ||
         item.description.toLowerCase().includes(query) ||
         item.category.toLowerCase().includes(query)
@@ -86,14 +86,14 @@ export function MenuGrid() {
     return (
       <div className="space-y-8">
         {/* Progress Indicator */}
-        <div className="px-6 py-4 bg-white/50 rounded-2xl border border-warm-beige/20">
+        <div className="px-6 py-4 bg-white/50 rounded-2xl border border-republic-gold/20">
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium text-text-secondary">Menü yükleniyor...</span>
-            <span className="text-sm font-medium text-sage">{isLoadingProgress}%</span>
+            <span className="text-sm font-medium text-republic-green">{isLoadingProgress}%</span>
           </div>
-          <div className="w-full bg-warm-beige/20 rounded-full h-2">
+          <div className="w-full bg-republic-gold/20 rounded-full h-2">
             <motion.div
-              className="bg-sage h-2 rounded-full"
+              className="bg-republic-green h-2 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${isLoadingProgress}%` }}
               transition={{ duration: 0.3, ease: "easeOut" }}
@@ -104,7 +104,7 @@ export function MenuGrid() {
         {/* Enhanced Skeleton Loading */}
         {Array.from({ length: Math.min(3, Math.ceil(categories.length || 3)) }).map((_, categoryIndex) => (
           <div key={categoryIndex} className="space-y-6">
-            <div className="px-6 py-8 border-b border-warm-beige/30">
+            <div className="px-6 py-8 border-b border-republic-gold/30">
               <div className="flex items-center space-x-4">
                 <Skeleton className="w-12 h-12 rounded-xl" />
                 <div className="space-y-2">
@@ -173,7 +173,7 @@ export function MenuGrid() {
     <div className="space-y-8">
       {Object.entries(groupedItems).map(([categoryId, items], categoryIndex) => {
         const category = categories.find(cat => cat.id === categoryId);
-        
+
         return (
           <motion.section
             key={categoryId}
@@ -184,9 +184,9 @@ export function MenuGrid() {
           >
             {/* Category Header - Elegant Section Headers */}
             {filters.category === 'all' && (
-              <div className="px-6 py-8 border-b border-warm-beige/30">
+              <div className="px-6 py-8 border-b border-republic-gold/30">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-sage/10 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-republic-green/10 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">{category?.icon}</span>
                   </div>
                   <div>
@@ -208,7 +208,7 @@ export function MenuGrid() {
                   key={item.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
+                  transition={{
                     delay: isInitialLoad ? Math.min(itemIndex * 0.02, 0.3) : 0,
                     duration: 0.2,
                     ease: "easeOut"

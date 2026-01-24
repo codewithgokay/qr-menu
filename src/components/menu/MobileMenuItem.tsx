@@ -74,7 +74,7 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
       transition={{ delay: index * 0.05 }}
       className="w-full"
     >
-      <Card 
+      <Card
         className="group overflow-hidden bg-white shadow-soft hover:shadow-elevated transition-all duration-300 border-0 rounded-2xl cursor-pointer"
         onClick={() => setShowDetails(true)}
       >
@@ -93,7 +93,7 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
               priority={index < 3} // Prioritize first 3 items
             />
           </div>
-          
+
           {/* Content Section */}
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-start mb-2">
@@ -104,18 +104,18 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
                 {formatPrice(item.price)}
               </span>
             </div>
-            
+
             <p className="text-text-secondary text-sm leading-relaxed mb-3 line-clamp-2">
               {item.description}
             </p>
-            
+
             {/* Dietary Badges */}
             <div className="flex flex-wrap gap-2">
               {dietaryInfo.slice(0, 2).map((info, idx) => (
-                <Badge 
-                  key={`${info}-${idx}`} 
-                  variant="outline" 
-                  className="text-sage bg-sage/10 text-xs px-2 py-1"
+                <Badge
+                  key={`${info}-${idx}`}
+                  variant="outline"
+                  className="text-republic-green bg-republic-green/10 text-xs px-2 py-1 border-republic-green/20"
                 >
                   {getDietaryIcon(info)}
                   <span className="ml-1">{translateDietaryInfo(info)}</span>
@@ -133,19 +133,19 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
 
       {/* Details Sheet */}
       <Sheet open={showDetails} onOpenChange={setShowDetails}>
-        <SheetContent className="w-full sm:max-w-lg bg-primary-cream p-0">
+        <SheetContent className="w-full sm:max-w-lg bg-republic-cream p-0">
           {/* Fixed Header */}
-          <div className="p-6 border-b border-warm-beige/30">
+          <div className="p-6 border-b border-republic-gold/30">
             <SheetTitle className="text-2xl font-heading text-text-primary mb-2">{item.name}</SheetTitle>
             <SheetDescription className="text-text-secondary">
               {item.description}
             </SheetDescription>
           </div>
-          
+
           {/* Scrollable Content */}
-          <div 
+          <div
             className="overflow-y-auto p-6 space-y-6"
-            style={{ 
+            style={{
               height: 'calc(100vh - 250px)',
               maxHeight: '500px',
               overflowY: 'auto'
@@ -167,7 +167,7 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
             </div>
 
             {/* Price */}
-            <div className="text-3xl font-bold text-navy-slate">
+            <div className="text-3xl font-bold text-republic-dark-green">
               {formatPrice(item.price)}
             </div>
 
@@ -177,10 +177,10 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
                 <h4 className="font-semibold mb-3 text-text-primary">Beslenme Bilgileri</h4>
                 <div className="flex flex-wrap gap-2">
                   {dietaryInfo.map((info, index) => (
-                    <Badge 
-                      key={`${info}-${index}`} 
-                      variant="outline" 
-                      className="text-sage bg-sage/10"
+                    <Badge
+                      key={`${info}-${index}`}
+                      variant="outline"
+                      className="text-republic-green bg-republic-green/10 border-republic-green/20"
                     >
                       {getDietaryIcon(info)}
                       <span className="ml-1">{translateDietaryInfo(info)}</span>
@@ -219,7 +219,7 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
                 </div>
               )}
             </div>
-            
+
             {/* Bottom padding for better scrolling */}
             <div className="h-8"></div>
           </div>

@@ -19,17 +19,17 @@ async function main() {
   const restaurant = await prisma.restaurant.create({
     data: {
       id: '1',
-      name: 'Dükkan',
-      description: 'Çanakkale\'nin en sevilen kahve dükkanı - özel kahve çekirdekleri ve ev yapımı lezzetler',
-      logo: '/images/logo.png',
+      name: 'Republic',
+      description: 'Çanakkale\'nin en iyi pub deneyimi. Özel içecekler, lezzetli atıştırmalıklar ve harika atmosfer.',
+      logo: 'https://res.cloudinary.com/dmudabrcn/image/upload/v1769272325/543799471_17989578092840121_1390771300469241938_n_dpnmkw.jpg',
       coverImage: '/images/restaurant-cover.jpg',
       address: 'Çanakkale Merkez, Türkiye',
       phone: '+90 (286) 123-4567',
-      email: 'info@dukkancanakkale.com',
-      website: 'https://dukkancanakkale.com',
-      instagram: '@dukkancanakkale',
-      facebook: 'DukkanCanakkale',
-      twitter: '@DukkanCanakkale',
+      email: 'info@republiccanakkale.com',
+      website: 'https://republiccanakkale.com',
+      instagram: '@republiccanakkale',
+      facebook: 'RepublicCanakkale',
+      twitter: '@RepublicCanakkale',
       currency: 'TRY',
       language: 'tr'
     }
@@ -38,13 +38,13 @@ async function main() {
 
   // Create operating hours
   const operatingHours = [
-    { dayOfWeek: 'monday', openTime: '07:00', closeTime: '22:00' },
-    { dayOfWeek: 'tuesday', openTime: '07:00', closeTime: '22:00' },
-    { dayOfWeek: 'wednesday', openTime: '07:00', closeTime: '22:00' },
-    { dayOfWeek: 'thursday', openTime: '07:00', closeTime: '22:00' },
-    { dayOfWeek: 'friday', openTime: '07:00', closeTime: '23:00' },
-    { dayOfWeek: 'saturday', openTime: '08:00', closeTime: '23:00' },
-    { dayOfWeek: 'sunday', openTime: '08:00', closeTime: '22:00' }
+    { dayOfWeek: 'monday', openTime: '12:00', closeTime: '02:00' },
+    { dayOfWeek: 'tuesday', openTime: '12:00', closeTime: '02:00' },
+    { dayOfWeek: 'wednesday', openTime: '12:00', closeTime: '02:00' },
+    { dayOfWeek: 'thursday', openTime: '12:00', closeTime: '02:00' },
+    { dayOfWeek: 'friday', openTime: '12:00', closeTime: '04:00' },
+    { dayOfWeek: 'saturday', openTime: '12:00', closeTime: '04:00' },
+    { dayOfWeek: 'sunday', openTime: '12:00', closeTime: '02:00' }
   ]
 
   for (const hours of operatingHours) {
@@ -155,7 +155,7 @@ async function main() {
       order: 6,
       allergens: ['dairy']
     },
-    
+
     // Soğuk İçecekler
     {
       id: '7',
@@ -201,7 +201,7 @@ async function main() {
       order: 10,
       allergens: []
     },
-    
+
     // Pastalar & Tatlılar
     {
       id: '11',
@@ -247,7 +247,7 @@ async function main() {
       order: 14,
       allergens: ['dairy', 'eggs', 'gluten']
     },
-    
+
     // Sandviçler
     {
       id: '15',
@@ -282,7 +282,7 @@ async function main() {
       order: 17,
       allergens: ['gluten']
     },
-    
+
     // Kahvaltı
     {
       id: '18',
@@ -317,7 +317,7 @@ async function main() {
       order: 20,
       allergens: ['dairy', 'eggs', 'gluten']
     },
-    
+
     // Atıştırmalıklar
     {
       id: '21',
@@ -357,7 +357,7 @@ async function main() {
   for (let i = 0; i < menuItems.length; i++) {
     const item = menuItems[i];
     const { allergens, ...itemData } = item
-    
+
     // Create the menu item with order
     const menuItem = await prisma.menuItem.create({
       data: {

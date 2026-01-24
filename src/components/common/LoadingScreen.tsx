@@ -9,7 +9,7 @@ interface LoadingScreenProps {
 
 export function LoadingScreen({ message = "Menü yükleniyor..." }: LoadingScreenProps) {
   return (
-    <div className="fixed inset-0 bg-primary-cream z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-republic-cream z-50 flex items-center justify-center">
       <div className="text-center space-y-8 max-w-md mx-auto px-6">
         {/* Logo/Icon Animation */}
         <motion.div
@@ -22,14 +22,14 @@ export function LoadingScreen({ message = "Menü yükleniyor..." }: LoadingScree
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="w-16 h-16 bg-sage/10 rounded-full flex items-center justify-center"
+              className="w-16 h-16 bg-republic-green/10 rounded-full flex items-center justify-center"
             >
-              <Utensils className="w-8 h-8 text-sage" />
+              <Utensils className="w-8 h-8 text-republic-green" />
             </motion.div>
             <motion.div
               animate={{ rotate: -360 }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 w-16 h-16 border-2 border-sage/20 border-t-sage rounded-full"
+              className="absolute inset-0 w-16 h-16 border-2 border-republic-green/20 border-t-republic-green rounded-full"
             />
           </div>
         </motion.div>
@@ -60,7 +60,7 @@ export function LoadingScreen({ message = "Menü yükleniyor..." }: LoadingScree
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className="w-2 h-2 bg-sage rounded-full"
+              className="w-2 h-2 bg-republic-green rounded-full"
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.5, 1, 0.5],

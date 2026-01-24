@@ -10,11 +10,11 @@ interface FooterProps {
 
 export function Footer({ restaurant }: FooterProps) {
   return (
-    <motion.footer 
+    <motion.footer
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.2 }}
-      className="border-t border-warm-beige bg-gradient-to-b from-soft-gray to-warm-beige/30 mt-16"
+      className="border-t border-republic-gold bg-gradient-to-b from-republic-cream to-republic-gold/10 mt-16"
     >
       <div className="px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -27,19 +27,19 @@ export function Footer({ restaurant }: FooterProps) {
             <div className="space-y-2 text-sm text-text-secondary">
               <p>{restaurant.address}</p>
             </div>
-            
+
             {/* Social Media Links */}
             {restaurant.socialMedia?.instagram && (
               <div className="pt-2">
-                <a 
+                <a
                   href={`https://instagram.com/${restaurant.socialMedia.instagram.replace('@', '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-3 text-text-secondary hover:text-sage transition-colors p-3 rounded-lg hover:bg-sage/10 group"
+                  className="flex items-center space-x-3 text-text-secondary hover:text-republic-green transition-colors p-3 rounded-lg hover:bg-republic-green/10 group"
                   aria-label="Instagram'da takip edin"
                 >
                   <Instagram className="h-7 w-7 flex-shrink-0" />
-                  <span className="text-sm font-medium group-hover:text-sage transition-colors">
+                  <span className="text-sm font-medium group-hover:text-republic-green transition-colors">
                     {restaurant.socialMedia.instagram}
                   </span>
                 </a>
@@ -65,7 +65,7 @@ export function Footer({ restaurant }: FooterProps) {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-warm-beige/50 text-center text-sm text-text-secondary">
+        <div className="mt-12 pt-8 border-t border-republic-gold/50 text-center text-sm text-text-secondary">
           <p>&copy; 2025 {restaurant.name}. Tüm hakları saklıdır.</p>
           <p className="mt-1">QR Menü Teknolojisi ile güçlendirilmiştir</p>
         </div>

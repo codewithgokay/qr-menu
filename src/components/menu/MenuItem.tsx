@@ -89,40 +89,40 @@ export function MenuItem({ item, index }: MenuItemProps) {
                   priority={index < 3} // Prioritize first 3 items
                 />
               </div>
-              
+
               {/* Content Section */}
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="font-semibold text-lg text-text-primary leading-tight flex-1 mr-3">
                     {item.name}
                   </h3>
-                  <span className="font-bold text-xl text-navy-slate flex-shrink-0">
+                  <span className="font-bold text-xl text-republic-dark-green flex-shrink-0">
                     {formatPrice(item.price)}
                   </span>
                 </div>
-                
+
                 <p className="text-text-secondary text-sm leading-relaxed mb-3 line-clamp-2">
                   {item.description}
                 </p>
-                
+
                 {/* Dietary Badges */}
                 <div className="flex flex-wrap gap-2">
-                {dietaryInfo.map((info, index) => (
-                  <Badge 
-                    key={`${info}-${index}`} 
-                    variant="outline" 
-                    className="text-sage bg-sage/10 text-xs px-2 py-1"
-                  >
-                    {getDietaryIcon(info)}
-                    <span className="ml-1">{translateDietaryInfo(info)}</span>
-                  </Badge>
-                ))}
+                  {dietaryInfo.map((info, index) => (
+                    <Badge
+                      key={`${info}-${index}`}
+                      variant="outline"
+                      className="text-republic-green bg-republic-green/10 text-xs px-2 py-1 border-republic-green/20"
+                    >
+                      {getDietaryIcon(info)}
+                      <span className="ml-1">{translateDietaryInfo(info)}</span>
+                    </Badge>
+                  ))}
                 </div>
               </div>
             </div>
           </Card>
         </SheetTrigger>
-        <SheetContent className="w-full sm:max-w-lg bg-primary-cream">
+        <SheetContent className="w-full sm:max-w-lg bg-republic-cream">
           <SheetHeader>
             <SheetTitle className="text-2xl font-heading text-text-primary">{item.name}</SheetTitle>
           </SheetHeader>
@@ -143,7 +143,7 @@ export function MenuItem({ item, index }: MenuItemProps) {
             </div>
 
             {/* Price */}
-            <div className="text-3xl font-bold text-navy-slate">
+            <div className="text-3xl font-bold text-republic-dark-green">
               {formatPrice(item.price)}
             </div>
 
@@ -158,10 +158,10 @@ export function MenuItem({ item, index }: MenuItemProps) {
                 <h4 className="font-semibold mb-3 text-text-primary">Beslenme Bilgileri</h4>
                 <div className="flex flex-wrap gap-2">
                   {dietaryInfo.map((info, index) => (
-                    <Badge 
-                      key={`${info}-${index}`} 
-                      variant="outline" 
-                      className="text-sage bg-sage/10"
+                    <Badge
+                      key={`${info}-${index}`}
+                      variant="outline"
+                      className="text-republic-green bg-republic-green/10 border-republic-green/20"
                     >
                       {getDietaryIcon(info)}
                       <span className="ml-1">{translateDietaryInfo(info)}</span>
@@ -190,13 +190,13 @@ export function MenuItem({ item, index }: MenuItemProps) {
               {item.prepTime && (
                 <div className="flex items-center text-text-secondary">
                   <Clock className="h-4 w-4 mr-2" />
-                            <span>Hazırlık: {item.prepTime}dk</span>
+                  <span>Hazırlık: {item.prepTime}dk</span>
                 </div>
               )}
               {item.calories && (
                 <div className="flex items-center text-text-secondary">
                   <Flame className="h-4 w-4 mr-2" />
-                            <span>{item.calories} kalori</span>
+                  <span>{item.calories} kalori</span>
                 </div>
               )}
             </div>

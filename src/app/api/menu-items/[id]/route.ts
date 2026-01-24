@@ -62,43 +62,20 @@ export async function PUT(
     const body = await request.json()
     const { name, description, price, category, image, imagePublicId, allergens, ...otherFields } = body
 
-    // Handle allergens efficiently with batch operations
-    if (allergens && allergens.length > 0) {
-      // Delete existing allergens
-      await prisma.menuItemAllergen.deleteMany({
-        where: { menuItemId: id }
-      })
-
-      // Batch upsert allergens
-      const allergenUpserts = allergens.map((allergenName: string) =>
-        prisma.allergen.upsert({
-          where: { name: allergenName },
-          update: {},
-          create: { name: allergenName }
-        })
-      )
-      
-      const upsertedAllergens = await Promise.all(allergenUpserts)
-      
-      // Batch create menu item allergen relationships
-      const menuItemAllergenCreates = upsertedAllergens.map(allergen =>
-        prisma.menuItemAllergen.create({
-          data: {
-            menuItemId: id,
-            allergenId: allergen.id
+    // Prepare allergen operations if provided
+    const allergenUpdate = allergens ? {
+      deleteMany: {}, // Remove existing relationships
+      create: allergens.map((allergenName: string) => ({
+        allergen: {
+          connectOrCreate: {
+            where: { name: allergenName },
+            create: { name: allergenName }
           }
-        })
-      )
-      
-      await Promise.all(menuItemAllergenCreates)
-    } else {
-      // Only delete if no allergens provided
-      await prisma.menuItemAllergen.deleteMany({
-        where: { menuItemId: id }
-      })
-    }
+        }
+      }))
+    } : undefined;
 
-    // Update the menu item
+    // Update the menu item in a single atomic operation
     const menuItem = await prisma.menuItem.update({
       where: { id: id },
       data: {
@@ -108,6 +85,8 @@ export async function PUT(
         price: parseFloat(price),
         image,
         imagePublicId,
+        // Only update allergens if they were included in the request
+        ...(allergens ? { allergens: allergenUpdate } : {}),
         ...otherFields
       },
       include: {
@@ -155,27 +134,27 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    
+
     // Check if menu item exists and soft delete in one operation
     const result = await prisma.menuItem.updateMany({
-      where: { 
+      where: {
         id,
         isActive: true // Only update if currently active
       },
       data: { isActive: false }
     })
-    
+
     if (result.count === 0) {
-      return NextResponse.json({ 
-        error: 'Menu item not found or already deleted' 
+      return NextResponse.json({
+        error: 'Menu item not found or already deleted'
       }, { status: 404 })
     }
-    
+
     return NextResponse.json({ message: 'Menu item deleted successfully' })
   } catch (error) {
     console.error('Error deleting menu item:', error)
-    
-    return NextResponse.json({ 
+
+    return NextResponse.json({
       error: 'Failed to delete menu item',
       details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 })
