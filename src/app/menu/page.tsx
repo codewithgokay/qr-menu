@@ -45,7 +45,7 @@ export default function MenuPage() {
 
         <main className="space-y-0">
           {/* Search and Filter Section */}
-          <div className="sticky top-[72px] z-30 bg-republic-cream">
+          <div className="sticky top-[85px] z-30 bg-republic-cream/95 backdrop-blur-sm pt-2 transition-all duration-300">
             <SearchBar />
             {/* Unified Category Filter (Horizontal Scroll) */}
             <CategoryFilter />

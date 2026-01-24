@@ -1,10 +1,14 @@
-'use client';
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { useMenu } from '@/lib/context/MenuContext';
-import { Coffee, Pizza, Beer, Wine, CakeSlice, Utensils, Egg, Zap, UtensilsCrossed } from 'lucide-react';
+import { Coffee, Pizza, Beer, Wine, CakeSlice, Utensils, Egg, Zap, UtensilsCrossed, ChevronDown, Check } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function CategoryFilter() {
   const { filters, setSelectedCategory, categories, isLoading } = useMenu();
@@ -22,8 +26,7 @@ export function CategoryFilter() {
   };
 
   // Icon mapping
-  const getIcon = (iconName: string | undefined) => {
-    const className = "w-4 h-4 mr-2";
+  const getIcon = (iconName: string | undefined, className = "w-4 h-4 mr-2") => {
     switch (iconName) {
       case '☕': return <Coffee className={className} />;
       case '🧊': return <Beer className={className} />; // Cold drinks
@@ -41,6 +44,8 @@ export function CategoryFilter() {
     ...categories
   ];
 
+  const activeCategoryData = allCategories.find(c => c.id === activeCategory) || allCategories[0];
+
   if (isLoading) {
     return (
       <div className="w-full px-4 overflow-x-hidden">
@@ -54,10 +59,45 @@ export function CategoryFilter() {
   }
 
   return (
-    <div className="w-full sticky top-[72px] z-40 bg-republic-cream/95 backdrop-blur-md pt-2 pb-4 border-b border-republic-gold/10">
+    <div className="w-full pt-2 pb-4 border-b border-republic-gold/10 bg-republic-cream">
+      {/* Mobile Dropdown View */}
+      <div className="block sm:hidden px-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full justify-between h-12 bg-white border-republic-gold/30 text-republic-charcoal hover:bg-white hover:text-republic-green"
+            >
+              <span className="flex items-center">
+                {getIcon(activeCategoryData?.icon)}
+                <span className="font-medium">{activeCategoryData?.name}</span>
+              </span>
+              <ChevronDown className="w-4 h-4 opacity-50" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-[calc(100vw-32px)] max-h-[60vh] overflow-y-auto bg-white/95 backdrop-blur-md border-republic-gold/20 shadow-xl">
+            {allCategories.map((category) => (
+              <DropdownMenuItem
+                key={category.id}
+                onClick={() => handleCategoryClick(category.id)}
+                className={`flex items-center justify-between py-3 cursor-pointer ${activeCategory === category.id ? 'bg-republic-green/10 text-republic-green font-medium' : ''
+                  }`}
+              >
+                <div className="flex items-center">
+                  {getIcon(category.icon, "w-4 h-4 mr-3 opacity-70")}
+                  {category.name}
+                </div>
+                {activeCategory === category.id && <Check className="w-4 h-4 text-republic-green" />}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Desktop/Tablet Horizontal Scroll View */}
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto px-4 pb-2 space-x-3 scrollbar-hide snap-x"
+        className="hidden sm:flex overflow-x-auto px-4 space-x-3 scrollbar-hide snap-x"
         style={{ scrollBehavior: 'smooth' }}
       >
         {allCategories.map((category, index) => (
