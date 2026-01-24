@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { menuItems } from '@/data/menu'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 // GET /api/menu-items - Get all menu items
 export async function GET() {
   try {
@@ -38,11 +41,11 @@ export async function GET() {
 
     if (dbMenuItems.length > 0) {
       // Database has data - use it but replace Cloudinary URLs with working images
-      
+
       transformedItems = dbMenuItems.map(item => {
         let workingImage = item.image
         let workingPublicId = item.imagePublicId
-        
+
         // Fix Cloudinary public ID paths - remove duplicate folder structure
         if (item.imagePublicId && item.imagePublicId.includes('qr-menu/menu-items/qr-menu/menu-items/')) {
           // Fix the duplicate path issue
@@ -75,7 +78,7 @@ export async function GET() {
       })
     } else {
       // No database data - use static fallback
-      
+
       transformedItems = menuItems.map((item, index) => ({
         id: item.id,
         name: item.name,
@@ -97,20 +100,20 @@ export async function GET() {
       }))
     }
 
-    
+
     const response = NextResponse.json(transformedItems)
-    
+
     // Disable all forms of caching for immediate updates
     response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
     response.headers.set('Pragma', 'no-cache')
     response.headers.set('Expires', '0')
     response.headers.set('Last-Modified', new Date().toUTCString())
     response.headers.set('ETag', `"${Date.now()}"`)
-    
+
     return response
   } catch (error) {
     console.error('Error fetching menu items:', error)
-    
+
     // Fallback to static data on error
     const transformedItems = menuItems.map((item, index) => ({
       id: item.id,
@@ -152,7 +155,7 @@ export async function POST(request: NextRequest) {
           create: { name: allergenName }
         })
       )
-      
+
       const upsertedAllergens = await Promise.all(allergenUpserts)
       allergenIds = upsertedAllergens.map(allergen => allergen.id)
     }
@@ -214,7 +217,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(transformedItem, { status: 201 })
   } catch (error) {
     console.error('Error creating menu item:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: 'Database not available. Please ensure your database is properly configured.',
       details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 })
