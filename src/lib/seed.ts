@@ -16,8 +16,8 @@ async function main() {
   const restaurant = await prisma.restaurant.create({
     data: {
       id: '1',
-      name: 'Dükkan',
-      description: 'Çanakkale\'nin en sevilen kahve dükkanı - özel kahve çekirdekleri ve ev yapımı lezzetler',
+      name: 'Republic',
+      description: 'Çanakkale\'nin en iyi pub deneyimi',
       logo: '/images/logo.png',
       coverImage: '/images/restaurant-cover.jpg',
       address: 'Çanakkale Merkez, Türkiye',
@@ -148,7 +148,7 @@ async function main() {
       order: 6,
       allergens: ['dairy']
     },
-    
+
     // Soğuk İçecekler
     {
       id: '7',
@@ -194,7 +194,7 @@ async function main() {
       order: 10,
       allergens: []
     },
-    
+
     // Pastalar & Tatlılar
     {
       id: '11',
@@ -240,7 +240,7 @@ async function main() {
       order: 14,
       allergens: ['dairy', 'eggs', 'gluten']
     },
-    
+
     // Sandviçler
     {
       id: '15',
@@ -275,7 +275,7 @@ async function main() {
       order: 17,
       allergens: ['gluten']
     },
-    
+
     // Kahvaltı
     {
       id: '18',
@@ -310,7 +310,7 @@ async function main() {
       order: 20,
       allergens: ['dairy', 'eggs', 'gluten']
     },
-    
+
     // Atıştırmalıklar
     {
       id: '21',
@@ -350,7 +350,7 @@ async function main() {
   for (let i = 0; i < menuItems.length; i++) {
     const item = menuItems[i];
     const { allergens, ...itemData } = item
-    
+
     // Create the menu item with order
     const menuItem = await prisma.menuItem.create({
       data: {

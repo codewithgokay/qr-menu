@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Restaurant } from '@/lib/types';
 import { motion } from 'framer-motion';
 import { ImageOptimized } from '@/components/common/ImageOptimized';
+import Link from 'next/link';
 
 interface HeaderProps {
   restaurant: Restaurant;
@@ -33,8 +34,8 @@ export function Header({ restaurant }: HeaderProps) {
     >
       <div className={`px-6 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-6'}`}>
         <div className="flex justify-start items-center">
-          <div className="flex items-center space-x-4">
-            {/* Logo */}
+          {/* Logo & Brand - Clickable */}
+          <Link href="/" className="flex items-center space-x-4 group">
             <div className={`relative flex-shrink-0 transition-all duration-300 ${isScrolled ? 'w-12 h-12' : 'w-14 h-14'
               }`}>
               <ImageOptimized
@@ -42,7 +43,7 @@ export function Header({ restaurant }: HeaderProps) {
                 alt="Republic Logo"
                 width={isScrolled ? 48 : 56}
                 height={isScrolled ? 48 : 56}
-                className="w-full h-full object-contain rounded-full border-2 border-republic-gold shadow-lg"
+                className="w-full h-full object-contain rounded-full border-2 border-republic-gold shadow-lg group-hover:scale-105 transition-transform"
                 fallbackText="RP"
                 priority={true}
                 lazy={false}
@@ -51,7 +52,7 @@ export function Header({ restaurant }: HeaderProps) {
 
             {/* Brand Name & Subtitle - Stacked for Authority */}
             <div className="flex flex-col justify-center">
-              <h1 className={`font-bold text-republic-gold tracking-tight font-heading leading-none transition-all duration-300 ${isScrolled ? 'text-xl' : 'text-2xl'
+              <h1 className={`font-bold text-republic-gold tracking-tight font-heading leading-none transition-all duration-300 group-hover:text-white ${isScrolled ? 'text-xl' : 'text-2xl'
                 }`}>
                 {restaurant.name}
               </h1>
@@ -60,7 +61,7 @@ export function Header({ restaurant }: HeaderProps) {
                 Social House
               </span>
             </div>
-          </div>
+          </Link>
         </div>
 
       </div>
