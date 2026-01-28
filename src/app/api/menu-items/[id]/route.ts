@@ -11,12 +11,7 @@ export async function GET(
     const menuItem = await prisma.menuItem.findUnique({
       where: { id },
       include: {
-        category: true,
-        allergens: {
-          include: {
-            allergen: true
-          }
-        }
+        category: true
       }
     })
 
@@ -33,15 +28,6 @@ export async function GET(
       category: menuItem.category.id,
       image: menuItem.image,
       imagePublicId: menuItem.imagePublicId,
-      allergens: menuItem.allergens.map(a => a.allergen.name),
-      isVegetarian: menuItem.isVegetarian,
-      isVegan: menuItem.isVegan,
-      isSpicy: menuItem.isSpicy,
-      isPopular: menuItem.isPopular,
-      isGlutenFree: menuItem.isGlutenFree,
-      isDairyFree: menuItem.isDairyFree,
-      calories: menuItem.calories,
-      prepTime: menuItem.prepTime,
       order: menuItem.order
     }
 
@@ -60,22 +46,9 @@ export async function PUT(
   try {
     const { id } = await params
     const body = await request.json()
-    const { name, description, price, category, image, imagePublicId, allergens, ...otherFields } = body
+    const { name, description, price, category, image, imagePublicId, order } = body
 
-    // Prepare allergen operations if provided
-    const allergenUpdate = allergens ? {
-      deleteMany: {}, // Remove existing relationships
-      create: allergens.map((allergenName: string) => ({
-        allergen: {
-          connectOrCreate: {
-            where: { name: allergenName },
-            create: { name: allergenName }
-          }
-        }
-      }))
-    } : undefined;
-
-    // Update the menu item in a single atomic operation
+    // Update the menu item
     const menuItem = await prisma.menuItem.update({
       where: { id: id },
       data: {
@@ -85,17 +58,10 @@ export async function PUT(
         price: parseFloat(price),
         image,
         imagePublicId,
-        // Only update allergens if they were included in the request
-        ...(allergens ? { allergens: allergenUpdate } : {}),
-        ...otherFields
+        order
       },
       include: {
-        category: true,
-        allergens: {
-          include: {
-            allergen: true
-          }
-        }
+        category: true
       }
     })
 
@@ -108,15 +74,6 @@ export async function PUT(
       category: menuItem.category.id,
       image: menuItem.image,
       imagePublicId: menuItem.imagePublicId,
-      allergens: menuItem.allergens.map(a => a.allergen.name),
-      isVegetarian: menuItem.isVegetarian,
-      isVegan: menuItem.isVegan,
-      isSpicy: menuItem.isSpicy,
-      isPopular: menuItem.isPopular,
-      isGlutenFree: menuItem.isGlutenFree,
-      isDairyFree: menuItem.isDairyFree,
-      calories: menuItem.calories,
-      prepTime: menuItem.prepTime,
       order: menuItem.order
     }
 
