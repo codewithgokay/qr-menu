@@ -36,11 +36,11 @@ model Restaurant {
 model RestaurantOperatingHours {
   id           String     @id @default(cuid())
   restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   dayOfWeek    String
   openTime     String
   closeTime    String
   isClosed     Boolean    @default(false)
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@unique([restaurantId, dayOfWeek])
   @@map("restaurant_operating_hours")
@@ -49,6 +49,7 @@ model RestaurantOperatingHours {
 model MenuCategory {
   id           String     @id @default(cuid())
   restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   name         String
   description  String?
   icon         String?
@@ -57,59 +58,29 @@ model MenuCategory {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   iconPublicId String?
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   menuItems    MenuItem[]
 
   @@map("menu_categories")
 }
 
 model MenuItem {
-  id            String             @id @default(cuid())
+  id            String       @id @default(cuid())
   restaurantId  String
+  restaurant    Restaurant   @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   categoryId    String
+  category      MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   name          String
   description   String
   price         Float
   image         String?
-  calories      Int?
-  prepTime      Int?
-  order         Int                @default(0)
-  isVegetarian  Boolean            @default(false)
-  isVegan       Boolean            @default(false)
-  isSpicy       Boolean            @default(false)
-  isPopular     Boolean            @default(false)
-  isGlutenFree  Boolean            @default(false)
-  isDairyFree   Boolean            @default(false)
-  isActive      Boolean            @default(true)
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
   imagePublicId String?
-  allergens     MenuItemAllergen[]
-  category      MenuCategory       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  restaurant    Restaurant         @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  order         Int          @default(0)
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   @@index([isActive, order])
   @@index([restaurantId, isActive])
   @@index([categoryId, isActive])
   @@map("menu_items")
-}
-
-model Allergen {
-  id        String             @id @default(cuid())
-  name      String             @unique
-  createdAt DateTime           @default(now())
-  menuItems MenuItemAllergen[]
-
-  @@map("allergens")
-}
-
-model MenuItemAllergen {
-  id         String   @id @default(cuid())
-  menuItemId String
-  allergenId String
-  allergen   Allergen @relation(fields: [allergenId], references: [id], onDelete: Cascade)
-  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
-
-  @@unique([menuItemId, allergenId])
-  @@map("menu_item_allergens")
 }

@@ -19,20 +19,7 @@ export async function GET() {
         categoryId: true,
         image: true,
         imagePublicId: true,
-        isVegetarian: true,
-        isVegan: true,
-        isSpicy: true,
-        isPopular: true,
-        isGlutenFree: true,
-        isDairyFree: true,
-        calories: true,
-        prepTime: true,
-        order: true,
-        allergens: {
-          include: {
-            allergen: true
-          }
-        }
+        order: true
       },
       orderBy: { order: 'asc' }
     })
@@ -64,15 +51,6 @@ export async function GET() {
           category: item.categoryId,
           image: workingImage,
           imagePublicId: workingPublicId,
-          allergens: item.allergens.map(a => a.allergen.name),
-          isVegetarian: item.isVegetarian || false,
-          isVegan: item.isVegan || false,
-          isSpicy: item.isSpicy || false,
-          isPopular: item.isPopular || false,
-          isGlutenFree: item.isGlutenFree || false,
-          isDairyFree: item.isDairyFree || false,
-          calories: item.calories || 0,
-          prepTime: item.prepTime || 0,
           order: item.order || 0
         }
       })
@@ -87,15 +65,6 @@ export async function GET() {
         category: item.category,
         image: item.image,
         imagePublicId: item.imagePublicId || null,
-        allergens: item.allergens || [],
-        isVegetarian: item.isVegetarian || false,
-        isVegan: item.isVegan || false,
-        isSpicy: item.isSpicy || false,
-        isPopular: item.isPopular || false,
-        isGlutenFree: item.isGlutenFree || false,
-        isDairyFree: item.isDairyFree || false,
-        calories: item.calories || 0,
-        prepTime: item.prepTime || 0,
         order: index + 1
       }))
     }
@@ -123,15 +92,6 @@ export async function GET() {
       category: item.category,
       image: item.image,
       imagePublicId: item.imagePublicId || null,
-      allergens: item.allergens || [],
-      isVegetarian: item.isVegetarian || false,
-      isVegan: item.isVegan || false,
-      isSpicy: item.isSpicy || false,
-      isPopular: item.isPopular || false,
-      isGlutenFree: item.isGlutenFree || false,
-      isDairyFree: item.isDairyFree || false,
-      calories: item.calories || 0,
-      prepTime: item.prepTime || 0,
       order: index + 1
     }))
 
@@ -143,22 +103,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, description, price, category, image, imagePublicId, allergens, ...otherFields } = body
-
-    // Batch upsert allergens for better performance
-    let allergenIds = []
-    if (allergens && allergens.length > 0) {
-      const allergenUpserts = allergens.map((allergenName: string) =>
-        prisma.allergen.upsert({
-          where: { name: allergenName },
-          update: {},
-          create: { name: allergenName }
-        })
-      )
-
-      const upsertedAllergens = await Promise.all(allergenUpserts)
-      allergenIds = upsertedAllergens.map(allergen => allergen.id)
-    }
+    const { name, description, price, category, image, imagePublicId, ...otherFields } = body
 
     // Get the first restaurant (assuming single restaurant for now)
     const restaurant = await prisma.restaurant.findFirst()
@@ -176,20 +121,10 @@ export async function POST(request: NextRequest) {
         price: parseFloat(price),
         image,
         imagePublicId,
-        ...otherFields,
-        allergens: {
-          create: allergenIds.map(allergenId => ({
-            allergenId
-          }))
-        }
+        ...otherFields
       },
       include: {
-        category: true,
-        allergens: {
-          include: {
-            allergen: true
-          }
-        }
+        category: true
       }
     })
 
@@ -202,15 +137,6 @@ export async function POST(request: NextRequest) {
       category: menuItem.category.id,
       image: menuItem.image,
       imagePublicId: menuItem.imagePublicId,
-      allergens: menuItem.allergens.map(a => a.allergen.name),
-      isVegetarian: menuItem.isVegetarian,
-      isVegan: menuItem.isVegan,
-      isSpicy: menuItem.isSpicy,
-      isPopular: menuItem.isPopular,
-      isGlutenFree: menuItem.isGlutenFree,
-      isDairyFree: menuItem.isDairyFree,
-      calories: menuItem.calories,
-      prepTime: menuItem.prepTime,
       order: menuItem.order
     }
 

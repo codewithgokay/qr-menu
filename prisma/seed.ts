@@ -7,12 +7,10 @@ async function main() {
 
   // Clear all existing data first
   console.log('🗑️  Clearing existing data...')
-  await prisma.menuItemAllergen.deleteMany()
   await prisma.menuItem.deleteMany()
   await prisma.menuCategory.deleteMany()
   await prisma.restaurantOperatingHours.deleteMany()
   await prisma.restaurant.deleteMany()
-  await prisma.allergen.deleteMany()
   console.log('✅ Data cleared successfully')
 
   // Create restaurant
@@ -77,15 +75,6 @@ async function main() {
   }
   console.log('✅ Categories created')
 
-  // Create allergens
-  const allergenNames = ['dairy', 'nuts', 'seafood', 'gluten', 'eggs', 'sulfites']
-  for (const allergenName of allergenNames) {
-    await prisma.allergen.create({
-      data: { name: allergenName }
-    })
-  }
-  console.log('✅ Allergens created')
-
   // Create menu items
   const menuItems = [
     // Kahveler
@@ -95,10 +84,7 @@ async function main() {
       description: 'Geleneksel Türk kahvesi, lokum eşliğinde',
       price: 15.00,
       categoryId: 'coffee',
-      calories: 5,
-      prepTime: 5,
-      order: 1,
-      allergens: []
+      order: 1
     },
     {
       id: '2',
@@ -106,10 +92,7 @@ async function main() {
       description: 'Tek shot özel çekirdek espressosu',
       price: 12.00,
       categoryId: 'coffee',
-      calories: 5,
-      prepTime: 3,
-      order: 2,
-      allergens: []
+      order: 2
     },
     {
       id: '3',
@@ -117,10 +100,7 @@ async function main() {
       description: 'Espresso + sıcak su',
       price: 14.00,
       categoryId: 'coffee',
-      calories: 5,
-      prepTime: 3,
-      order: 3,
-      allergens: []
+      order: 3
     },
     {
       id: '4',
@@ -128,10 +108,7 @@ async function main() {
       description: 'Espresso + buharda ısıtılmış süt + süt köpüğü',
       price: 18.00,
       categoryId: 'coffee',
-      calories: 80,
-      prepTime: 4,
-      order: 4,
-      allergens: ['dairy']
+      order: 4
     },
     {
       id: '5',
@@ -139,10 +116,7 @@ async function main() {
       description: 'Espresso + bol sıcak süt + az köpük',
       price: 20.00,
       categoryId: 'coffee',
-      calories: 120,
-      prepTime: 4,
-      order: 5,
-      allergens: ['dairy']
+      order: 5
     },
     {
       id: '6',
@@ -150,10 +124,7 @@ async function main() {
       description: 'Espresso + çikolata + sıcak süt + krema',
       price: 22.00,
       categoryId: 'coffee',
-      calories: 200,
-      prepTime: 5,
-      order: 6,
-      allergens: ['dairy']
+      order: 6
     },
 
     // Soğuk İçecekler
@@ -163,10 +134,7 @@ async function main() {
       description: '12 saat soğuk demleme, buz ile servis',
       price: 16.00,
       categoryId: 'cold-drinks',
-      calories: 5,
-      prepTime: 2,
-      order: 7,
-      allergens: []
+      order: 7
     },
     {
       id: '8',
@@ -174,10 +142,7 @@ async function main() {
       description: 'Espresso + soğuk süt + buz',
       price: 18.00,
       categoryId: 'cold-drinks',
-      calories: 100,
-      prepTime: 3,
-      order: 8,
-      allergens: ['dairy']
+      order: 8
     },
     {
       id: '9',
@@ -185,10 +150,7 @@ async function main() {
       description: 'Buzlu kahve + süt + şeker, blender ile',
       price: 20.00,
       categoryId: 'cold-drinks',
-      calories: 150,
-      prepTime: 4,
-      order: 9,
-      allergens: ['dairy']
+      order: 9
     },
     {
       id: '10',
@@ -196,10 +158,7 @@ async function main() {
       description: 'Günlük taze sıkılmış portakal suyu',
       price: 12.00,
       categoryId: 'cold-drinks',
-      calories: 110,
-      prepTime: 3,
-      order: 10,
-      allergens: []
+      order: 10
     },
 
     // Pastalar & Tatlılar
@@ -209,10 +168,7 @@ async function main() {
       description: 'Ev yapımı New York usulü cheesecake',
       price: 25.00,
       categoryId: 'pastries',
-      calories: 350,
-      prepTime: 2,
-      order: 11,
-      allergens: ['dairy', 'eggs', 'gluten']
+      order: 11
     },
     {
       id: '12',
@@ -220,10 +176,7 @@ async function main() {
       description: 'Çikolatalı brownie, dondurma ile',
       price: 18.00,
       categoryId: 'pastries',
-      calories: 280,
-      prepTime: 2,
-      order: 12,
-      allergens: ['dairy', 'eggs', 'gluten']
+      order: 12
     },
     {
       id: '13',
@@ -231,10 +184,7 @@ async function main() {
       description: 'Kahve ve mascarpone ile klasik tiramisu',
       price: 22.00,
       categoryId: 'pastries',
-      calories: 320,
-      prepTime: 2,
-      order: 13,
-      allergens: ['dairy', 'eggs', 'gluten']
+      order: 13
     },
     {
       id: '14',
@@ -242,10 +192,7 @@ async function main() {
       description: 'Tereyağlı kruvasan, reçel ile',
       price: 8.00,
       categoryId: 'pastries',
-      calories: 200,
-      prepTime: 1,
-      order: 14,
-      allergens: ['dairy', 'eggs', 'gluten']
+      order: 14
     },
 
     // Sandviçler
@@ -255,10 +202,7 @@ async function main() {
       description: 'Tavuk, domates, marul, mayonez',
       price: 28.00,
       categoryId: 'sandwiches',
-      calories: 450,
-      prepTime: 8,
-      order: 15,
-      allergens: ['gluten', 'eggs']
+      order: 15
     },
     {
       id: '16',
@@ -266,10 +210,7 @@ async function main() {
       description: 'Ton balığı, kaşar peyniri, soğan',
       price: 26.00,
       categoryId: 'sandwiches',
-      calories: 420,
-      prepTime: 7,
-      order: 16,
-      allergens: ['seafood', 'dairy', 'gluten']
+      order: 16
     },
     {
       id: '17',
@@ -277,10 +218,7 @@ async function main() {
       description: 'Avokado, domates, salatalık, marul',
       price: 22.00,
       categoryId: 'sandwiches',
-      calories: 300,
-      prepTime: 5,
-      order: 17,
-      allergens: ['gluten']
+      order: 17
     },
 
     // Kahvaltı
@@ -290,10 +228,7 @@ async function main() {
       description: 'Yumurta, domates, biber, soğan',
       price: 24.00,
       categoryId: 'breakfast',
-      calories: 250,
-      prepTime: 10,
-      order: 18,
-      allergens: ['eggs']
+      order: 18
     },
     {
       id: '19',
@@ -301,10 +236,7 @@ async function main() {
       description: '3 yumurta, peynir, mantar, domates',
       price: 20.00,
       categoryId: 'breakfast',
-      calories: 300,
-      prepTime: 8,
-      order: 19,
-      allergens: ['eggs', 'dairy']
+      order: 19
     },
     {
       id: '20',
@@ -312,10 +244,7 @@ async function main() {
       description: '3 adet pancake, bal ve tereyağı',
       price: 18.00,
       categoryId: 'breakfast',
-      calories: 400,
-      prepTime: 12,
-      order: 20,
-      allergens: ['dairy', 'eggs', 'gluten']
+      order: 20
     },
 
     // Atıştırmalıklar
@@ -325,10 +254,7 @@ async function main() {
       description: 'Ev yapımı çikolatalı kurabiye',
       price: 6.00,
       categoryId: 'snacks',
-      calories: 150,
-      prepTime: 1,
-      order: 21,
-      allergens: ['dairy', 'eggs', 'gluten']
+      order: 21
     },
     {
       id: '22',
@@ -336,10 +262,7 @@ async function main() {
       description: 'Yulaf, kuruyemiş, bal ile ev yapımı',
       price: 8.00,
       categoryId: 'snacks',
-      calories: 200,
-      prepTime: 1,
-      order: 22,
-      allergens: ['nuts']
+      order: 22
     },
     {
       id: '23',
@@ -347,43 +270,21 @@ async function main() {
       description: 'Badem, ceviz, fındık karışımı',
       price: 12.00,
       categoryId: 'snacks',
-      calories: 300,
-      prepTime: 1,
-      order: 23,
-      allergens: ['nuts']
+      order: 23
     }
   ]
 
   for (let i = 0; i < menuItems.length; i++) {
-    const item = menuItems[i];
-    const { allergens, ...itemData } = item
+    const item = menuItems[i]
 
     // Create the menu item with order
-    const menuItem = await prisma.menuItem.create({
+    await prisma.menuItem.create({
       data: {
         restaurantId: restaurant.id,
-        ...itemData,
+        ...item,
         order: i + 1
       }
     })
-
-    // Create allergen associations
-    if (allergens && allergens.length > 0) {
-      for (const allergenName of allergens) {
-        const allergen = await prisma.allergen.findUnique({
-          where: { name: allergenName }
-        })
-
-        if (allergen) {
-          await prisma.menuItemAllergen.create({
-            data: {
-              menuItemId: menuItem.id,
-              allergenId: allergen.id
-            }
-          })
-        }
-      }
-    }
   }
   console.log('✅ Menu items created')
   console.log('🎉 Database seed completed successfully!')

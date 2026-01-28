@@ -16,11 +16,11 @@ interface MenuItemFormProps {
   isLoading?: boolean;
 }
 
-export function MenuItemForm({ 
-  item, 
-  categories, 
-  onSave, 
-  onCancel, 
+export function MenuItemForm({
+  item,
+  categories,
+  onSave,
+  onCancel,
   isEditing = false,
   isLoading = false
 }: MenuItemFormProps) {
@@ -29,16 +29,7 @@ export function MenuItemForm({
     description: '',
     price: '',
     category: '',
-    image: '',
-    allergens: '',
-    calories: '',
-    prepTime: '',
-    isVegetarian: false,
-    isVegan: false,
-    isSpicy: false,
-    isPopular: false,
-    isGlutenFree: false,
-    isDairyFree: false
+    image: ''
   });
 
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -52,16 +43,7 @@ export function MenuItemForm({
         description: item.description,
         price: item.price.toString(),
         category: item.category,
-        image: item.image || '',
-        allergens: item.allergens?.join(', ') || '',
-        calories: item.calories?.toString() || '',
-        prepTime: item.prepTime?.toString() || '',
-        isVegetarian: item.isVegetarian || false,
-        isVegan: item.isVegan || false,
-        isSpicy: item.isSpicy || false,
-        isPopular: item.isPopular || false,
-        isGlutenFree: item.isGlutenFree || false,
-        isDairyFree: item.isDairyFree || false
+        image: item.image || ''
       });
       setImagePreview(item.image || '');
       setImagePublicId((item as MenuItem & { imagePublicId?: string }).imagePublicId || '');
@@ -86,7 +68,7 @@ export function MenuItemForm({
     }
 
     setIsUploading(true);
-    
+
     try {
       const uploadFormData = new FormData();
       uploadFormData.append('file', file);
@@ -114,7 +96,7 @@ export function MenuItemForm({
       console.error('Upload error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
       alert(`Resim yüklenirken hata oluştu: ${errorMessage}`);
-      
+
       // Reset file input
       e.target.value = '';
     } finally {
@@ -124,23 +106,14 @@ export function MenuItemForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const itemData: Omit<MenuItem, 'id'> & { imagePublicId?: string } = {
       name: formData.name,
       description: formData.description,
       price: parseFloat(formData.price),
       category: formData.category,
       image: imagePreview,
-      imagePublicId: imagePublicId,
-      allergens: formData.allergens ? formData.allergens.split(',').map(a => a.trim()).filter(a => a.length > 0) : [],
-      calories: formData.calories ? parseInt(formData.calories) : undefined,
-      prepTime: formData.prepTime ? parseInt(formData.prepTime) : undefined,
-      isVegetarian: formData.isVegetarian,
-      isVegan: formData.isVegan,
-      isSpicy: formData.isSpicy,
-      isPopular: formData.isPopular,
-      isGlutenFree: formData.isGlutenFree,
-      isDairyFree: formData.isDairyFree
+      imagePublicId: imagePublicId
     };
 
     onSave(itemData);
@@ -258,108 +231,6 @@ export function MenuItemForm({
             />
           </div>
         )}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-2">
-              Alerjenler
-            </label>
-            <Input
-              value={formData.allergens}
-              onChange={(e) => setFormData({ ...formData, allergens: e.target.value })}
-              placeholder="süt, gluten, fındık"
-              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage text-sm sm:text-base"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-2">
-              Kalori
-            </label>
-            <Input
-              type="number"
-              value={formData.calories}
-              onChange={(e) => setFormData({ ...formData, calories: e.target.value })}
-              placeholder="250"
-              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage text-sm sm:text-base"
-            />
-          </div>
-
-          <div className="sm:col-span-2 lg:col-span-1">
-            <label className="block text-sm font-medium text-text-primary mb-2">
-              Hazırlık Süresi (dakika)
-            </label>
-            <Input
-              type="number"
-              value={formData.prepTime}
-              onChange={(e) => setFormData({ ...formData, prepTime: e.target.value })}
-              placeholder="15"
-              className="bg-soft-gray border-warm-beige text-text-primary placeholder-text-secondary focus:border-sage focus:ring-sage text-sm sm:text-base"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={formData.isVegetarian}
-              onChange={(e) => setFormData({ ...formData, isVegetarian: e.target.checked })}
-              className="rounded border-warm-beige bg-soft-gray text-sage focus:ring-sage"
-            />
-            <span className="text-text-primary">🌱 Vejetaryen</span>
-          </label>
-
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={formData.isVegan}
-              onChange={(e) => setFormData({ ...formData, isVegan: e.target.checked })}
-              className="rounded border-warm-beige bg-soft-gray text-sage focus:ring-sage"
-            />
-            <span className="text-text-primary">🌿 Vegan</span>
-          </label>
-
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={formData.isSpicy}
-              onChange={(e) => setFormData({ ...formData, isSpicy: e.target.checked })}
-              className="rounded border-warm-beige bg-soft-gray text-sage focus:ring-sage"
-            />
-            <span className="text-text-primary">🌶️ Acılı</span>
-          </label>
-
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={formData.isPopular}
-              onChange={(e) => setFormData({ ...formData, isPopular: e.target.checked })}
-              className="rounded border-warm-beige bg-soft-gray text-sage focus:ring-sage"
-            />
-            <span className="text-text-primary">⭐ Popüler</span>
-          </label>
-
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={formData.isGlutenFree}
-              onChange={(e) => setFormData({ ...formData, isGlutenFree: e.target.checked })}
-              className="rounded border-warm-beige bg-soft-gray text-sage focus:ring-sage"
-            />
-            <span className="text-text-primary">🌾 Glutensiz</span>
-          </label>
-
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={formData.isDairyFree}
-              onChange={(e) => setFormData({ ...formData, isDairyFree: e.target.checked })}
-              className="rounded border-warm-beige bg-soft-gray text-sage focus:ring-sage"
-            />
-            <span className="text-text-primary">🥛 Süt içermez</span>
-          </label>
-        </div>
 
         <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4">
           <Button

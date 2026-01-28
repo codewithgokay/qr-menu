@@ -6,15 +6,6 @@ export interface MenuItem {
   category: string;
   image?: string;
   imagePublicId?: string;
-  allergens?: string[];
-  isVegetarian?: boolean;
-  isVegan?: boolean;
-  isSpicy?: boolean;
-  isPopular?: boolean;
-  isGlutenFree?: boolean;
-  isDairyFree?: boolean;
-  calories?: number;
-  prepTime?: number; // in minutes
   order?: number; // for sorting menu items
 }
 
@@ -54,26 +45,16 @@ export interface Restaurant {
 export interface FilterOptions {
   search: string;
   category: string;
-  dietary: string[];
   priceRange: [number, number];
-  sortBy: 'name' | 'price' | 'popularity';
+  sortBy: 'name' | 'price';
   sortOrder: 'asc' | 'desc';
 }
 
 export interface UserPreferences {
-  dietaryRestrictions: string[];
   language: string;
   currency: string;
   theme: 'light' | 'dark' | 'system';
 }
-
-export type DietaryOption = 
-  | 'vegetarian' 
-  | 'vegan' 
-  | 'gluten-free' 
-  | 'dairy-free' 
-  | 'spicy' 
-  | 'popular';
 
 export interface MenuState {
   items: MenuItem[];

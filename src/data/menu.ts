@@ -46,12 +46,7 @@ export const menuItems: MenuItem[] = [
     price: 15.00,
     category: 'coffee',
     image: undefined,
-    imagePublicId: undefined,
-    isVegan: true,
-    isGlutenFree: true,
-    calories: 5,
-    prepTime: 5,
-    isPopular: true
+    imagePublicId: undefined
   },
   {
     id: '2',
@@ -60,11 +55,7 @@ export const menuItems: MenuItem[] = [
     price: 12.00,
     category: 'coffee',
     image: undefined,
-    imagePublicId: undefined,
-    isVegan: true,
-    isGlutenFree: true,
-    calories: 5,
-    prepTime: 3
+    imagePublicId: undefined
   },
   {
     id: '3',
@@ -73,11 +64,7 @@ export const menuItems: MenuItem[] = [
     price: 14.00,
     category: 'coffee',
     image: undefined,
-    imagePublicId: undefined,
-    isVegan: true,
-    isGlutenFree: true,
-    calories: 5,
-    prepTime: 3
+    imagePublicId: undefined
   },
   {
     id: '4',
@@ -86,10 +73,7 @@ export const menuItems: MenuItem[] = [
     price: 18.00,
     category: 'coffee',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy'],
-    calories: 80,
-    prepTime: 4
+    imagePublicId: undefined
   },
   {
     id: '5',
@@ -98,10 +82,7 @@ export const menuItems: MenuItem[] = [
     price: 20.00,
     category: 'coffee',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy'],
-    calories: 120,
-    prepTime: 4
+    imagePublicId: undefined
   },
   {
     id: '6',
@@ -110,10 +91,7 @@ export const menuItems: MenuItem[] = [
     price: 22.00,
     category: 'coffee',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy'],
-    calories: 200,
-    prepTime: 5
+    imagePublicId: undefined
   },
 
   // Soğuk İçecekler
@@ -124,11 +102,7 @@ export const menuItems: MenuItem[] = [
     price: 16.00,
     category: 'cold-drinks',
     image: undefined,
-    imagePublicId: undefined,
-    isVegan: true,
-    isGlutenFree: true,
-    calories: 5,
-    prepTime: 2
+    imagePublicId: undefined
   },
   {
     id: '8',
@@ -137,10 +111,7 @@ export const menuItems: MenuItem[] = [
     price: 18.00,
     category: 'cold-drinks',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy'],
-    calories: 100,
-    prepTime: 3
+    imagePublicId: undefined
   },
   {
     id: '9',
@@ -149,10 +120,7 @@ export const menuItems: MenuItem[] = [
     price: 20.00,
     category: 'cold-drinks',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy'],
-    calories: 150,
-    prepTime: 4
+    imagePublicId: undefined
   },
   {
     id: '10',
@@ -161,11 +129,7 @@ export const menuItems: MenuItem[] = [
     price: 12.00,
     category: 'cold-drinks',
     image: undefined,
-    imagePublicId: undefined,
-    isVegan: true,
-    isGlutenFree: true,
-    calories: 110,
-    prepTime: 3
+    imagePublicId: undefined
   },
 
   // Pastalar & Tatlılar
@@ -176,12 +140,7 @@ export const menuItems: MenuItem[] = [
     price: 25.00,
     category: 'pastries',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy', 'eggs', 'gluten'],
-    isVegetarian: true,
-    calories: 350,
-    prepTime: 2,
-    isPopular: true
+    imagePublicId: undefined
   },
   {
     id: '12',
@@ -190,11 +149,7 @@ export const menuItems: MenuItem[] = [
     price: 18.00,
     category: 'pastries',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy', 'eggs', 'gluten'],
-    isVegetarian: true,
-    calories: 280,
-    prepTime: 2
+    imagePublicId: undefined
   },
   {
     id: '13',
@@ -203,11 +158,7 @@ export const menuItems: MenuItem[] = [
     price: 22.00,
     category: 'pastries',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy', 'eggs', 'gluten'],
-    isVegetarian: true,
-    calories: 320,
-    prepTime: 2
+    imagePublicId: undefined
   },
   {
     id: '14',
@@ -216,11 +167,7 @@ export const menuItems: MenuItem[] = [
     price: 8.00,
     category: 'pastries',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy', 'eggs', 'gluten'],
-    isVegetarian: true,
-    calories: 200,
-    prepTime: 1
+    imagePublicId: undefined
   },
 
   // Sandviçler
@@ -231,10 +178,7 @@ export const menuItems: MenuItem[] = [
     price: 28.00,
     category: 'sandwiches',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['gluten', 'eggs'],
-    calories: 450,
-    prepTime: 8
+    imagePublicId: undefined
   },
   {
     id: '16',
@@ -243,10 +187,7 @@ export const menuItems: MenuItem[] = [
     price: 26.00,
     category: 'sandwiches',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['seafood', 'dairy', 'gluten'],
-    calories: 420,
-    prepTime: 7
+    imagePublicId: undefined
   },
   {
     id: '17',
@@ -255,12 +196,7 @@ export const menuItems: MenuItem[] = [
     price: 22.00,
     category: 'sandwiches',
     image: undefined,
-    imagePublicId: undefined,
-    isVegetarian: true,
-    isVegan: true,
-    isGlutenFree: false,
-    calories: 300,
-    prepTime: 5
+    imagePublicId: undefined
   },
 
   // Kahvaltı
@@ -271,12 +207,7 @@ export const menuItems: MenuItem[] = [
     price: 24.00,
     category: 'breakfast',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['eggs'],
-    isVegetarian: true,
-    calories: 250,
-    prepTime: 10,
-    isPopular: true
+    imagePublicId: undefined
   },
   {
     id: '19',
@@ -285,11 +216,7 @@ export const menuItems: MenuItem[] = [
     price: 20.00,
     category: 'breakfast',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['eggs', 'dairy'],
-    isVegetarian: true,
-    calories: 300,
-    prepTime: 8
+    imagePublicId: undefined
   },
   {
     id: '20',
@@ -298,11 +225,7 @@ export const menuItems: MenuItem[] = [
     price: 18.00,
     category: 'breakfast',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy', 'eggs', 'gluten'],
-    isVegetarian: true,
-    calories: 400,
-    prepTime: 12
+    imagePublicId: undefined
   },
 
   // Atıştırmalıklar
@@ -313,11 +236,7 @@ export const menuItems: MenuItem[] = [
     price: 6.00,
     category: 'snacks',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['dairy', 'eggs', 'gluten'],
-    isVegetarian: true,
-    calories: 150,
-    prepTime: 1
+    imagePublicId: undefined
   },
   {
     id: '22',
@@ -326,13 +245,7 @@ export const menuItems: MenuItem[] = [
     price: 8.00,
     category: 'snacks',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['nuts'],
-    isVegetarian: true,
-    isVegan: true,
-    isGlutenFree: true,
-    calories: 200,
-    prepTime: 1
+    imagePublicId: undefined
   },
   {
     id: '23',
@@ -341,12 +254,6 @@ export const menuItems: MenuItem[] = [
     price: 12.00,
     category: 'snacks',
     image: undefined,
-    imagePublicId: undefined,
-    allergens: ['nuts'],
-    isVegetarian: true,
-    isVegan: true,
-    isGlutenFree: true,
-    calories: 300,
-    prepTime: 1
+    imagePublicId: undefined
   }
 ];
