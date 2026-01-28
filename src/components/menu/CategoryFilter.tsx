@@ -23,6 +23,8 @@ export function CategoryFilter() {
   const handleCategoryClick = (categoryId: string) => {
     setActiveCategory(categoryId);
     setSelectedCategory(categoryId);
+    // Scroll to top to show first items
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Icon mapping

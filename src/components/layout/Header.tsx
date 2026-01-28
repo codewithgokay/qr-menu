@@ -32,17 +32,16 @@ export function Header({ restaurant }: HeaderProps) {
       className={`sticky top-0 z-50 w-full border-b border-republic-gold/50 bg-republic-green/95 backdrop-blur supports-[backdrop-filter]:bg-republic-green/90 transition-all duration-300 ${isScrolled ? 'shadow-lg' : ''
         }`}
     >
-      <div className={`px-6 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-6'}`}>
+      <div className="px-6 py-4">
         <div className="flex justify-start items-center">
           {/* Logo & Brand - Clickable */}
           <Link href="/" className="flex items-center space-x-4 group">
-            <div className={`relative flex-shrink-0 transition-all duration-300 ${isScrolled ? 'w-12 h-12' : 'w-14 h-14'
-              }`}>
+            <div className="relative flex-shrink-0 w-14 h-14 transition-all duration-300">
               <ImageOptimized
                 src="https://res.cloudinary.com/dmudabrcn/image/upload/v1769272325/543799471_17989578092840121_1390771300469241938_n_dpnmkw.jpg"
                 alt="Republic Logo"
-                width={isScrolled ? 48 : 56}
-                height={isScrolled ? 48 : 56}
+                width={56}
+                height={56}
                 className="w-full h-full object-contain rounded-full border-2 border-republic-gold shadow-lg group-hover:scale-105 transition-transform"
                 fallbackText="RP"
                 priority={true}
@@ -52,12 +51,10 @@ export function Header({ restaurant }: HeaderProps) {
 
             {/* Brand Name & Subtitle - Stacked for Authority */}
             <div className="flex flex-col justify-center">
-              <h1 className={`font-bold text-republic-gold tracking-tight font-heading leading-none transition-all duration-300 group-hover:text-white ${isScrolled ? 'text-xl' : 'text-2xl'
-                }`}>
+              <h1 className="font-bold text-republic-gold tracking-tight font-heading leading-none text-2xl transition-all duration-300 group-hover:text-white">
                 {restaurant.name}
               </h1>
-              <span className={`text-republic-gold/90 font-medium tracking-[0.2em] uppercase transition-all duration-300 ${isScrolled ? 'text-[0.65rem]' : 'text-xs'
-                }`}>
+              <span className="text-republic-gold/90 font-medium tracking-[0.2em] uppercase text-xs transition-all duration-300">
                 Social House
               </span>
             </div>
