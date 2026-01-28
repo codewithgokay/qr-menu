@@ -29,12 +29,12 @@ export const restaurant: Restaurant = {
 };
 
 export const categories: MenuCategory[] = [
-  { id: 'coffee', name: 'Kahveler', description: 'Özel çekirdeklerden hazırlanan kahveler', icon: '☕', order: 1 },
-  { id: 'cold-drinks', name: 'Soğuk İçecekler', description: 'Serinletici içecekler', icon: '🧊', order: 2 },
-  { id: 'pastries', name: 'Pastalar & Tatlılar', description: 'Ev yapımı pastalar ve tatlılar', icon: '🧁', order: 3 },
-  { id: 'sandwiches', name: 'Sandviçler', description: 'Taze sandviçler ve tostlar', icon: '🥪', order: 4 },
-  { id: 'breakfast', name: 'Kahvaltı', description: 'Günün en önemli öğünü', icon: '🍳', order: 5 },
-  { id: 'snacks', name: 'Atıştırmalıklar', description: 'Hafif atıştırmalıklar', icon: '🥜', order: 6 }
+  { id: 'coffee', name: 'Kahveler', description: 'Özel çekirdeklerden hazırlanan kahveler', order: 1 },
+  { id: 'cold-drinks', name: 'Soğuk İçecekler', description: 'Serinletici içecekler', order: 2 },
+  { id: 'pastries', name: 'Pastalar & Tatlılar', description: 'Ev yapımı pastalar ve tatlılar', order: 3 },
+  { id: 'sandwiches', name: 'Sandviçler', description: 'Taze sandviçler ve tostlar', order: 4 },
+  { id: 'breakfast', name: 'Kahvaltı', description: 'Günün en önemli öğünü', order: 5 },
+  { id: 'snacks', name: 'Atıştırmalıklar', description: 'Hafif atıştırmalıklar', order: 6 }
 ];
 
 export const menuItems: MenuItem[] = [
