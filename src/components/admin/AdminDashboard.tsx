@@ -12,14 +12,11 @@ export function AdminDashboard({ menuItems, categories }: AdminDashboardProps) {
   // Calculate statistics
   const totalItems = menuItems.length;
   const totalCategories = categories.length;
-  
+
   const itemsByCategory = categories.map(category => ({
     name: category.name,
     count: menuItems.filter(item => item.category === category.id).length
   }));
-
-  const vegetarianItems = menuItems.filter(item => item.isVegetarian).length;
-  const veganItems = menuItems.filter(item => item.isVegan).length;
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -64,19 +61,7 @@ export function AdminDashboard({ menuItems, categories }: AdminDashboardProps) {
           </div>
         </Card>
 
-        <Card className="p-4 sm:p-6 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300">
-          <h3 className="text-base sm:text-lg font-semibold text-text-primary mb-3 sm:mb-4 font-heading">Özel Diyet Seçenekleri</h3>
-          <div className="space-y-2 sm:space-y-3">
-            <div className="flex justify-between items-center py-1">
-              <span className="text-text-primary text-sm sm:text-base">🌱 Vejetaryen</span>
-              <span className="text-text-primary font-semibold text-sm sm:text-base">{vegetarianItems} ürün</span>
-            </div>
-            <div className="flex justify-between items-center py-1">
-              <span className="text-text-primary text-sm sm:text-base">🌿 Vegan</span>
-              <span className="text-text-primary font-semibold text-sm sm:text-base">{veganItems} ürün</span>
-            </div>
-          </div>
-        </Card>
+        {/* Special Diet Options removed */}
       </div>
     </div>
   );
