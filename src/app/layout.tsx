@@ -16,20 +16,20 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Republic - Social House',
-  description: 'Çanakkale\'nin en iyi pub deneyimi. QR Menü ve sipariş sistemi.',
-  keywords: 'republic, canakkale, pub, bar, restaurant, menu, food, dining, qr menu',
-  authors: [{ name: 'Republic' }],
+  title: 'Republic Pub - Social House',
+  description: 'Çanakkale\'nin en iyi pub deneyimi. Özel içecekler, lezzetli atıştırmalıklar ve harika atmosfer.',
+  keywords: 'republic, canakkale, pub, bar, restaurant, menu, food, dining, qr menu, republic pub',
+  authors: [{ name: 'Republic Pub' }],
   openGraph: {
-    title: 'Republic - QR Menu',
-    description: 'Lezzetli yemekler ve içecekler',
+    title: 'Republic Pub - Social House',
+    description: 'Çanakkale\'nin en iyi pub deneyimi. QR Menü ve sipariş sistemi.',
     type: 'website',
     locale: 'tr_TR',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Republic - QR Menu',
-    description: 'Lezzetli yemekler ve içecekler',
+    title: 'Republic Pub - Social House',
+    description: 'Çanakkale\'nin en iyi pub deneyimi. QR Menü ve sipariş sistemi.',
   },
   robots: {
     index: true,
