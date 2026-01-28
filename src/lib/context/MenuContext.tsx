@@ -44,7 +44,6 @@ const initialState: ExtendedMenuState = {
   filters: {
     search: '',
     category: 'all',
-    dietary: [],
     priceRange: [0, 100],
     sortBy: 'name',
     sortOrder: 'asc'
@@ -53,7 +52,6 @@ const initialState: ExtendedMenuState = {
   error: null,
   selectedItem: null,
   userPreferences: {
-    dietaryRestrictions: [],
     language: 'en',
     currency: 'USD',
     theme: 'system'
@@ -73,7 +71,7 @@ function menuReducer(state: ExtendedMenuState, action: MenuAction): ExtendedMenu
           search: action.payload
         }
       };
-    
+
     case 'SET_SELECTED_CATEGORY':
       return {
         ...state,
@@ -82,7 +80,7 @@ function menuReducer(state: ExtendedMenuState, action: MenuAction): ExtendedMenu
           category: action.payload
         }
       };
-    
+
     case 'SET_FILTERS':
       return {
         ...state,
@@ -91,8 +89,8 @@ function menuReducer(state: ExtendedMenuState, action: MenuAction): ExtendedMenu
           ...action.payload
         }
       };
-    
-    
+
+
     case 'SET_USER_PREFERENCES':
       return {
         ...state,
@@ -101,73 +99,72 @@ function menuReducer(state: ExtendedMenuState, action: MenuAction): ExtendedMenu
           ...action.payload
         }
       };
-    
+
     case 'CLEAR_FILTERS':
       return {
         ...state,
         filters: {
           search: '',
           category: 'all',
-          dietary: [],
           priceRange: [0, 100],
           sortBy: 'name',
           sortOrder: 'asc'
         }
       };
-    
+
     case 'SET_LOADING':
       return {
         ...state,
         isLoading: action.payload
       };
-    
+
     case 'SET_ERROR':
       return {
         ...state,
         error: action.payload
       };
-    
+
     case 'SET_SELECTED_ITEM':
       return {
         ...state,
         selectedItem: action.payload
       };
-    
+
     case 'SET_ITEMS':
       return {
         ...state,
         items: action.payload,
         filteredItems: action.payload
       };
-    
+
     case 'SET_CATEGORIES':
       return {
         ...state,
         categories: action.payload
       };
-    
+
     case 'UPDATE_ITEMS':
       // This case is no longer needed - we always fetch fresh data
       return state;
-    
+
     case 'SET_LOADING_PROGRESS':
       return {
         ...state,
         isLoadingProgress: action.payload
       };
-    
+
     case 'SET_INITIAL_LOAD':
       return {
         ...state,
         isInitialLoad: action.payload
       };
-    
+
     case 'SET_VISIBLE_ITEMS':
       return {
         ...state,
         visibleItems: action.payload
       };
-    
+
     default:
       return state;
   }
@@ -177,7 +174,7 @@ interface MenuProviderProps {
   children: ReactNode;
 }
 
-export function MenuProvider({ 
+export function MenuProvider({
   children
 }: MenuProviderProps) {
   const [state, dispatch] = useReducer(menuReducer, initialState);
@@ -186,7 +183,7 @@ export function MenuProvider({
   useEffect(() => {
     // Only run on client side
     if (typeof window === 'undefined') return;
-    
+
     const loadData = async () => {
       try {
         dispatch({ type: 'SET_LOADING', payload: true });
@@ -200,12 +197,12 @@ export function MenuProvider({
           menuItemsApi.getAll(),
           categoriesApi.getAll()
         ]);
-        
+
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 75 });
-        
+
         let allItems: MenuItemType[] = [];
         let allCategories: MenuCategoryType[] = [];
-        
+
         // Handle menu items result
         if (itemsResult.status === 'fulfilled' && Array.isArray(itemsResult.value) && itemsResult.value.length > 0) {
           allItems = itemsResult.value as MenuItemType[];
@@ -214,7 +211,7 @@ export function MenuProvider({
           allItems = fallbackMenuItems;
           console.warn('Using fallback menu items');
         }
-        
+
         // Handle categories result
         if (categoriesResult.status === 'fulfilled' && Array.isArray(categoriesResult.value) && categoriesResult.value.length > 0) {
           allCategories = categoriesResult.value as MenuCategoryType[];
@@ -223,14 +220,14 @@ export function MenuProvider({
           allCategories = fallbackCategories;
           console.warn('Using fallback categories');
         }
-        
+
         // Update with fresh data
         dispatch({ type: 'SET_CATEGORIES', payload: allCategories });
         dispatch({ type: 'SET_ITEMS', payload: allItems });
         dispatch({ type: 'SET_VISIBLE_ITEMS', payload: allItems });
-        
+
         dispatch({ type: 'SET_LOADING_PROGRESS', payload: 100 });
-        
+
       } catch (error) {
         console.error('Error loading menu data:', error);
         // Only use fallback data if everything fails
@@ -253,7 +250,7 @@ export function MenuProvider({
     };
 
     window.addEventListener('menuUpdated', handleMenuUpdate);
-    
+
     return () => {
       window.removeEventListener('menuUpdated', handleMenuUpdate);
     };
