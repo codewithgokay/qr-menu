@@ -132,12 +132,7 @@ function SortableMenuItem({
               {getCategoryName(item.category)}
             </Badge>
 
-            <div className="flex space-x-1">
-              {/* Badges removed */}
-
-              {item.isGlutenFree && <span className="text-blue-500 text-sm" title="Glutensiz">🌾</span>}
-              {item.isDairyFree && <span className="text-blue-500 text-sm" title="Süt içermez">🥛</span>}
-            </div>
+            {/* All Badges removed */}
           </div>
         </div>
 
