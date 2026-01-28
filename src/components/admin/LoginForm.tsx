@@ -25,13 +25,13 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     const result = login(username, password);
-    
+
     if (result.success) {
       onLoginSuccess();
     } else {
       setError(result.message);
     }
-    
+
     setIsLoading(false);
   };
 
@@ -40,7 +40,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
       <Card className="w-full max-w-md p-6 sm:p-8 bg-white shadow-soft border border-warm-beige">
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-2 font-heading">Admin Paneli</h1>
-          <p className="text-text-secondary text-sm sm:text-base">Dükkan Yönetimi</p>
+          <p className="text-text-secondary text-sm sm:text-base">Republic Yönetimi</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
