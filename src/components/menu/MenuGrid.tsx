@@ -7,27 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMenu } from '@/lib/context/MenuContext';
-import {
-  ChevronDown,
-  Coffee,
-  GlassWater,
-  CakeSlice,
-  Sandwich,
-  Egg,
-  Cookie,
-  UtensilsCrossed
-} from 'lucide-react';
-
-// Icon mapping based on category IDs
-const categoryIcons: { [key: string]: React.ReactNode } = {
-  'coffee': <Coffee className="w-6 h-6" />,
-  'cold-drinks': <GlassWater className="w-6 h-6" />,
-  'pastries': <CakeSlice className="w-6 h-6" />,
-  'sandwiches': <Sandwich className="w-6 h-6" />,
-  'breakfast': <Egg className="w-6 h-6" />,
-  'snacks': <Cookie className="w-6 h-6" />,
-  'default': <UtensilsCrossed className="w-6 h-6" />
-};
+import { ChevronDown } from 'lucide-react';
 
 export function MenuGrid() {
   const {
@@ -179,9 +159,7 @@ export function MenuGrid() {
               whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-center space-x-3">
-                <span className="text-republic-gold">
-                  {categoryIcons[category.id] || categoryIcons['default']}
-                </span>
+                <span className="text-2xl">{category.icon}</span>
                 <span className="font-heading font-bold text-lg">{category.name}</span>
                 <span className={`text-sm ${isExpanded ? 'text-republic-gold/80' : 'text-gray-400'}`}>
                   ({items.length})
