@@ -32,7 +32,7 @@ export function MenuGrid() {
       const query = filters.search.toLowerCase();
       filtered = filtered.filter(item =>
         item.name.toLowerCase().includes(query) ||
-        item.description.toLowerCase().includes(query) ||
+        (item.description ? item.description.toLowerCase().includes(query) : false) ||
         item.category.toLowerCase().includes(query)
       );
     }
