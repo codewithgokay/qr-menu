@@ -37,12 +37,12 @@ interface MenuItemListProps {
 }
 
 // Sortable Menu Item Component
-function SortableMenuItem({ 
-  item, 
-  categories, 
-  onEdit, 
-  onDelete, 
-  deleteConfirm, 
+function SortableMenuItem({
+  item,
+  categories,
+  onEdit,
+  onDelete,
+  deleteConfirm,
   setDeleteConfirm,
   isManageMode = false,
   onMoveUp,
@@ -96,15 +96,13 @@ function SortableMenuItem({
   };
 
   return (
-    <Card 
-      ref={setNodeRef} 
+    <Card
+      ref={setNodeRef}
       style={style}
       {...(isManageMode ? { ...attributes, ...listeners } : {})}
-      className={`p-4 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300 ${
-        isManageMode ? 'cursor-grab active:cursor-grabbing touch-manipulation' : ''
-      } ${
-        isDragging ? 'opacity-50 scale-105 shadow-lg' : isManageMode ? 'hover:scale-105' : ''
-      }`}
+      className={`p-4 bg-white shadow-soft border border-warm-beige hover:shadow-elevated transition-all duration-300 ${isManageMode ? 'cursor-grab active:cursor-grabbing touch-manipulation' : ''
+        } ${isDragging ? 'opacity-50 scale-105 shadow-lg' : isManageMode ? 'hover:scale-105' : ''
+        }`}
     >
       <div className="flex items-center space-x-4">
         {/* Item Image */}
@@ -119,32 +117,30 @@ function SortableMenuItem({
             />
           </div>
         )}
-        
+
         {/* Item Details */}
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start mb-1">
             <h3 className="text-lg font-semibold text-text-primary leading-tight flex-1 mr-3">{item.name}</h3>
             <span className="text-lg font-bold text-sage flex-shrink-0">₺{item.price}</span>
           </div>
-          
+
           <p className="text-text-secondary text-sm mb-2 line-clamp-1">{item.description}</p>
-          
+
           <div className="flex items-center justify-between">
             <Badge variant="outline" className="bg-sage/10 border-sage/30 text-sage text-xs">
               {getCategoryName(item.category)}
             </Badge>
-            
+
             <div className="flex space-x-1">
-              {item.isVegetarian && <span className="text-green-600 text-sm" title="Vejetaryen">🌱</span>}
-              {item.isVegan && <span className="text-green-600 text-sm" title="Vegan">🌿</span>}
-              {item.isSpicy && <span className="text-red-500 text-sm" title="Acılı">🌶️</span>}
-              {item.isPopular && <span className="text-yellow-500 text-sm" title="Popüler">⭐</span>}
+              {/* Badges removed */}
+
               {item.isGlutenFree && <span className="text-blue-500 text-sm" title="Glutensiz">🌾</span>}
               {item.isDairyFree && <span className="text-blue-500 text-sm" title="Süt içermez">🥛</span>}
             </div>
           </div>
         </div>
-        
+
         {/* Action Buttons */}
         <div className="flex flex-col space-y-2 flex-shrink-0">
           {isManageMode ? (
@@ -185,7 +181,7 @@ function SortableMenuItem({
               >
                 {operationLoading?.[`update-${item.id}`] ? '...' : 'Düzenle'}
               </Button>
-              
+
               {deleteConfirm === item.id ? (
                 <div className="flex space-x-1">
                   <Button
@@ -234,15 +230,15 @@ function SortableMenuItem({
 }
 
 // Category Section Component
-function CategorySection({ 
-  category, 
-  items, 
-  categories, 
-  onEdit, 
-  onDelete, 
-  onReorder, 
-  deleteConfirm, 
-  setDeleteConfirm, 
+function CategorySection({
+  category,
+  items,
+  categories,
+  onEdit,
+  onDelete,
+  onReorder,
+  deleteConfirm,
+  setDeleteConfirm,
   isManageMode,
   operationLoading
 }: {
@@ -368,11 +364,11 @@ function CategorySection({
   );
 }
 
-export function MenuItemList({ 
-  menuItems, 
-  categories, 
-  onEdit, 
-  onDelete, 
+export function MenuItemList({
+  menuItems,
+  categories,
+  onEdit,
+  onDelete,
   onReorder,
   isManageMode = false,
   operationLoading = {}
@@ -382,7 +378,7 @@ export function MenuItemList({
   // Group items by category and sort categories by order
   const groupedItems = useMemo(() => {
     const grouped: { [key: string]: MenuItem[] } = {};
-    
+
     // Group items by category
     menuItems.forEach(item => {
       if (!grouped[item.category]) {
@@ -413,7 +409,7 @@ export function MenuItemList({
         ...item,
         order: index + 1 // Update order field based on new position
       }));
-      
+
       // Get all items from other categories
       const otherItems = Object.entries(groupedItems)
         .filter(([id]) => id !== categoryId)
@@ -421,7 +417,7 @@ export function MenuItemList({
 
       // Combine with reordered items from this category
       const allItems = [...otherItems, ...updatedReorderedItems];
-      
+
       onReorder(allItems);
     }
   };
