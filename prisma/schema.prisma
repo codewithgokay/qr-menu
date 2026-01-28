@@ -70,7 +70,7 @@ model MenuItem {
   categoryId    String
   category      MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   name          String
-  description   String
+  description   String?
   price         Float
   image         String?
   imagePublicId String?

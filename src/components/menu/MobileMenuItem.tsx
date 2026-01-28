@@ -60,9 +60,11 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
               </span>
             </div>
 
-            <p className="text-text-secondary text-sm leading-relaxed mb-3 line-clamp-2">
-              {item.description}
-            </p>
+            {item.description && (
+              <p className="text-text-secondary text-sm leading-relaxed mb-3 line-clamp-2">
+                {item.description}
+              </p>
+            )}
           </div>
         </div>
       </Card>

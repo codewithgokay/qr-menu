@@ -57,9 +57,11 @@ export function MenuItem({ item, index }: MenuItemProps) {
                   </span>
                 </div>
 
-                <p className="text-text-secondary text-sm leading-relaxed mb-3 line-clamp-2">
-                  {item.description}
-                </p>
+                {item.description && (
+                  <p className="text-text-secondary text-sm leading-relaxed mb-3 line-clamp-2">
+                    {item.description}
+                  </p>
+                )}
               </div>
             </div>
           </Card>
@@ -90,9 +92,11 @@ export function MenuItem({ item, index }: MenuItemProps) {
             </div>
 
             {/* Description */}
-            <p className="text-text-secondary text-lg leading-relaxed">
-              {item.description}
-            </p>
+            {item.description && (
+              <p className="text-text-secondary text-lg leading-relaxed">
+                {item.description}
+              </p>
+            )}
           </div>
         </SheetContent>
       </Sheet>

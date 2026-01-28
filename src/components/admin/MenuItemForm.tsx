@@ -40,7 +40,7 @@ export function MenuItemForm({
     if (item) {
       setFormData({
         name: item.name,
-        description: item.description,
+        description: item.description || '',
         price: item.price.toString(),
         category: item.category,
         image: item.image || ''
@@ -168,7 +168,7 @@ export function MenuItemForm({
 
         <div>
           <label className="block text-sm font-medium text-text-primary mb-2">
-            Açıklama *
+            Açıklama (İsteğe bağlı)
           </label>
           <textarea
             value={formData.description}
@@ -176,7 +176,6 @@ export function MenuItemForm({
             placeholder="Ürün açıklamasını girin"
             className="w-full p-3 rounded-lg bg-soft-gray border border-warm-beige text-text-primary placeholder-text-secondary resize-none focus:border-sage focus:ring-sage"
             rows={3}
-            required
           />
         </div>
 
