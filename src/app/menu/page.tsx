@@ -4,7 +4,6 @@ import { Suspense } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { MenuGrid } from '@/components/menu/MenuGrid';
-import { CategoryFilter } from '@/components/menu/CategoryFilter';
 import { SearchBar } from '@/components/menu/SearchBar';
 import { MenuProvider } from '@/lib/context/MenuContext';
 import { restaurant } from '@/data/menu';
@@ -47,8 +46,6 @@ export default function MenuPage() {
           {/* Search and Filter Section */}
           <div className="sticky top-[85px] z-30 bg-republic-cream/95 backdrop-blur-sm pt-2 transition-all duration-300">
             <SearchBar />
-            {/* Unified Category Filter (Horizontal Scroll) */}
-            <CategoryFilter />
           </div>
 
           {/* Menu Grid with Suspense */}
