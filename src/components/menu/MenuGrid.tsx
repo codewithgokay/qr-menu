@@ -27,7 +27,21 @@ export function MenuGrid() {
       setExpandedCategory(null);
     } else {
       setExpandedCategory(categoryId);
-      // Optional: Scroll to the category header?
+
+      // Scroll to the category header after a brief delay to allow expansion
+      setTimeout(() => {
+        const element = document.getElementById(`category-${categoryId}`);
+        if (element) {
+          const headerOffset = 140; // Approx height of sticky header + search
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      }, 100);
     }
   };
 
@@ -143,6 +157,7 @@ export function MenuGrid() {
         return (
           <motion.div
             key={category.id}
+            id={`category-${category.id}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
