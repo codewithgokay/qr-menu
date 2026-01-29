@@ -3,7 +3,6 @@
 import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { MenuState, FilterOptions, UserPreferences, MenuItem as MenuItemType, MenuCategory as MenuCategoryType } from '@/lib/types';
 import { menuItemsApi, categoriesApi } from '@/lib/api';
-import { menuItems as fallbackMenuItems, categories as fallbackCategories } from '@/data/menu';
 
 interface ExtendedMenuState extends MenuState {
   isLoadingProgress: number;
@@ -208,8 +207,8 @@ export function MenuProvider({
           allItems = itemsResult.value as MenuItemType[];
         } else {
           // Only use fallback if API completely fails
-          allItems = fallbackMenuItems;
-          console.warn('Using fallback menu items');
+          allItems = [];
+          console.warn('No items found or API failed');
         }
 
         // Handle categories result
@@ -217,8 +216,8 @@ export function MenuProvider({
           allCategories = categoriesResult.value as MenuCategoryType[];
         } else {
           // Only use fallback if API completely fails
-          allCategories = fallbackCategories;
-          console.warn('Using fallback categories');
+          allCategories = [];
+          console.warn('No categories found or API failed');
         }
 
         // Update with fresh data
@@ -231,9 +230,9 @@ export function MenuProvider({
       } catch (error) {
         console.error('Error loading menu data:', error);
         // Only use fallback data if everything fails
-        dispatch({ type: 'SET_CATEGORIES', payload: fallbackCategories });
-        dispatch({ type: 'SET_ITEMS', payload: fallbackMenuItems });
-        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: fallbackMenuItems });
+        dispatch({ type: 'SET_CATEGORIES', payload: [] });
+        dispatch({ type: 'SET_ITEMS', payload: [] });
+        dispatch({ type: 'SET_VISIBLE_ITEMS', payload: [] });
         dispatch({ type: 'SET_ERROR', payload: 'Failed to load menu data' });
       } finally {
         dispatch({ type: 'SET_LOADING', payload: false });
