@@ -51,10 +51,13 @@ export function Header({ restaurant }: HeaderProps) {
 
             {/* Brand Name & Subtitle - Stacked for Authority */}
             <div className="flex flex-col justify-center">
-              <h1 className="font-bold tracking-tight font-heading leading-none text-2xl transition-all duration-300">
-                <span className="text-republic-charcoal">RE</span>
-                <span className="text-republic-green">PUB</span>
-                <span className="text-republic-charcoal uppercase">lic</span>
+              <h1 className="font-bold tracking-tight font-heading leading-none text-2xl transition-all duration-300 flex items-center gap-1">
+                <span>
+                  <span className="text-republic-charcoal">RE</span>
+                  <span className="text-republic-green">PUB</span>
+                  <span className="text-republic-charcoal">LIC</span>
+                </span>
+                <span className="text-republic-green text-lg">★</span>
               </h1>
               <span className="text-republic-charcoal font-medium tracking-[0.2em] uppercase text-xs transition-all duration-300">
                 Social House
