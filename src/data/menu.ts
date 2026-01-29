@@ -11,7 +11,7 @@ export const restaurant: Restaurant = {
   email: 'info@republiccanakkale.com',
   website: 'https://republiccanakkale.com',
   socialMedia: {
-    instagram: '@republiccanakkale',
+    instagram: '@republicanakkale',
     facebook: 'RepublicCanakkale',
     twitter: '@RepublicCanakkale'
   },
@@ -20,8 +20,8 @@ export const restaurant: Restaurant = {
     Salı: { open: '12:00', close: '02:00' },
     Çarşamba: { open: '12:00', close: '02:00' },
     Perşembe: { open: '12:00', close: '02:00' },
-    Cuma: { open: '12:00', close: '04:00' },
-    Cumartesi: { open: '12:00', close: '04:00' },
+    Cuma: { open: '12:00', close: '02:00' },
+    Cumartesi: { open: '12:00', close: '02:00' },
     Pazar: { open: '12:00', close: '02:00' }
   },
   currency: 'TRY',
