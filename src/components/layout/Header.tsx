@@ -29,7 +29,7 @@ export function Header({ restaurant }: HeaderProps) {
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`sticky top-0 z-50 w-full border-b border-republic-gold/50 bg-republic-green/95 backdrop-blur supports-[backdrop-filter]:bg-republic-green/90 transition-all duration-300 ${isScrolled ? 'shadow-lg' : ''
+      className={`sticky top-0 z-50 w-full border-b border-republic-gold/30 bg-republic-cream/95 backdrop-blur supports-[backdrop-filter]:bg-republic-cream/90 transition-all duration-300 ${isScrolled ? 'shadow-lg' : ''
         }`}
     >
       <div className="px-6 py-4">
@@ -51,10 +51,12 @@ export function Header({ restaurant }: HeaderProps) {
 
             {/* Brand Name & Subtitle - Stacked for Authority */}
             <div className="flex flex-col justify-center">
-              <h1 className="font-bold text-white tracking-tight font-heading leading-none text-2xl transition-all duration-300 group-hover:text-republic-charcoal">
-                {restaurant.name}
+              <h1 className="font-bold tracking-tight font-heading leading-none text-2xl transition-all duration-300">
+                <span className="text-republic-charcoal">RE</span>
+                <span className="text-republic-green">PUB</span>
+                <span className="text-republic-charcoal uppercase">lic</span>
               </h1>
-              <span className="text-black font-medium tracking-[0.2em] uppercase text-xs transition-all duration-300">
+              <span className="text-republic-charcoal font-medium tracking-[0.2em] uppercase text-xs transition-all duration-300">
                 Social House
               </span>
             </div>
