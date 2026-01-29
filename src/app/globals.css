@@ -43,10 +43,13 @@
 
   /* Custom colors - Republic Pub Theme */
   --color-republic-cream: #F8F9FA;
-  --color-republic-green: #B91C1C; /* Premium Red */
-  --color-republic-dark-green: #7F1D1D; /* Burgundy */
+  --color-republic-green: #B91C1C;
+  /* Premium Red */
+  --color-republic-dark-green: #7F1D1D;
+  /* Burgundy */
   --color-republic-gold: #D4AF37;
-  --color-republic-charcoal: #1A1A1A;
+  --color-republic-charcoal: #111111;
+  /* Deep Black/Charcoal */
   --color-republic-soft-white: #FFFFFF;
 
   /* Mapping legacy names to new palette for backward compatibility during transition */
@@ -59,7 +62,8 @@
   --color-golden-accent: var(--color-republic-gold);
   --color-soft-gray: var(--color-republic-soft-white);
   --color-text-primary: var(--color-republic-charcoal);
-  --color-text-secondary: var(--color-republic-green);
+  --color-text-secondary: #4B5563;
+  /* Neutral Gray-600 */
 }
 
 :root {
