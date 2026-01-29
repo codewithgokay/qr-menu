@@ -41,7 +41,7 @@ export function MenuGrid() {
             behavior: "smooth"
           });
         }
-      }, 100);
+      }, 350);
     }
   };
 
