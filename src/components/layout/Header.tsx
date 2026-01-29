@@ -50,18 +50,27 @@ export function Header({ restaurant }: HeaderProps) {
             </div>
 
             {/* Brand Name & Subtitle - Stacked for Authority */}
-            <div className="flex flex-col justify-center">
-              <h1 className="font-bold tracking-tight font-heading leading-none text-2xl transition-all duration-300 flex items-center gap-1">
-                <span>
-                  <span className="text-republic-charcoal">RE</span>
-                  <span className="text-republic-green">PUB</span>
-                  <span className="text-republic-charcoal">LIC</span>
-                </span>
-                <span className="text-republic-green text-lg">★</span>
+            <div className="flex flex-col justify-center items-center">
+              <h1 className="font-bold tracking-tight font-heading leading-none text-2xl transition-all duration-300 flex items-end">
+                <span className="text-republic-charcoal">RE</span>
+                <span className="text-republic-green">PUB</span>
+                <span className="text-republic-charcoal">L</span>
+                {/* Custom 'i' with Star Dot */}
+                <div className="relative flex flex-col items-center justify-end mx-[1px]">
+                  <span className="text-republic-green text-[0.4em] absolute -top-1">★</span>
+                  <span className="text-republic-charcoal leading-none">ı</span>
+                </div>
+                <span className="text-republic-charcoal">C</span>
               </h1>
-              <span className="text-republic-charcoal font-medium tracking-[0.2em] uppercase text-xs transition-all duration-300">
-                Social House
-              </span>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-republic-charcoal font-medium tracking-[0.2em] uppercase text-[10px] transition-all duration-300">
+                  SOCIAL
+                </span>
+                <span className="text-republic-green text-[8px]">★</span>
+                <span className="text-republic-charcoal font-medium tracking-[0.2em] uppercase text-[10px] transition-all duration-300">
+                  HOUSE
+                </span>
+              </div>
             </div>
           </Link>
         </div>
