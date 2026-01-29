@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { menuItems } from '@/data/menu'
+
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -55,18 +55,7 @@ export async function GET() {
         }
       })
     } else {
-      // No database data - use static fallback
-
-      transformedItems = menuItems.map((item, index) => ({
-        id: item.id,
-        name: item.name,
-        description: item.description,
-        price: item.price,
-        category: item.category,
-        image: item.image,
-        imagePublicId: item.imagePublicId || null,
-        order: index + 1
-      }))
+      transformedItems = []
     }
 
 
@@ -82,20 +71,7 @@ export async function GET() {
     return response
   } catch (error) {
     console.error('Error fetching menu items:', error)
-
-    // Fallback to static data on error
-    const transformedItems = menuItems.map((item, index) => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      price: item.price,
-      category: item.category,
-      image: item.image,
-      imagePublicId: item.imagePublicId || null,
-      order: index + 1
-    }))
-
-    return NextResponse.json(transformedItems)
+    return NextResponse.json([], { status: 500 })
   }
 }
 

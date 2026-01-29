@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { categories } from '@/data/menu'
+
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -34,18 +34,8 @@ export async function GET() {
 
     return response
   } catch (error) {
-    console.error('Database error, falling back to static data:', error)
-
-    // Fallback to static data when database is not available
-    const transformedCategories = categories.map(category => ({
-      id: category.id,
-      name: category.name,
-      description: category.description,
-      icon: category.icon,
-      order: category.order
-    }))
-
-    return NextResponse.json(transformedCategories)
+    console.error('Database error:', error)
+    return NextResponse.json([], { status: 500 })
   }
 }
 
