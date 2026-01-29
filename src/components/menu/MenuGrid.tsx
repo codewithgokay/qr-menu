@@ -168,7 +168,7 @@ export function MenuGrid() {
               className={`
                 w-full flex items-center justify-between p-4 rounded-xl transition-all duration-300
                 ${isExpanded
-                  ? 'bg-republic-green text-republic-gold shadow-md'
+                  ? 'bg-republic-green text-white shadow-md'
                   : 'bg-white text-republic-charcoal shadow-sm hover:bg-gray-50'}
               `}
               whileTap={{ scale: 0.98 }}
@@ -176,7 +176,7 @@ export function MenuGrid() {
               <div className="flex items-center space-x-3">
                 <span className="text-2xl">{category.icon}</span>
                 <span className="font-heading font-bold text-lg">{category.name}</span>
-                <span className={`text-sm ${isExpanded ? 'text-republic-gold/80' : 'text-gray-400'}`}>
+                <span className={`text-sm ${isExpanded ? 'text-white/80' : 'text-gray-400'}`}>
                   ({items.length})
                 </span>
               </div>
@@ -184,7 +184,7 @@ export function MenuGrid() {
                 animate={{ rotate: isExpanded ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <ChevronDown className={`w-5 h-5 ${isExpanded ? 'text-republic-gold' : 'text-gray-400'}`} />
+                <ChevronDown className={`w-5 h-5 ${isExpanded ? 'text-white' : 'text-gray-400'}`} />
               </motion.div>
             </motion.button>
 
