@@ -55,10 +55,10 @@ export function Header({ restaurant }: HeaderProps) {
                 <span className="text-republic-charcoal">RE</span>
                 <span className="text-republic-green">PUB</span>
                 <span className="text-republic-charcoal">L</span>
-                {/* Custom 'i' with Star Dot */}
-                <div className="relative flex flex-col items-center justify-end mx-[1px]">
-                  <span className="text-republic-green text-[0.4em] absolute -top-1">★</span>
-                  <span className="text-republic-charcoal leading-none">ı</span>
+                {/* Custom 'I' with Star on top */}
+                <div className="relative flex flex-col items-center justify-center mx-[1px]">
+                  <span className="text-republic-green text-[0.4em] absolute -top-1.5 left-1/2 -translate-x-1/2">★</span>
+                  <span className="text-republic-charcoal">I</span>
                 </div>
                 <span className="text-republic-charcoal">C</span>
               </h1>
