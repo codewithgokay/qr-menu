@@ -50,21 +50,24 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
           </div>
 
           {/* Content Section */}
-          <div className="flex-1 min-w-0">
-            <div className="flex justify-between items-start mb-2 gap-3">
-              <h3 className="font-semibold text-lg text-text-primary leading-tight break-words flex-1">
+          <div className="flex-1 min-w-0 flex flex-col justify-between min-h-[6rem]">
+            <div>
+              <h3 className="font-semibold text-lg text-text-primary leading-tight break-words mb-1">
                 {item.name}
               </h3>
-              <span className="font-bold text-xl text-republic-dark-green whitespace-nowrap flex-shrink-0">
+
+              {item.description && (
+                <p className="text-text-secondary text-sm leading-relaxed mb-1 line-clamp-2">
+                  {item.description}
+                </p>
+              )}
+            </div>
+
+            <div className="flex justify-end">
+              <span className="font-bold text-xl text-republic-dark-green whitespace-nowrap">
                 {formatPrice(item.price)}
               </span>
             </div>
-
-            {item.description && (
-              <p className="text-text-secondary text-sm leading-relaxed mb-3 line-clamp-2">
-                {item.description}
-              </p>
-            )}
           </div>
         </div>
       </Card>
