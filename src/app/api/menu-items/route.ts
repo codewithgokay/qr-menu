@@ -24,7 +24,7 @@ export async function GET() {
       orderBy: { order: 'asc' }
     })
 
-    let transformedItems
+    let transformedItems: any[]
 
     if (dbMenuItems.length > 0) {
       // Database has data - use it but replace Cloudinary URLs with working images
