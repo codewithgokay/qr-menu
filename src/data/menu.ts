@@ -16,13 +16,13 @@ export const restaurant: Restaurant = {
     twitter: '@RepublicCanakkale'
   },
   operatingHours: {
-    Pazartesi: { open: '12:00', close: '02:00' },
-    Salı: { open: '12:00', close: '02:00' },
-    Çarşamba: { open: '12:00', close: '02:00' },
-    Perşembe: { open: '12:00', close: '02:00' },
-    Cuma: { open: '12:00', close: '02:00' },
-    Cumartesi: { open: '12:00', close: '02:00' },
-    Pazar: { open: '12:00', close: '02:00' }
+    Pazartesi: { open: '16:00', close: '02:00' },
+    Salı: { open: '16:00', close: '02:00' },
+    Çarşamba: { open: '16:00', close: '02:00' },
+    Perşembe: { open: '16:00', close: '02:00' },
+    Cuma: { open: '16:00', close: '02:00' },
+    Cumartesi: { open: '16:00', close: '02:00' },
+    Pazar: { open: '16:00', close: '02:00' }
   },
   currency: 'TRY',
   language: 'tr'

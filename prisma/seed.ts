@@ -28,13 +28,13 @@ async function main() {
       })
 
       const hoursData = [
-        { dayOfWeek: "Pazartesi", openTime: "12:00", closeTime: "02:00" },
-        { dayOfWeek: "Salı", openTime: "12:00", closeTime: "02:00" },
-        { dayOfWeek: "Çarşamba", openTime: "12:00", closeTime: "02:00" },
-        { dayOfWeek: "Perşembe", openTime: "12:00", closeTime: "02:00" },
-        { dayOfWeek: "Cuma", openTime: "12:00", closeTime: "02:00" },
-        { dayOfWeek: "Cumartesi", openTime: "12:00", closeTime: "02:00" },
-        { dayOfWeek: "Pazar", openTime: "12:00", closeTime: "02:00" }
+        { dayOfWeek: "Pazartesi", openTime: "16:00", closeTime: "02:00" },
+        { dayOfWeek: "Salı", openTime: "16:00", closeTime: "02:00" },
+        { dayOfWeek: "Çarşamba", openTime: "16:00", closeTime: "02:00" },
+        { dayOfWeek: "Perşembe", openTime: "16:00", closeTime: "02:00" },
+        { dayOfWeek: "Cuma", openTime: "16:00", closeTime: "02:00" },
+        { dayOfWeek: "Cumartesi", openTime: "16:00", closeTime: "02:00" },
+        { dayOfWeek: "Pazar", openTime: "16:00", closeTime: "02:00" }
       ]
 
       await prisma.restaurantOperatingHours.createMany({
