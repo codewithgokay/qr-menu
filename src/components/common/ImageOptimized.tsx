@@ -18,6 +18,7 @@ interface ImageOptimizedProps {
   priority?: boolean;
   lazy?: boolean;
   objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+  autoHeight?: boolean;
 }
 
 const ImageOptimized = memo(function ImageOptimized({
@@ -33,7 +34,8 @@ const ImageOptimized = memo(function ImageOptimized({
   gravity = 'auto',
   priority = false,
   lazy = true,
-  objectFit = 'cover'
+  objectFit = 'cover',
+  autoHeight = false
 }: ImageOptimizedProps) {
   const [imageError, setImageError] = useState(false);
   const [isInView, setIsInView] = useState(!lazy);
@@ -72,9 +74,9 @@ const ImageOptimized = memo(function ImageOptimized({
     cloudinaryPublicId.trim() !== ''
     ? getCloudinaryUrl(cloudinaryPublicId, {
       width,
-      height,
+      height: autoHeight ? undefined : height,
       quality,
-      crop,
+      crop: autoHeight ? 'limit' : crop, // Use limit to preserve aspect ratio if width is constrained
       gravity,
       format: 'auto'
     })
@@ -98,15 +100,15 @@ const ImageOptimized = memo(function ImageOptimized({
         <Image
           src={imageSrc}
           alt={alt}
-          width={width}
-          height={height}
+          width={autoHeight ? 0 : width}
+          height={autoHeight ? 0 : height}
           priority={priority}
           loading={priority ? 'eager' : 'lazy'}
-          className={`transition-opacity duration-200 object-${objectFit}`}
+          className={`transition-opacity duration-200 ${!autoHeight ? `object-${objectFit}` : ''}`}
           style={{
             width: '100%',
-            height: '100%',
-            objectFit: objectFit
+            height: autoHeight ? 'auto' : '100%',
+            objectFit: autoHeight ? undefined : objectFit
           }}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           onError={() => setImageError(true)}
