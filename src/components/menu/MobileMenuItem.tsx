@@ -93,18 +93,18 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
             }}
           >
             {/* Large Image */}
-            <div className="relative h-64 w-full overflow-hidden rounded-2xl">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl">
               <ImageOptimized
                 src={item.image}
                 alt={item.name}
                 width={600}
-                height={400}
+                height={600}
                 cloudinaryPublicId={item.imagePublicId}
-                className="w-full h-full object-contain bg-black/5"
+                className="w-full h-full"
                 fallbackText="No Image"
                 lazy={false} // Don't lazy load in modal
                 priority={true}
-                objectFit="contain"
+                objectFit="cover"
               />
             </div>
 
