@@ -31,7 +31,7 @@ export function Footer({ restaurant }: FooterProps) {
               <h3 className="text-lg font-bold text-republic-charcoal font-heading">İletişim</h3>
               <div className="space-y-2 text-sm text-gray-600">
                 <p className="font-medium">{restaurant.address}</p>
-                <p>{restaurant.phone}</p>
+                {restaurant.phone && <p>{restaurant.phone}</p>}
               </div>
 
               {/* Social Media Links */}

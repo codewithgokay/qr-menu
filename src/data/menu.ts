@@ -6,8 +6,8 @@ export const restaurant: Restaurant = {
   description: 'Çanakkale\'nin en iyi pub deneyimi. Özel içecekler, lezzetli atıştırmalıklar ve harika atmosfer.',
   logo: 'https://res.cloudinary.com/dmudabrcn/image/upload/v1769272325/543799471_17989578092840121_1390771300469241938_n_dpnmkw.jpg',
   coverImage: '/images/restaurant-cover.jpg',
-  address: 'Çanakkale Merkez, Türkiye',
-  phone: '+90 (286) 123-4567',
+  address: 'Kemalpaşa mah. Fetvane sokak no:5, Çanakkale, Turkey 17000',
+  phone: '',
   email: 'info@republiccanakkale.com',
   website: 'https://republiccanakkale.com',
   socialMedia: {
