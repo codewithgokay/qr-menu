@@ -93,37 +93,19 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
             }}
           >
             {/* Large Image */}
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-black/5">
-              {/* Blurred Background */}
-              <div className="absolute inset-0 z-0">
-                <ImageOptimized
-                  src={item.image}
-                  alt=""
-                  width={100}
-                  height={100}
-                  cloudinaryPublicId={item.imagePublicId}
-                  className="w-full h-full opacity-60 blur-xl scale-[2.0]"
-                  fallbackText=""
-                  lazy={false} // Don't lazy load in modal
-                  objectFit="cover"
-                />
-              </div>
-
-              {/* Main Image */}
-              <div className="relative z-10 w-full h-full p-2">
-                <ImageOptimized
-                  src={item.image}
-                  alt={item.name}
-                  width={600}
-                  height={600}
-                  cloudinaryPublicId={item.imagePublicId}
-                  className="w-full h-full drop-shadow-sm"
-                  fallbackText="No Image"
-                  lazy={false} // Don't lazy load in modal
-                  priority={true}
-                  objectFit="contain"
-                />
-              </div>
+            <div className="relative aspect-[2/3] w-full overflow-hidden rounded-2xl bg-black/5">
+              <ImageOptimized
+                src={item.image}
+                alt={item.name}
+                width={600}
+                height={900}
+                cloudinaryPublicId={item.imagePublicId}
+                className="w-full h-full"
+                fallbackText="No Image"
+                lazy={false} // Don't lazy load in modal
+                priority={true}
+                objectFit="cover"
+              />
             </div>
 
             {/* Price */}
