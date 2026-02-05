@@ -93,7 +93,7 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
             }}
           >
             {/* Large Image */}
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl">
               <ImageOptimized
                 src={item.image}
                 alt={item.name}
