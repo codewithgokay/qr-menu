@@ -17,13 +17,14 @@ interface ImageOptimizedProps {
   gravity?: string;
   priority?: boolean;
   lazy?: boolean;
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
 }
 
-const ImageOptimized = memo(function ImageOptimized({ 
-  src, 
-  alt, 
-  width = 400, 
-  height = 300, 
+const ImageOptimized = memo(function ImageOptimized({
+  src,
+  alt,
+  width = 400,
+  height = 300,
   className = '',
   fallbackText = 'No Image',
   cloudinaryPublicId,
@@ -31,7 +32,8 @@ const ImageOptimized = memo(function ImageOptimized({
   crop = 'fill',
   gravity = 'auto',
   priority = false,
-  lazy = true
+  lazy = true,
+  objectFit = 'cover'
 }: ImageOptimizedProps) {
   const [imageError, setImageError] = useState(false);
   const [isInView, setIsInView] = useState(!lazy);
@@ -48,9 +50,9 @@ const ImageOptimized = memo(function ImageOptimized({
           observer.disconnect();
         }
       },
-      { 
+      {
         rootMargin: '100px', // Increased margin for better UX
-        threshold: 0.1 
+        threshold: 0.1
       }
     );
 
@@ -61,21 +63,21 @@ const ImageOptimized = memo(function ImageOptimized({
   // Determine the image source - prioritize Cloudinary if publicId is provided
   // If the src is already a Cloudinary URL, use it directly for better performance
   const isCloudinaryUrl = src && src.includes('res.cloudinary.com');
-  
+
   // Skip Cloudinary URL generation for placeholder or invalid publicIds
-  const imageSrc = cloudinaryPublicId && 
-                   !isCloudinaryUrl && 
-                   cloudinaryPublicId !== 'placeholder.jpg' &&
-                   !cloudinaryPublicId.includes('placeholder') &&
-                   cloudinaryPublicId.trim() !== ''
+  const imageSrc = cloudinaryPublicId &&
+    !isCloudinaryUrl &&
+    cloudinaryPublicId !== 'placeholder.jpg' &&
+    !cloudinaryPublicId.includes('placeholder') &&
+    cloudinaryPublicId.trim() !== ''
     ? getCloudinaryUrl(cloudinaryPublicId, {
-        width,
-        height,
-        quality,
-        crop,
-        gravity,
-        format: 'auto'
-      })
+      width,
+      height,
+      quality,
+      crop,
+      gravity,
+      format: 'auto'
+    })
     : src;
 
 
@@ -100,11 +102,11 @@ const ImageOptimized = memo(function ImageOptimized({
           height={height}
           priority={priority}
           loading={priority ? 'eager' : 'lazy'}
-          className="object-cover transition-opacity duration-200"
+          className={`transition-opacity duration-200 object-${objectFit}`}
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover'
+            objectFit: objectFit
           }}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           onError={() => setImageError(true)}

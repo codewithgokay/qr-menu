@@ -104,6 +104,7 @@ const MobileMenuItem = memo(function MobileMenuItem({ item, index }: MobileMenuI
                 fallbackText="No Image"
                 lazy={false} // Don't lazy load in modal
                 priority={true}
+                objectFit="contain"
               />
             </div>
 
